@@ -53,18 +53,27 @@ Requisitos Funcionais
 
 
 RF01 - Página Inicial (Home): O site deve ter uma página inicial contendo uma breve introdução sobre a atlética, links para redes sociais, e um rodapé com contatos, CNPJ e endereço.
+
 RF02 - Gestão de Conteúdo Institucional: O sistema deve permitir a publicação de informações sobre "Quem somos" , a atual "Diretoria" , as "Modalidades" esportivas oferecidas e uma "Galeria" de fotos/vídeos.
+
 RF03 - Área de Parceiros: Deve haver uma seção dedicada para listar "Nossas parcerias" e uma página com informações sobre como "Seja um patrocinador".
+
 RF04 - Portal da Transparência: O site deve disponibilizar arquivos para download ou visualização referentes ao "Estatuto" da atlética , "ATAS" de reuniões e "Relatório Financeiro".
+
 RF05 - Autenticação de Sócios: O sistema deve possuir uma funcionalidade de Login e Senha para restringir o acesso à "Área Sócio".
+
 RF06 - Loja Virtual/Exclusiva: Deve haver uma seção de "Loja" acessível aos sócios  
+
 RF07 - Mural de Comunicados: O sistema deve permitir que a administração publique "Comunicados" exclusivos para os sócios logados.
+
 RF08 - Contatos Estratégicos: Disponibilização de informações de contato direto de "Diretores e presidência" apenas para usuários autenticados.
 
 
 Requisitos Não Funcionais 
 
 
-RNF01 - Responsividade (Usabilidade): O site deve ser totalmente responsivo, adaptando-se perfeitamente a dispositivos móveis (celulares e tablets)fUTURAMENTE!
+RNF01 - Responsividade (Usabilidade): O site deve ser totalmente responsivo, adaptando-se perfeitamente a dispositivos móveis (celulares e tablets)Futuramente!
+
 RNF02 - Segurança: A área de login  deve utilizar protocolos seguros (HTTPS/SSL) e criptografia de senhas para proteger os dados dos sócios.
+
 RNF03 - Facilidade de Gestão (Manutenibilidade): O sistema deve possuir um painel administrativo  intuitivo para que a própria diretoria possa atualizar textos, subir atas e relatórios financeiros  sem depender sempre de desenvolvedores.
