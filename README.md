@@ -11,10 +11,10 @@ Repositório destinado à elaboração do site institucional da Associação Atl
 ### Stack Tecnológica
 
 #### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Banco de Dados**: SQLite3
-- **Middleware**: CORS
+- **Linguagem**: Python 3.8+
+- **Framework**: Flask (micro-framework)
+- **Armazenamento**: Arquivos JSON (sem banco de dados)
+- **Middleware**: Flask-CORS
 
 #### Frontend
 - **Tecnologias**: HTML5, CSS3, JavaScript
@@ -27,20 +27,20 @@ MVP-AAALDV/
 ├── frontend/          # Interface HTML/CSS
 │   ├── index.html
 │   └── styles.css
-└── backend/           # API REST
-    ├── routes/        # Endpoints
-    ├── server.js
-    ├── database.js
-    └── package.json
+└── backend/           # API REST simplificada
+    ├── servidor.py    # Servidor Flask (código em português)
+    ├── requirements.txt # Dependências Python
+    ├── noticias.json  # Dados das notícias
+    └── contatos.json  # Dados dos contatos
 ```
 
 ### API Endpoints
 - `GET/POST /api/news` - Notícias
 - `GET/POST /api/contacts` - Contatos
 
-### Tabelas do Banco
-- `noticias` (id, titulo, conteudo, data)
-- `contatos` (id, nome, email, mensagem)
+### Armazenamento
+- `news.json` - Array com notícias (id, titulo, conteudo, data)
+- `contacts.json` - Array com contatos (id, nome, email, mensagem)
 
 ## Requisitos Funcionais
 
@@ -56,22 +56,36 @@ MVP-AAALDV/
 
 **RNF01** - Simplicidade: Código limpo e fácil de manter.
 
-**RNF02** - Performance: API leve e rápida com SQLite.
+**RNF02** - Performance: API leve e rápida com arquivos JSON.
 
 **RNF03** - Manutenibilidade: Estrutura simples para facilitar atualizações.
 
 ## Como Usar
 
+### Pré-requisitos
+**IMPORTANTE:** Python precisa estar instalado!
+
+**Instalar Python:**
+- **Microsoft Store**: Procure "Python 3.12" e instale
+- **Site oficial**: https://www.python.org/downloads/
+  - Durante instalação, marque "Add Python to PATH"
+
 ### Backend
 ```bash
 cd backend
-npm install
-npm start
+pip install -r requirements.txt
+python servidor.py
 ```
-Servidor: `http://localhost:3000`
+
+**Link do site:** http://localhost:3000
 
 ### Frontend
-Abra `frontend/index.html` no navegador.
+Abra o arquivo `frontend/index.html` no navegador.
 
-## Tecnologias em Português
-Todo código backend traduzido para português (variáveis, tabelas, campos).
+### API Disponível
+- `GET http://localhost:3000/api/news` - Lista notícias
+- `POST http://localhost:3000/api/news` - Cria notícia
+- `GET http://localhost:3000/api/contacts` - Lista contatos
+- `POST http://localhost:3000/api/contacts` - Cria contato
+
+
