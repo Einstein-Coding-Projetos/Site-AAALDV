@@ -104,11 +104,16 @@ body {
   border-radius: 9999px;
 }
 
+
 .section-title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 3rem;
   text-transform: uppercase;
   letter-spacing: -0.025em;
+}
+
+.material-icons-sharp {
+  font-size: 15.5px;
 }
 
 .nav {
@@ -189,7 +194,7 @@ body {
   display: inline-block !important;
 
   font-size: 1.8rem ;
-  font-weight: 700 !important;
+  font-weight: 100rem !important;
   letter-spacing: 0.06em !important;
 
   background: transparent !important;

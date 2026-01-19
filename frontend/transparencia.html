@@ -2,7 +2,11 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Transparência | AAALDV</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     
 </head>
@@ -55,19 +59,81 @@
     </div>
 
  <!--CONTEUDO-->
-    <section class="container mx-auto px-4 space-y-12">
+  <section class="container mx-auto px-4 space-y-12">
       <div id="financeiro" class="tab-content">
         <h2 class="text-2xl font-semibold mb-4">Financeiro</h2>
       </div>
 
-      <div id="documentos" class="tab-content hidden">
-        <h2 class="text-2xl font-semibold mb-4">Documentos</h2>
+      <!--DESENVOLVIMENTO DO DOCUMENTO-->
+
+      <div id="documentos" class="tab-content hidden space-y-6">
+        <div class="card">
+          <h2 class="text-2xl font-semibold mb-4">Documentos Institucionais</h2>
+          <p class="text-muted-foreground mb-6">
+        Estatutos, regimentos e políticas oficiais da AAALDV
+          </p>
+
+        <div class="space-y-4">
+          <div class="document-item">
+            <div>
+              <h4 class="font-medium">Estatuto Social AAALDV</h4>
+              <div class="text-sm text-muted-foreground">
+                 v2026.2 · Atualizado em 02/02/2026 · 245 KB
+              </p>
+            </div>
+            <a href="#" class="btn-primary flex items-center gap-2">
+              <span class="material-icons-sharp">file_download</span>
+              Download
+            </a>
+          </div>
+
+
+        <div class="document-item">
+          <div>
+            <h4 class="font-medium">Regimento Interno</h4>
+            <p class="text-sm text-muted-foreground">
+               v2026.2 · Atualizado em 02/02/2026 · 180 KB
+            </p>
+          </div>
+          <a href="#" class="btn-primary flex items-center gap-2">
+              <span class="material-icons-sharp">file_download</span>
+              Download
+          </a>
+        </div>
+
+        <div class="document-item">
+          <div>
+            <h4 class="font-medium">Código de Ética e Conduta</h4>
+            <p class="text-sm text-muted-foreground">
+               v2025.2 · Atualizado em 05/02/2025 · 95 KB
+            </p>
+          </div>
+          <a href="#" class="btn-primary flex items-center gap-2">
+              <span class="material-icons-sharp">file_download</span>
+              Download
+          </a>
+        </div>
+
+        <div class="document-item">
+          <div>
+            <h4 class="font-medium">Política de Privacidade</h4>
+            <p class="text-sm text-muted-foreground">
+               v2024.1 · Atualizado em 01/03/2024 · 62 KB
+            </p>
+          </div>
+          <a href="#" class="btn-primary flex items-center gap-2">
+              <span class="material-icons-sharp">file_download</span>
+              Download
+          </a>
+        </div>
       </div>
 
       <div id="atas" class="tab-content hidden">
         <h2 class="text-2xl font-semibold mb-4">Atas</h2>
       </div>
 
+
+      <!--DESENVOLVIMENTO DA DIRETORIA-->
       <div id="diretoria" class="tab-content hidden">
         <h2 class="text-2xl font-semibold mb-4">Diretoria</h2>
       </div>
@@ -77,10 +143,13 @@
       </div>
     </section>
 
+ 
+
+
   </main>
 
   <script>
-    const tabs = document.querySelectorAll(".tab-btn");
+    const tabs = document.querySelectorAll(".tab");
     const contents = document.querySelectorAll(".tab-content");
 
     tabs.forEach(tab => {
@@ -93,6 +162,37 @@
       });
     });
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <footer class="bg-card border-t border-border py-12">
     <div class="container mx-auto px-4">
