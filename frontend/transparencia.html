@@ -60,9 +60,30 @@
 
  <!--CONTEUDO-->
   <section class="container mx-auto px-4 space-y-12">
-      <div id="financeiro" class="tab-content">
-        <h2 class="text-2xl font-semibold mb-4">Financeiro</h2>
+      <div id="financeiro" class="tab-content hidden space-y-0">
+  <div class="cards">
+
+    <div class="sign-header">
+      <div class="money-header-icon">
+        <span class="material-icons-sharp money-title-icon">attach_money</span>
       </div>
+
+      <div class="money-header-text">
+        <h2 class="text-lg font-semibold mb-0">
+          Relatórios Financeiros
+        </h2>
+        <div class="text-sm text-muted-foreground">
+          Prestação de contas detalhada por período
+        </div>
+      </div>
+    </div>
+
+    <div class="sign-body space-y-4">
+      <!-- conteúdo financeiro aqui -->
+    </div>
+
+  </div>
+</div>
 
       <!--DESENVOLVIMENTO DO DOCUMENTO-->
 
@@ -71,7 +92,6 @@
           <div class="documents-header">
             <div class="documents-header-icon">
               <span class="material-icons-sharp documents-title-icon">balance</span>
-            
             </div>
 
             <div class="documents-header-text">
@@ -102,7 +122,11 @@
             </div>
           </div>
 
-            <a href="#" class="btn-download">
+            <a 
+              href="assets/docs/EstatutoUSP.pdf" 
+              class="btn-download"
+              download
+            >
               <span class="material-icons-sharp">file_download</span>
               Download
             </a>
@@ -174,22 +198,147 @@
                 Download
             </a>
           </div>
-         
+        </div> 
+      </div>
+ </div>
+</div>      
 
       <div id="atas" class="tab-content hidden">
-        <h2 class="text-2xl font-semibold mb-4">Atas</h2>
+        <h2 class="text-2xl font-semibold mb-4">ATAS</h2>
       </div>
-
+ </div>
+</div>
 
       <!--DESENVOLVIMENTO DA DIRETORIA-->
-      <div id="diretoria" class="tab-content hidden">
-        <h2 class="text-2xl font-semibold mb-4">Diretoria</h2>
-      </div>
+      <div id="diretoria" class="tab-content hidden space-y-0">
+        <div class="board-section">
 
+          <div class="section-header">
+            <span class="material-icons-sharp">group</span>
+            <div>
+              <h2>Composição da Diretoria Executiva</h2>
+              <p>Membros eleitos para a gestão de 2025-2026</p>
+            </div>
+          </div>
+
+          <div class="board-grid">
+
+            <div class="board-card">
+              <div class="avatar">A</div>
+              <span class="role">Presidente</span>
+              <h3>Ciclana</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                presidente@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">B</div>
+              <span class="role">Vice-Presidente</span>
+              <h3>Ciclano</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                vice@aaaldv.com
+              </p>
+            </div>
+            
+            <div class="board-card">
+              <div class="avatar">C</div>
+              <span class="role">Diretor Financeiro</span>
+              <h3>Fulana</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                financeiro@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">D</div>
+              <span class="role">Diretor de Marketing</span>
+              <h3>Fulano</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                marketing@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">E</div>
+              <span class="role">Diretor de Esportes</span>
+              <h3>Beltrana</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                esportes@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">F</div>
+              <span class="role">Diretor de Eventos</span>
+              <h3>Beltrano</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                eventos@aaaldv.com
+              </p>
+            </div>
+
+            </div> <!-- fecha board-grid -->
+
+           <section class="history">
+            <div class="history-header">
+              <div class="history-title">
+                <span class="material-icons-sharp">history</span>
+                <h2>Histórico de Gestões</h2>
+              </div>
+              <p>Linha do tempo das gestões anteriores</p>
+            </div>
+
+            <div class="history-timeline">
+
+              <div class="history-item active">
+                <span class="dot"></span>
+                <div class="history-content">
+                  <h3>
+                    Gestão 2025–2026
+                    <span class="badge">Atual</span>
+                  </h3>
+                  <p>Presidência: Ciclano</p>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <span class="dot-past"></span>
+                <div class="history-content">
+                  <h3>Gestão 2024–2025</h3>
+                  <p>Presidência: Maria Gabriela von Adamek</p>
+                </div>
+              </div>
+
+               <div class="history-item">
+                <span class="dot-past"></span>
+                <div class="history-content">
+                  <h3>Gestão 2023–2024</h3>
+                  <p>Presidência: Luiz Gustavo Ravache</p>
+                </div>
+              </div>
+
+            </div>
+          </section>
+          </div>
+      </div> 
+  </div>
+</div>
       <div id="projetos" class="tab-content hidden">
         <h2 class="text-2xl font-semibold mb-4">Projetos</h2>
       </div>
-    </section>
+  </section>
 
  
 
@@ -209,6 +358,7 @@
         document.getElementById(tab.dataset.tab).classList.remove("hidden");
       });
     });
+    
   </script>
 
 
