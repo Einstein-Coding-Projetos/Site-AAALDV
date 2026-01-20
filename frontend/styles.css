@@ -147,7 +147,7 @@ body {
 }
 
 .transparencia-main {
-  margin-top: 125px;
+  margin-top: 130px;
 }
 
 .transparencia-title {
@@ -164,6 +164,7 @@ body {
   padding: 6px;
   width: fit-content;
   margin: 0 auto 40px auto;
+  margin-top: 90px;
 }
 
 .transparencia-tabs .tab{
@@ -204,7 +205,116 @@ body {
   padding: 10px 26px !important;
   border-radius: 9999px !important;
 
-  margin-bottom: 36px !important;
+  transform: translateY(20px);
+
+  margin-bottom:60px;
+  margin-top: 55px;
+}
+
+.documents-header {
+  display: flex;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 2px solid #000000;
+  background: hsl(0, 0%, 4%);
+}
+
+.documents-header-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 28px;
+  margin-top: 20px;
+}
+
+.document-item {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  padding: 16px 20px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  background: hsl(0, 0%, 5%);
+
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-top: 20px;
+}
+
+.card {
+  border: 2px solid #000000;
+  border-radius: 20px;
+  background: hsl(0, 0%, 5%);
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+.documents-body {
+  padding: 20px;
+  padding-bottom: 36px;
+}
+
+.document-item:last-child {
+  margin-bottom: 16px;
+}
+
+.documents-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.documents-title-icon {
+  font-size: 22px;
+  color: hsl(20, 100%, 50%); /* cinza escuro */
+}
+
+/* Nome dos documentos */
+.document-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.document-icon {
+  font-size: 18px;
+  color: hsl(20, 100%, 50%);
+  flex-shrink:0;
+}
+
+.document-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.document-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-download {
+  background-color: hsl(20, 100%, 50%);
+  color: white;
+
+  padding: 10px 16px;
+  border-radius: 10px;
+
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  transition: background-color 0.2s ease;
+}
+
+.btn-download:hover {
+  background-color: hsl(20, 90%, 45%);
 }
 
 /* Layout utilities */

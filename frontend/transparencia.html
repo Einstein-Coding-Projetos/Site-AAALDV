@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Transparência | AAALDV</title>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outilined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     
@@ -48,7 +48,7 @@
             </p>    
     </section>
 
-    <div class="flex justify-center mb-16">
+    <div class="flex justify-center mb-18">
         <div class="transparencia-tabs">
             <button class="tab active-tab" data-tab="financeiro"> $ Financeiro</button>
             <button class="tab" data-tab="documentos">🗎 Documentos</button>
@@ -66,67 +66,115 @@
 
       <!--DESENVOLVIMENTO DO DOCUMENTO-->
 
-      <div id="documentos" class="tab-content hidden space-y-6">
+      <div id="documentos" class="tab-content hidden space-y-0">
         <div class="card">
-          <h2 class="text-2xl font-semibold mb-4">Documentos Institucionais</h2>
-          <p class="text-muted-foreground mb-6">
-        Estatutos, regimentos e políticas oficiais da AAALDV
-          </p>
+          <div class="documents-header">
+            <div class="documents-header-icon">
+              <span class="material-icons-sharp documents-title-icon">balance</span>
+            
+            </div>
 
-        <div class="space-y-4">
+            <div class="documents-header-text">
+              <h2 class="text-lg font-semibold mb-0">
+                  Documentos Institucionais
+              </h2>
+              <div class="text-sm text-muted-foreground mb-6">
+              Estatutos, regimentos e políticas oficiais da AAALDV
+            </div>
+          </div>
+        </div>
+
+
+        <div class="documents-body space-y-4">
           <div class="document-item">
-            <div>
-              <h4 class="font-medium">Estatuto Social AAALDV</h4>
-              <div class="text-sm text-muted-foreground">
-                 v2026.2 · Atualizado em 02/02/2026 · 245 KB
+           <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
+
+            <div class="document-text">
+              <h4 class="font-medium">
+                Estatuto Social AAALDV
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2026.2 · Atualizado em 02/02/2026 · 245 KB
               </p>
             </div>
-            <a href="#" class="btn-primary flex items-center gap-2">
+          </div>
+
+            <a href="#" class="btn-download">
               <span class="material-icons-sharp">file_download</span>
               Download
             </a>
           </div>
 
 
-        <div class="document-item">
-          <div>
-            <h4 class="font-medium">Regimento Interno</h4>
-            <p class="text-sm text-muted-foreground">
-               v2026.2 · Atualizado em 02/02/2026 · 180 KB
-            </p>
-          </div>
-          <a href="#" class="btn-primary flex items-center gap-2">
-              <span class="material-icons-sharp">file_download</span>
-              Download
-          </a>
-        </div>
+          <div class="document-item">
+            <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
 
-        <div class="document-item">
-          <div>
-            <h4 class="font-medium">Código de Ética e Conduta</h4>
-            <p class="text-sm text-muted-foreground">
-               v2025.2 · Atualizado em 05/02/2025 · 95 KB
-            </p>
+            <div class="document-text">
+              <h4 class="font-medium">
+                Regimento Interno
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2026.2 · Atualizado em 02/02/2026 · 180 KB
+              </p>
+            </div>
           </div>
-          <a href="#" class="btn-primary flex items-center gap-2">
-              <span class="material-icons-sharp">file_download</span>
-              Download
-          </a>
-        </div>
 
-        <div class="document-item">
-          <div>
-            <h4 class="font-medium">Política de Privacidade</h4>
-            <p class="text-sm text-muted-foreground">
-               v2024.1 · Atualizado em 01/03/2024 · 62 KB
-            </p>
+            <a href="#" class="btn-download">
+                <span class="material-icons-sharp">file_download</span>
+                Download
+            </a>
           </div>
-          <a href="#" class="btn-primary flex items-center gap-2">
-              <span class="material-icons-sharp">file_download</span>
-              Download
-          </a>
-        </div>
-      </div>
+
+          <div class="document-item">
+            <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
+
+            <div class="document-text">
+              <h4 class="font-medium">
+                Código de Ética e Conduta
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2025.2 · Atualizado em 05/02/2025 · 95 KB
+              </p>
+            </div>
+          </div>
+
+            <a href="#" class="btn-download">
+                <span class="material-icons-sharp">file_download</span>
+                Download
+            </a>
+          </div>
+
+          <div class="document-item">
+            <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
+
+            <div class="document-text">
+              <h4 class="font-medium">
+                Política de Privacidade
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2024.1 · Atualizado em 01/03/2024 · 62 KB
+              </p>
+            </div>
+          </div>
+
+            <a href="#" class="btn-download">
+                <span class="material-icons-sharp">file_download</span>
+                Download
+            </a>
+          </div>
+         
 
       <div id="atas" class="tab-content hidden">
         <h2 class="text-2xl font-semibold mb-4">Atas</h2>
