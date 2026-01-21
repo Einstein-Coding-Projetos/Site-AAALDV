@@ -51,8 +51,7 @@
     <div class="flex justify-center mb-18">
         <div class="transparencia-tabs">
             <button class="tab active-tab" data-tab="financeiro"> $ Financeiro</button>
-            <button class="tab" data-tab="documentos">🗎 Documentos</button>
-            <button class="tab" data-tab="atas">≔ ATAS</button>
+            <button class="tab" data-tab="documentos">🗎 Documentos</button>          
             <button class="tab" data-tab="diretoria">🗣 Diretoria</button>
             <button class="tab" data-tab="projetos">ᯓ★ Projetos</button>
         </div>
@@ -61,29 +60,118 @@
  <!--CONTEUDO-->
   <section class="container mx-auto px-4 space-y-12">
       <div id="financeiro" class="tab-content hidden space-y-0">
-  <div class="cards">
+        <div class="finance-summary">
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">trending_up</span>
+              <span>Total de Receitas</span>
+            </div>
+          
+            <strong id="total-receitas" class="verde">R$ 0,00</strong>
+            <p>Acumulado do período</p>
+          
+          </div>
 
-    <div class="sign-header">
-      <div class="money-header-icon">
-        <span class="material-icons-sharp money-title-icon">attach_money</span>
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">trending_up</span>
+              <span>Total de Despesas</span>
+            </div>
+
+            <strong id="total-despesas" class="vermelho">R$ 0,00</strong>
+            <p>Acumulado do período</p>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">account_balance</span>
+              <span>Saldo Atual</span>
+            </div>
+
+            <strong id="saldo">R$ 0,00</strong>
+            <p>Fevereiro 2026</p>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">percent</span>
+              <span class="summary-title">Aproveitamento</span>
+            </div>
+
+            <strong id="aproveitamento">0%</strong>
+            <p>Despesas/Receitas</p>
+          </div>
+        </div>
+      
+      <div class="finance-wrapper">
+
+      <div class="finance-box receitas">
+        <div class="finance-title">
+          <span class="material-icons-sharp">trending_up</span>
+          <h3>Receitas</h3>
+        </div>
+
+        <div class="finance-row header">
+          <span>Descrição</span>
+          <span>Valor</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Mensalidades de associados</span>
+          <span class="valor verde">R$ 2.500,00</span>
+        </div>
+
+        <div class="finance-row">
+        <span>Venda de camisetas</span>
+        <span class="valor verde">R$ 1.200,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Patrocínios</span>
+          <span class="valor verde">R$ 500,00</span>
+        </div>
+    
+        <div class="finance-row">
+          <span>Eventos</span>
+          <span class="valor verde">R$ 7.500,00</span>
+        </div>
       </div>
 
-      <div class="money-header-text">
-        <h2 class="text-lg font-semibold mb-0">
-          Relatórios Financeiros
-        </h2>
-        <div class="text-sm text-muted-foreground">
-          Prestação de contas detalhada por período
+    <!-- DESPESAS -->
+      <div class="finance-box despesas">
+        <div class="finance-title">
+          <span class="material-icons-sharp">trending_down</span>
+          <h3>Despesas</h3>
+        </div>
+
+        <div class="finance-row header">
+          <span>Descrição</span>
+          <span>Valor</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Uniformes e materiais esportivos</span>
+          <span class="valor vermelho">R$ 1.500,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Transporte</span>
+          <span class="valor vermelho">R$ 1.000,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Marketing</span>
+          <span class="valor vermelho">R$ 2.000,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Despesas administrativas</span>
+          <span class="valor vermelho">R$ 2.000,00</span>
         </div>
       </div>
     </div>
-
-    <div class="sign-body space-y-4">
-      <!-- conteúdo financeiro aqui -->
-    </div>
-
   </div>
-</div>
+</section>
 
       <!--DESENVOLVIMENTO DO DOCUMENTO-->
 
@@ -203,12 +291,7 @@
  </div>
 </div>      
 
-      <div id="atas" class="tab-content hidden">
-        <h2 class="text-2xl font-semibold mb-4">ATAS</h2>
-      </div>
- </div>
-</div>
-
+      
       <!--DESENVOLVIMENTO DA DIRETORIA-->
       <div id="diretoria" class="tab-content hidden space-y-0">
         <div class="board-section">
@@ -335,6 +418,8 @@
       </div> 
   </div>
 </div>
+
+
       <div id="projetos" class="tab-content hidden">
         <h2 class="text-2xl font-semibold mb-4">Projetos</h2>
       </div>
@@ -360,38 +445,6 @@
     });
     
   </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <footer class="bg-card border-t border-border py-12">
     <div class="container mx-auto px-4">
       <div class="grid md:grid-cols-4 gap-8">
@@ -450,6 +503,51 @@
     </div>
   </footer>
   
+  <script>
+    function parseValor(valor) {
+      return Number(
+        valor
+          .replace('R$', '')
+          .replace(/\./g, '')
+          .replace(',', '.')
+          .trim()
+      );
+    }
+
+    function formatarBR(valor) {
+      return valor.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function calcularFinanceiro() {
+      let totalReceitas = 0;
+      let totalDespesas = 0;
+
+      document.querySelectorAll('.valor.verde').forEach(el => {
+        totalReceitas += parseValor(el.innerText);
+      });
+
+      document.querySelectorAll('.valor.vermelho').forEach(el => {
+        totalDespesas += parseValor(el.innerText);
+      });
+
+      const saldo = totalReceitas - totalDespesas;
+      const aproveitamento =
+      totalReceitas > 0 ? (saldo / totalReceitas) * 100 : 0;
+
+      document.getElementById('total-receitas').innerText = formatarBR(totalReceitas);
+      document.getElementById('total-despesas').innerText = formatarBR(totalDespesas);
+      const saldoEl = document.getElementById('saldo');
+      saldoEl.innerText = formatarBR(saldo);
+
+      const aproveitamentoEl = document.getElementById('aproveitamento');
+      aproveitamentoEl.innerText = `${aproveitamento.toFixed(1)}%`;
+    }
+      // calcula ao carregar
+      calcularFinanceiro();
+  </script> 
   </body>
 </html>
 
