@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transparência | AAALDV</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outilined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+
+<body class="bg-background text-foreground">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-background/80 border-b border-border">
+    <div class="container mx-auto px-4 flex items-center justify-between h-20">
+      <a href="index.html" class="font-display text-2xl tracking-tight hidden sm:block">
+        <span class="text-primary">AAA</span>LDV
+      </a>
+
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="nav-link">Início</a>
+        <a href="calendario.html" class="nav-link">Calendário</a>
+        <a href="noticias.html" class="nav-link">Notícias</a>
+        <a href="loja.html" class="nav-link">Loja</a>
+
+
+        <a href="transparencia.html" class="nav-link text-primary">Transparência</a>
+
+
+
+        <a href="socios.html" class="nav-link">Vitruvianos</a>
+        <a href="#contato" class="nav-link">Contato</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="transparencia-main">
+    <section class="container mx-auto px-4 text-center mb-12">
+        <div class="transparencia-title-wrapper">
+            <h1 class="font-display">Diretrizes e Prestação de Contas</h1>
+        </div>
+            <p class="text-muted-foreground max-w-2xl mx-auto text-center">
+                Nossa gestão fundamenta-se na transparência ativa e na responsabilidade fiscal. 
+                Este espaço é dedicado à democratização da informação: aqui, você acompanha em tempo 
+                real a evolução dos nossos projetos, a saúde financeira da associação e o acervo de documentos oficial da AAALDV
+            </p>    
+    </section>
+
+    <div class="flex justify-center mb-18">
+        <div class="transparencia-tabs">
+            <button class="tab active-tab" data-tab="financeiro"> $ Financeiro</button>
+            <button class="tab" data-tab="documentos">🗎 Documentos</button>          
+            <button class="tab" data-tab="diretoria">🗣 Diretoria</button>
+            <button class="tab" data-tab="projetos">ᯓ★ Projetos</button>
+        </div>
+    </div>
+
+ <!--CONTEUDO-->
+  <section class="container mx-auto px-4 space-y-12">
+      <div id="financeiro" class="tab-content hidden space-y-0">
+        <div class="finance-summary">
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">trending_up</span>
+              <span>Total de Receitas</span>
+            </div>
+          
+            <strong id="total-receitas" class="verde">R$ 0,00</strong>
+            <p>Acumulado do período</p>
+          
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">trending_up</span>
+              <span>Total de Despesas</span>
+            </div>
+
+            <strong id="total-despesas" class="vermelho">R$ 0,00</strong>
+            <p>Acumulado do período</p>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">account_balance</span>
+              <span>Saldo Atual</span>
+            </div>
+
+            <strong id="saldo">R$ 0,00</strong>
+            <p>Fevereiro 2026</p>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-title">
+              <span class="material-icons-sharp">percent</span>
+              <span class="summary-title">Aproveitamento</span>
+            </div>
+
+            <strong id="aproveitamento">0%</strong>
+            <p>Despesas/Receitas</p>
+          </div>
+        </div>
+      
+      <div class="finance-wrapper">
+
+      <div class="finance-box receitas">
+        <div class="finance-title">
+          <span class="material-icons-sharp">trending_up</span>
+          <h3>Receitas</h3>
+        </div>
+
+        <div class="finance-row header">
+          <span>Descrição</span>
+          <span>Valor</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Mensalidades de associados</span>
+          <span class="valor verde">R$ 2.500,00</span>
+        </div>
+
+        <div class="finance-row">
+        <span>Venda de camisetas</span>
+        <span class="valor verde">R$ 1.200,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Patrocínios</span>
+          <span class="valor verde">R$ 500,00</span>
+        </div>
+    
+        <div class="finance-row">
+          <span>Eventos</span>
+          <span class="valor verde">R$ 7.500,00</span>
+        </div>
+      </div>
+
+    <!-- DESPESAS -->
+      <div class="finance-box despesas">
+        <div class="finance-title">
+          <span class="material-icons-sharp">trending_down</span>
+          <h3>Despesas</h3>
+        </div>
+
+        <div class="finance-row header">
+          <span>Descrição</span>
+          <span>Valor</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Uniformes e materiais esportivos</span>
+          <span class="valor vermelho">R$ 1.500,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Transporte</span>
+          <span class="valor vermelho">R$ 1.000,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Marketing</span>
+          <span class="valor vermelho">R$ 2.000,00</span>
+        </div>
+
+        <div class="finance-row">
+          <span>Despesas administrativas</span>
+          <span class="valor vermelho">R$ 2.000,00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <!--DESENVOLVIMENTO DO DOCUMENTO-->
+
+      <div id="documentos" class="tab-content hidden space-y-0">
+        <div class="card">
+          <div class="documents-header">
+            <div class="documents-header-icon">
+              <span class="material-icons-sharp documents-title-icon">balance</span>
+            </div>
+
+            <div class="documents-header-text">
+              <h2 class="text-lg font-semibold mb-0">
+                  Documentos Institucionais
+              </h2>
+              <div class="text-sm text-muted-foreground mb-6">
+              Estatutos, regimentos e políticas oficiais da AAALDV
+            </div>
+          </div>
+        </div>
+
+
+        <div class="documents-body space-y-4">
+          <div class="document-item">
+           <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
+
+            <div class="document-text">
+              <h4 class="font-medium">
+                Estatuto Social AAALDV
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2026.2 · Atualizado em 02/02/2026 · 245 KB
+              </p>
+            </div>
+          </div>
+
+            <a 
+              href="assets/docs/EstatutoUSP.pdf" 
+              class="btn-download"
+              download
+            >
+              <span class="material-icons-sharp">file_download</span>
+              Download
+            </a>
+          </div>
+
+
+          <div class="document-item">
+            <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
+
+            <div class="document-text">
+              <h4 class="font-medium">
+                Regimento Interno
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2026.2 · Atualizado em 02/02/2026 · 180 KB
+              </p>
+            </div>
+          </div>
+
+            <a href="#" class="btn-download">
+                <span class="material-icons-sharp">file_download</span>
+                Download
+            </a>
+          </div>
+
+          <div class="document-item">
+            <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
+
+            <div class="document-text">
+              <h4 class="font-medium">
+                Código de Ética e Conduta
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2025.2 · Atualizado em 05/02/2025 · 95 KB
+              </p>
+            </div>
+          </div>
+
+            <a href="#" class="btn-download">
+                <span class="material-icons-sharp">file_download</span>
+                Download
+            </a>
+          </div>
+
+          <div class="document-item">
+            <div class="document-left">
+            <span class="material-icons-sharp document-icon">
+              assignment
+            </span>
+
+            <div class="document-text">
+              <h4 class="font-medium">
+                Política de Privacidade
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2024.1 · Atualizado em 01/03/2024 · 62 KB
+              </p>
+            </div>
+          </div>
+
+            <a href="#" class="btn-download">
+                <span class="material-icons-sharp">file_download</span>
+                Download
+            </a>
+          </div>
+        </div> 
+      </div>
+ </div>
+</div>      
+
+      
+      <!--DESENVOLVIMENTO DA DIRETORIA-->
+      <div id="diretoria" class="tab-content hidden space-y-0">
+        <div class="board-section">
+
+          <div class="section-header">
+            <span class="material-icons-sharp">group</span>
+            <div>
+              <h2>Composição da Diretoria Executiva</h2>
+              <p>Membros eleitos para a gestão de 2025-2026</p>
+            </div>
+          </div>
+
+          <div class="board-grid">
+
+            <div class="board-card">
+              <div class="avatar">A</div>
+              <span class="role">Presidente</span>
+              <h3>Manuela Resende</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                presidente@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">B</div>
+              <span class="role">Vice-Presidente</span>
+              <h3>Ciclano</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                vice@aaaldv.com
+              </p>
+            </div>
+            
+            <div class="board-card">
+              <div class="avatar">C</div>
+              <span class="role">Diretor Financeiro</span>
+              <h3>Fulana</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                financeiro@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">D</div>
+              <span class="role">Diretor de Marketing</span>
+              <h3>Fulano</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                marketing@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">E</div>
+              <span class="role">Diretor de Esportes</span>
+              <h3>Beltrana</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                esportes@aaaldv.com
+              </p>
+            </div>
+
+            <div class="board-card">
+              <div class="avatar">F</div>
+              <span class="role">Diretor de Eventos</span>
+              <h3>Beltrano</h3>
+              <p class="course">Engenharia Biomédica</p>
+              <p class="email">
+                <span class="material-icons-sharp">mail</span>
+                eventos@aaaldv.com
+              </p>
+            </div>
+
+            </div> <!-- fecha board-grid -->
+
+           <section class="history">
+            <div class="history-header">
+              <div class="history-title">
+                <span class="material-icons-sharp">history</span>
+                <h2>Histórico de Gestões</h2>
+              </div>
+              <p>Linha do tempo das gestões anteriores</p>
+            </div>
+
+            <div class="history-timeline">
+
+              <div class="history-item active">
+                <span class="dot"></span>
+                <div class="history-content">
+                  <h3>
+                    Gestão 2025–2026
+                    <span class="badge">Atual</span>
+                  </h3>
+                  <p>Presidência: Manuela Resende</p>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <span class="dot-past"></span>
+                <div class="history-content">
+                  <h3>Gestão 2024–2025</h3>
+                  <p>Presidência: Maria Gabriela von Adamek</p>
+                </div>
+              </div>
+
+               <div class="history-item">
+                <span class="dot-past"></span>
+                <div class="history-content">
+                  <h3>Gestão 2023–2024</h3>
+                  <p>Presidência: Luiz Gustavo Ravache</p>
+                </div>
+              </div>
+
+            </div>
+          </section>
+          </div>
+      </div> 
+  </div>
+</div>
+
+
+      <div id="projetos" class="tab-content hidden">
+        <h2 class="text-2xl font-semibold mb-4">Projetos</h2>
+      </div>
+  </section>
+
+ 
+
+
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active-tab"));
+        contents.forEach(c => c.classList.add("hidden"));
+
+        tab.classList.add("active-tab");
+        document.getElementById(tab.dataset.tab).classList.remove("hidden");
+      });
+    });
+    
+  </script>
+  <footer class="bg-card border-t border-border py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="md:col-span-2">
+          <h3 class="font-display text-2xl mb-1">
+            <span class="text-primary">AAA</span>LDV
+          </h3>
+          <p class="text-xs text-muted-foreground mb-4">Leonardo da Vinci</p>
+          <p class="text-muted-foreground text-sm">
+            A Associação Atlética Acadêmica Leonardo da Vinci representa os estudantes de 
+            Engenharia Biomédica do Einstein, promovendo esporte, integração e muito mais!
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-display text-lg mb-4 text-primary">Links</h4>
+          <ul class="space-y-2 text-sm text-muted-foreground">
+            <li><a href="calendario.html">Calendário</a></li>
+            <li><a href="noticias.html">Notícias</a></li>
+            <li><a href="loja.html">Loja</a></li>
+            <li><a href="socios.html">Seja Sócio</a></li>
+          </ul>
+        </div>
+
+        <div id="contato">
+          <h4 class="font-display text-lg mb-4 text-primary">Contato</h4>
+          <ul class="space-y-3 text-sm text-muted-foreground">
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+              <a href="https://instagram.com/aaaldv">@aaaldv</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <a href="mailto:contato@aaaldv.com.br">contato@aaaldv.com.br</a>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="h-4 w-4 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span>Faculdade Einstein, São Paulo - SP</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-border mt-8 pt-8 text-center">
+        <p class="text-sm text-muted-foreground">© 2024 AAALDV. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    function parseValor(valor) {
+      return Number(
+        valor
+          .replace('R$', '')
+          .replace(/\./g, '')
+          .replace(',', '.')
+          .trim()
+      );
+    }
+
+    function formatarBR(valor) {
+      return valor.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function calcularFinanceiro() {
+      let totalReceitas = 0;
+      let totalDespesas = 0;
+
+      document.querySelectorAll('.valor.verde').forEach(el => {
+        totalReceitas += parseValor(el.innerText);
+      });
+
+      document.querySelectorAll('.valor.vermelho').forEach(el => {
+        totalDespesas += parseValor(el.innerText);
+      });
+
+      const saldo = totalReceitas - totalDespesas;
+      const aproveitamento =
+      totalReceitas > 0 ? (saldo / totalReceitas) * 100 : 0;
+
+      document.getElementById('total-receitas').innerText = formatarBR(totalReceitas);
+      document.getElementById('total-despesas').innerText = formatarBR(totalDespesas);
+      const saldoEl = document.getElementById('saldo');
+      saldoEl.innerText = formatarBR(saldo);
+
+      const aproveitamentoEl = document.getElementById('aproveitamento');
+      aproveitamentoEl.innerText = `${aproveitamento.toFixed(1)}%`;
+    }
+      // calcula ao carregar
+      calcularFinanceiro();
+  </script> 
+  </body>
+</html>
+
+
