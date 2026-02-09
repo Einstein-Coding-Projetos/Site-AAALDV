@@ -52,119 +52,53 @@
     </div>
 
  <!--CONTEUDO-->
-  <section class="container mx-auto px-4 space-y-12">
-      <div id="financeiro" class="tab-content hidden space-y-0">
-        <div class="finance-summary">
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">trending_up</span>
-              <span>Total de Receitas</span>
-            </div>
-          
-            <strong id="total-receitas" class="verde">R$ 0,00</strong>
-            <p>Acumulado do período</p>
-          
-          </div>
-
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">trending_up</span>
-              <span>Total de Despesas</span>
+  <div id="financeiro" class="tab-content hidden space-y-0">
+        <div class="card_financeiro">
+          <div class="financeiro-header">
+            <div class="financeiro-header-icon">
+              <span class="material-icons-sharp financeiro-title-icon">account_balance</span>
             </div>
 
-            <strong id="total-despesas" class="vermelho">R$ 0,00</strong>
-            <p>Acumulado do período</p>
-          </div>
-
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">account_balance</span>
-              <span>Saldo Atual</span>
+            <div class="documents-header-text">
+              <h2 class="text-lg font-semibold mb-0">
+                  Relatório Financeiro
+              </h2>
+              <div class="text-sm text-muted-foreground mb-6">
+                Relatórios Financeiros da AAALDV
             </div>
-
-            <strong id="saldo">R$ 0,00</strong>
-            <p>Fevereiro 2026</p>
           </div>
+        </div>
 
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">percent</span>
-              <span class="summary-title">Aproveitamento</span>
+
+        <div class="financeiro-body space-y-4">
+          <div class="financeiro-item">
+           <div class="financeiro-left">
+            <span class="material-icons-sharp financeiro-icon">
+              assignment
+            </span>
+
+            <div class="financeiro-text">
+              <h4 class="font-medium">
+                Relatório Financeiro 2026
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2026.2 · Atualizado em 02/02/2026 · 245 KB
+              </p>
             </div>
-
-            <strong id="aproveitamento">0%</strong>
-            <p>Despesas/Receitas</p>
           </div>
-        </div>
-      
-      <div class="finance-wrapper">
 
-      <div class="finance-box receitas">
-        <div class="finance-title">
-          <span class="material-icons-sharp">trending_up</span>
-          <h3>Receitas</h3>
-        </div>
-
-        <div class="finance-row header">
-          <span>Descrição</span>
-          <span>Valor</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Mensalidades de associados</span>
-          <span class="valor verde">R$ 2.500,00</span>
-        </div>
-
-        <div class="finance-row">
-        <span>Venda de camisetas</span>
-        <span class="valor verde">R$ 1.200,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Patrocínios</span>
-          <span class="valor verde">R$ 500,00</span>
-        </div>
-    
-        <div class="finance-row">
-          <span>Eventos</span>
-          <span class="valor verde">R$ 7.500,00</span>
-        </div>
-      </div>
-
-    <!-- DESPESAS -->
-      <div class="finance-box despesas">
-        <div class="finance-title">
-          <span class="material-icons-sharp">trending_down</span>
-          <h3>Despesas</h3>
-        </div>
-
-        <div class="finance-row header">
-          <span>Descrição</span>
-          <span>Valor</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Uniformes e materiais esportivos</span>
-          <span class="valor vermelho">R$ 1.500,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Transporte</span>
-          <span class="valor vermelho">R$ 1.000,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Marketing</span>
-          <span class="valor vermelho">R$ 2.000,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Despesas administrativas</span>
-          <span class="valor vermelho">R$ 2.000,00</span>
+            <a 
+              href="assets/docs/EstatutoUSP.pdf" 
+              class="btn-download"
+              download
+            >
+              <span class="material-icons-sharp">file_download</span>
+              Download
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </section>
 
       <!--DESENVOLVIMENTO DO DOCUMENTO-->
@@ -293,7 +227,7 @@
         <div class="card_estatuto">
           <div class="estatuto-header">
             <div class="estatuto-header-icon">
-              <span class="material-icons-sharp estatuto-title-icon">balance</span>
+              <span class="material-icons-sharp estatuto-title-icon">license</span>
             </div>
 
             <div class="estatuto-header-text">
