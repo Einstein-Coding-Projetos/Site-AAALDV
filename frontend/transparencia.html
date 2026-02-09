@@ -20,20 +20,14 @@
 
 
       <div class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="nav-link">Início</a>
+        <a href="index.html" class="nav-link text-primary">Início</a>
         <a href="institucional.html" class="nav-link">Institucional</a>
         <a href="calendario.html" class="nav-link">Calendário</a>
         <a href="noticias.html" class="nav-link">Notícias</a>
-        <a href="loja.html" class="nav-link">Loja</a>
-
-
-        <a href="transparencia.html" class="nav-link text-primary">Transparência</a>
-
-
-
+        <a href="loja.html" class="nav-link">Produtos</a>
+        <a href="transparencia.html" class="nav-link">Transparência</a>
         <a href="socios.html" class="nav-link">Vitruvianos</a>
         <a href="#contato" class="nav-link">Contato</a>
-      </div>
     </div>
   </nav>
 
@@ -51,9 +45,9 @@
 
     <div class="flex justify-center mb-18">
         <div class="transparencia-tabs">
-            <button class="tab active-tab" data-tab="financeiro"> $ Relatório Financeiro</button>
-            <button class="tab" data-tab="documentos">🗎 Documentos</button>          
-            <button class="tab" data-tab="projetos">🗃 Projetos</button>
+            <button class="tab active-tab" data-tab="financeiro">Relatório Financeiro</button>
+            <button class="tab" data-tab="documentos">Documentos</button>          
+            <button class="tab" data-tab="estatuto">Estatuto</button>
         </div>
     </div>
 
@@ -202,7 +196,7 @@
 
             <div class="document-text">
               <h4 class="font-medium">
-                Estatuto Social AAALDV
+                ATA
               </h4>
               <p class="text-xs text-muted-foreground">
                 v2026.2 · Atualizado em 02/02/2026 · 245 KB
@@ -294,55 +288,53 @@
   </div>
 </div>
 
-<!--ABINHA DE PROJETOS-->
-      <div id="projetos" class="tab-content hidden">
-        <div class="section-box">
-          <div class="projects-header">
-            <h2 class="projects-title">
-              <span class="material-icons-sharp">folder</span>
-              Projetos da AAALDV
-            </h2>
-            <p class="projects-subtitle">
-              Acompanhe os projetos em andamento e planejados da atlética.
-            </p>
+<!--ABINHA DE ESTATUTO-->
+      <div id="estatuto" class="tab-content hidden space-y-0">
+        <div class="card_estatuto">
+          <div class="estatuto-header">
+            <div class="estatuto-header-icon">
+              <span class="material-icons-sharp estatuto-title-icon">balance</span>
+            </div>
+
+            <div class="estatuto-header-text">
+              <h2 class="text-lg font-semibold mb-0">
+                  Estatuto Oficial AAALDV
+              </h2>
+              <div class="text-sm text-muted-foreground mb-6">
+              Documento oficial que rege o funcionamento da AAALDV. O Estatuto define as normas, direitos e deveres dos membros da AAALDV, bem como sua estrutura administrativa e funcionamento interno.
+              </div>
+            </div>
           </div>
-            
 
-          <div class="projects-list">
 
-            <div class="project-card">
-              <div class="project-info">
-                <h3>Campeonato Interatléticas 2025</h3>
-                <div class="project-meta">
-                  <span><span class="material-icons-sharp">group</span> Diretoria de Esportes</span>
-                  <span><span class="material-icons-sharp">event</span> Mar/2025</span>
-                </div>
+          <div class="estatuto-body space-y-4">
+            <div class="estatuto-item">
+              <div class="estatuto-left">
+               <span class="material-icons-sharp estatuto-icon">
+                assignment
+              </span>
+
+              <div class="estatuto-text">
+                <h4 class="font-medium">
+                  Estatuto Social AAALDV
+                </h4>
+                <p class="text-xs text-muted-foreground">
+                  v2026.2 · Atualizado em 02/02/2026 · 245 KB
+                </p>
               </div>
-              <span class="project-status andamento">Em andamento</span>
             </div>
 
-            <div class="project-card">
-              <div class="project-info">
-                <h3>Festa de Integração</h3>
-                <div class="project-meta">
-                  <span><span class="material-icons-sharp">group</span> Diretoria de Eventos</span>
-                  <span><span class="material-icons-sharp">event</span> Abr/2025</span>
-                </div>
-              </div>
-              <span class="project-status planejado">Planejado</span>
+              <a 
+                href="assets/docs/EstatutoUSP.pdf" 
+                class="btn-download"
+                download
+              >
+                <span class="material-icons-sharp">file_download</span>
+                Download
+              </a>
             </div>
-
-            <div class="project-card">
-              <div class="project-info">
-                <h3>Renovação de Uniformes</h3>
-                <div class="project-meta">
-                  <span><span class="material-icons-sharp">group</span> Diretoria Financeira</span>
-                  <span><span class="material-icons-sharp">event</span> Jan/2025</span>
-                </div>
-              </div>
-              <span class="project-status concluido">Concluído</span>
-            </div>
-          
+          </div> 
+        </div>
     </div>
   </div>
 </div>
@@ -384,7 +376,7 @@
           <ul class="space-y-2 text-sm text-muted-foreground">
             <li><a href="calendario.html">Calendário</a></li>
             <li><a href="noticias.html">Notícias</a></li>
-            <li><a href="loja.html">Loja</a></li>
+            <li><a href="loja.html">Produtos/a></li>
             <li><a href="socios.html">Seja Sócio</a></li>
           </ul>
         </div>
