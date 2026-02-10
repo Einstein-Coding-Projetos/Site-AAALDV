@@ -520,6 +520,91 @@ body {
   background-color: hsl(20, 90%, 45%);
 }
 
+/*CRIAÇÃO DE PRODUTOS */  
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#0b0b0b;
+  color:#fff;
+}
+
+/* SECTION */
+.products-section{
+  padding:60px 6%;
+}
+
+.products-section h1{
+  color:hsl(20, 100%, 50%);
+  font-size:25px;
+  letter-spacing:2px;
+  margin-bottom:0px;
+  margin-top: 40px;
+}
+
+.products-section p{
+  color:#bfbfbf;
+  margin-bottom:40px;
+}
+
+/* GRID */
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:30px;
+}
+
+/* CARD */
+.product-card{
+  background:#141414;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.6);
+  transition:transform .3s ease;
+}
+
+.product-card:hover{
+  transform:translateY(-8px);
+}
+
+/* IMAGE */
+.product-image{
+  background:#1d1d1d;
+  height:260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.product-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* INFO */
+.product-info{
+  padding:18px;
+}
+
+.product-info h3{
+  font-size:14px;
+  font-weight:500;
+  color:#dcdcdc;
+  margin-bottom:6px;
+  text-transform:uppercase;
+}
+
+.product-info span{
+  color:hsl(20, 100%, 50%);
+  font-size:18px;
+  font-weight:700;
+}
 
 
 /* Layout utilities */
