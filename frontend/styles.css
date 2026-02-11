@@ -958,14 +958,9 @@ button {
 }
 
 /* MODALIDADES */
-.foto {
-  width: 250px;    
-  height: 150px;
-  object-fit: cover;   
-}
 
 .modalidades-section {
-   background:  hsl(0, 0%, 5%);
+  background:  hsl(0, 0%, 5%);
   border-radius: 16px;
   padding: 15px;
   border: 2px solid #000000;
@@ -976,18 +971,145 @@ button {
 }
 
 
-.modalidade-card {
+.modalidade-grid {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+
+.modalidade-card{
+  position: relative;   
+  overflow: hidden;     
+  padding: 10px;  
   background:  hsl(0, 0%, 5%);
   border-radius: 14px;
   padding: 10px;
   border: 2px solid #000000;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;         
 }
 
-.modalidade-grid {
-  align-items: center;
+
+
+.modalidade-img{
+  width: 100%;
+  height: 150px;       
+  object-fit: cover;
+  display: block;
+}
+
+.modalidade-title{
+  padding: 10px 12px 12px 12px;
+  border-top: 2px solid #000;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.modalidade-overlay{
+  position: absolute;
+  inset: 0;
+  padding: 14px;
+  z-index: 2;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .25s ease, transform .25s ease;
+  overflow: auto;
+}
+
+.modalidade-card:hover .modalidade-overlay,
+.modalidade-card:focus-within .modalidade-overlay{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modalidade-card:hover .modalidade-img{
+  filter: brightness(0.45);
+  transform: scale(1.03);
+}
+
+.overlay-title{
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.treinos{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 10px;
+}
+
+.treino{
+  border: 2px solid #000;
+  border-radius: 12px;
+  background: hsl(0, 0%, 5%);
+  overflow: hidden;
+}
+
+.treino > summary{
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.treino > summary::-webkit-details-marker{
+  display: none;
+}
+
+.treino-body{
+  padding: 10px 12px 12px 12px;
+  border-top: 2px solid #000;
+  color: var(--muted-foreground);
+  font-size: 0.82rem;
+}
+/* LIGA EINSTEIN */
+
+.liga{
+  position: relative;
+  overflow: hidden;
+  background: var(--background);
+  padding-top: 200px; /* opcional: espaço pra ver o logo */
+}
+
+.liga::before{
+  content:"";
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/docs/futebol.png"); /* TROQUE AQUI */
+  background-repeat: no-repeat;
+  background-position: center 20px;
+  background-size: 520px auto;
+  opacity: 0.10;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.liga::after{
+  content:"";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.10) 35%,
+    var(--background) 75%,
+    var(--background) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.liga > *{
+  position: relative;
+  z-index: 2;
 }
