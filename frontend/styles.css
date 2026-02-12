@@ -958,14 +958,9 @@ button {
 }
 
 /* MODALIDADES */
-.foto {
-  width: 250px;    
-  height: 150px;
-  object-fit: cover;   
-}
 
 .modalidades-section {
-   background:  hsl(0, 0%, 5%);
+  background:  hsl(0, 0%, 5%);
   border-radius: 16px;
   padding: 15px;
   border: 2px solid #000000;
@@ -976,18 +971,289 @@ button {
 }
 
 
-.modalidade-card {
+.modalidade-grid {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+
+.modalidade-card{
+  position: relative;   
+  overflow: hidden;     
+  padding: 10px;  
   background:  hsl(0, 0%, 5%);
   border-radius: 14px;
   padding: 10px;
   border: 2px solid #000000;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;         
 }
 
-.modalidade-grid {
-  align-items: center;
+
+
+.modalidade-img{
+  width: 100%;
+  height: 150px;       
+  object-fit: cover;
+  display: block;
+}
+
+.modalidade-title{
+  padding: 10px 12px 12px 12px;
+  border-top: 2px solid #000;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.modalidade-overlay{
+  position: absolute;
+  inset: 0;
+  padding: 14px;
+  z-index: 2;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .25s ease, transform .25s ease;
+  overflow: auto;
+}
+
+.modalidade-card:hover .modalidade-overlay,
+.modalidade-card:focus-within .modalidade-overlay{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modalidade-card:hover .modalidade-img{
+  filter: brightness(0.45);
+  transform: scale(1.03);
+}
+
+.overlay-title{
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.treinos{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 10px;
+}
+
+.treino{
+  border: 2px solid #000;
+  border-radius: 12px;
+  background: hsl(0, 0%, 5%);
+  overflow: hidden;
+}
+
+.treino > summary{
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.treino > summary::-webkit-details-marker{
+  display: none;
+}
+
+.treino-body{
+  padding: 10px 12px 12px 12px;
+  border-top: 2px solid #000;
+  color: var(--muted-foreground);
+  font-size: 0.82rem;
+}
+/* LIGA EINSTEIN */
+
+.liga{
+  position: relative;
+  overflow: hidden;
+  padding-top: 200px;
+}
+
+.liga::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("./assets/liga/fotinho.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size:cover;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.liga::after{
+  content:"";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.10) 35%,
+    var(--background) 75%,
+    var(--background) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.liga > *{
+  position: relative;
+  z-index: 2;
+}
+
+.liga-logo{
+  width: 92px;           /* tamanho do círculo */
+  height: 92px;
+  margin: 0 auto 14px;   /* centraliza e dá espaço abaixo */
+  border-radius: 50%;
+  overflow: hidden;      /* corta a imagem em círculo */
+  border: 2px solid rgba(255,255,255,0.15); 
+  background: rgba(0,0,0,0.25); 
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);            
+}
+
+.liga-logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* preenche o círculo sem distorcer */
+  display: block;
+}
+
+/* fotos liga */
+
+.carousel-section{
+  margin-top: 40px;
+  margin-bottom: 60px;
+  padding: 15px;
+  border: 2px solid #000;
+  border-radius: 16px;
+  background: hsl(0,0%,5%);
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.carousel{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(980px, 100%);
+  margin: 0 auto;
+}
+
+.carousel-viewport{
+  overflow: hidden;
+  border-radius: 16px;
+  border: 2px solid #000;
+  width: 100%;
+  background: hsl(0,0%,4%);
+}
+
+.carousel-track{
+  display: flex;
+  transition: transform 320ms ease;
+}
+
+
+.slide{
+  margin: 0;
+  width: 100%;
+  flex: 0 0 100%;
+}
+
+.slide img{
+  width: 100%;
+  height: 340px;      /* igual você já tinha */
+  object-fit: cover;
+  display: block;
+}
+
+.slide figcaption{
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: #bfbfbf;
+  border-top: 2px solid #000;
+  background: hsl(0,0%,4%);
+}
+
+
+.carousel-btn{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 2px solid #000;
+  background: hsl(0,0%,8%);
+  color: white;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.carousel-btn:hover{
+  background: hsl(0,0%,12%);
+}
+
+
+.history-details{
+  margin-top: 10px;
+}
+
+.history-toggle{
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 2px solid #000;
+  background: hsl(0,0%,8%);
+  color: #fff;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+.history-toggle::-webkit-details-marker{
+  display: none;
+}
+
+.history-toggle::after{
+  content: "▾";
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.history-details[open] .history-toggle::after{
+  content: "▴";
+}
+
+/* versão compacta do grid quando aparece dentro do histórico */
+.board-section--compact{
+  margin: 12px 0 0 0;
+  padding: 12px;
+}
+
+.board-section--compact .board-grid{
+  grid-template-columns: repeat(2, 1fr); /* ou 3 se couber */
+  gap: 12px;
+}
+
+@media (min-width: 900px){
+  .board-section--compact .board-grid{
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
