@@ -7,9 +7,11 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outilined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=22">
+
 
 </head>
+
 <body>
     <nav class="fixed top-0 left-0 right-0 z-50  bg-background/80 border-b border-border ">
     <div class="container mx-auto px-4 flex items-center justify-between h-20">
@@ -31,26 +33,33 @@
   </nav>
 
   <main class="bg-background">
-    
-    <section class="liga" id="modalidades">
+
+    <section class="liga " id="modalidades">
+
+        <div class="liga-logo">
+          <img src="./assets/liga/logoliga.png" alt="Logo Liga Einstein">
+        </div>
         <div class="container mx-auto px-4 text-center">
             <h1 class="section-title mb-4">Liga Einstein</h1>
         </div>
+
     </section>
 
-    <p class="text-xl md:text-2xl text-muted-foreground mb-2 font-display tracking-wide text-center">
-        Engenharia Biomédica • Enfermagem • Nutrição • Psicologia • Fisioterapia • ADM
-    </p>
-    <p class="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 text-center">
-        União das Atléticas Einstein para promover o esporte e participar de competições. Juntos somos mais fortes!
-    </p>
+    <div= class ="relative min-h-screen">
+      <p class="text-xl md:text-2xl text-muted-foreground mb-2 font-display tracking-wide text-center">
+          Engenharia Biomédica • Enfermagem • Nutrição • Psicologia • Fisioterapia • ADM
+      </p>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 text-center">
+          União das Atléticas Einstein para promover o esporte e participar de competições. Juntos somos mais fortes!
+      </p>
+    </div>
 
 
     <!--MODALIDADES-->
-    <section>
+    <br><br><br><br><br><section>
       <div class="container mx-auto px-4 text-center">
         <h1 class="section-title mb-4">
-            <span class="text-primary">Treinos</span> Liga Einstein
+            <span class="section-title text-primary">Treinos</span> Liga Einstein
         </h1>
       </div>
 
@@ -59,7 +68,7 @@
         <div class="modalidade-grid">
 
             <article class="modalidade-card">
-                <img src="assets/docs/futebol.png" alt="Futsal" class="modalidade-img">
+                <img src="assets/liga/futebol.png" alt="Futsal" class="modalidade-img">
                 <h3 class="modalidade-title">Futsal</h3>
 
                 <div class="modalidade-overlay">
@@ -88,7 +97,7 @@
             </article>
 
             <article class="modalidade-card">
-                <img src="assets/docs/volei.png" alt="Volei" class="modalidade-img">
+                <img src="assets/liga/volei.png" alt="Volei" class="modalidade-img">
                 <h3 class="modalidade-title">Volei</h3>
 
                 <div class="modalidade-overlay">
@@ -117,7 +126,7 @@
             </article>
 
             <article class="modalidade-card">
-                <img src="assets/docs/handebol.jpg" alt="Handebol" class="modalidade-img">
+                <img src="assets/liga/handebol.jpg" alt="Handebol" class="modalidade-img">
                 <h3 class="modalidade-title">Handebol</h3>
 
                 <div class="modalidade-overlay">
@@ -137,11 +146,11 @@
             </article>
 
             <article class="modalidade-card">
-                <img src="assets/docs/basquete.jpg" alt="Basquete" class="modalidade-img">
+                <img src="assets/liga/basquete.jpg" alt="Basquete" class="modalidade-img">
                 <h3 class="modalidade-title">Basquete</h3>
 
                 <div class="modalidade-overlay">
-                    <h3 cclass="overlay-title">BASQUETE</h3>
+                    <h3 class="overlay-title">BASQUETE</h3>
 
                     <div class="treinos">
                     <details class="treino">
@@ -160,6 +169,71 @@
 
     </section>
 
+   <!--MENSALIDADE-->
+
+    <section class="bg-background">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="section-title mb-4">
+          <span class="section-title text-primary">Mensal</span>idade
+        </h1>
+      </div>
+
+      <div class="card text-center mx-auto max-w-md p-6">
+        <h2 class="text-xl md:text-2xl text-muted-foreground mb-2 font-display tracking-wide text-center">Plano Esportes</h2>
+
+        <p class="mensalidade-preco">
+           <span class="section-title mb-4">R$ 60</span> <span class="periodo">/ mês</span>
+        </p>
+        <p><strong>+ R$ 5</strong> por esporte adicionado</p>
+        <br><p>Inclúi acesso aos treinos, descontos atleta e participação de campeonatos semestrais.</p>
+    
+      </div>
+
+    </section>
+
+    <!--conquistas -->
+
+    <section class="carousel-section bg-background" id="fotos">
+
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="section-title mb-4">
+          <span class="section-title text-primary">Conquistas</span> da Liga 
+        </h1>
+      </div>
+
+
+      <div class="carousel">
+        <button class="carousel-btn prev" aria-label="Anterior">‹</button>
+
+        <div class="carousel-viewport">
+          <div class="carousel-track">
+            <figure class="slide">
+              <img src="./assets/liga/foto1.jpg" alt="Foto 1">
+              <figcaption>Terceiro lugar geral no JUSA 24</figvaption>
+            </figure>
+             <figure class="slide">
+              <img src="./assets/liga/foto2.jpg" alt="Foto 2">
+              <figcaption>Primeiro lugar geral no JUCAMP 25</figvaption>
+            </figure>
+             <figure class="slide">
+              <img src="./assets/liga/foto3.jpg" alt="Foto 3">
+              <figcaption>Primeiro lugar na segunda divisão masculina de futsal da Liga Interatléticas</figvaption>
+            </figure>
+             <figure class="slide">
+              <img src="./assets/liga/foto4.jpg" alt="Foto 4">
+              <figcaption>Primeiro lugar na segunda divisão feminina de vôlei da Liga Interatléticas</figvaption>
+            </figure>
+          </div>
+        </div>
+
+        <button class="carousel-btn next" aria-label="Próximo">›</button>
+      </div>
+
+
+    </section>
+
+    
+
   </main>
 
   <footer class="bg-card border-t border-border py-12">
@@ -167,7 +241,7 @@
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-2">
           <h3 class="font-display text-2xl mb-1">
-            <span class="text-primary">AAA</span>LDV
+            <span class="font-display text-2xl mb-1 text-primary">AAA</span>LDV
           </h3>
           <p class="text-xs text-muted-foreground mb-4">Leonardo da Vinci</p>
           <p class="text-muted-foreground text-sm">
@@ -219,5 +293,30 @@
       </div>
     </div>
   </footer>
+
+
+  <script>
+    const track = document.querySelector(".carousel-track");
+    const slides = Array.from(track.querySelectorAll("img"));
+    const btnPrev = document.querySelector(".carousel-btn.prev");
+    const btnNext = document.querySelector(".carousel-btn.next");
+
+    let index = 0;
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    btnNext.addEventListener("click", () => {
+      index = (index + 1) % slides.length;
+      updateCarousel();
+    });
+
+    btnPrev.addEventListener("click", () => {
+      index = (index - 1 + slides.length) % slides.length;
+      updateCarousel();
+    });
+  </script>
+
 </body>
 </html>
