@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - AAALDV</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-background">
+  <div class="container mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl font-display font-bold mb-2 text-center">
+        <span class="text-primary">Gerenciar</span> Notícias
+      </h1>
+      <p class="text-center text-muted-foreground mb-12">Adicione, visualize e remova notícias do site</p>
+
+      <div class="grid lg:grid-cols-2 gap-8 mb-12">
+        <!-- Formulário -->
+        <div class="bg-card border border-border rounded-lg p-6">
+          <h2 class="text-xl font-display font-bold mb-6">
+            <span class="text-primary">Nova</span> Notícia
+          </h2>
+          
+        <form id="noticiaForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">Título *</label>
+            <input 
+              type="text" 
+              name="titulo" 
+              required 
+              class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+              placeholder="Título da notícia"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2">Descrição *</label>
+            <textarea 
+              name="descricao" 
+              required 
+              rows="5"
+              class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none text-foreground"
+              placeholder="Descreva o evento ou notícia..."
+            ></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Data *</label>
+              <input 
+                type="text" 
+                name="data" 
+                required 
+                pattern="\d{2}/\d{2}/\d{4}"
+                class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                placeholder="DD/MM/AAAA"
+              >
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">Foto</label>
+              <input 
+                type="file" 
+                name="foto" 
+                accept="image/*"
+                class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:cursor-pointer hover:file:bg-primary/90"
+              >
+            </div>
+          </div>
+          
+          <p class="text-xs text-muted-foreground">* Campos obrigatórios | Imagens: PNG, JPG, JPEG, GIF, WEBP (máx. 16MB)</p>
+
+          <button 
+            type="submit" 
+            class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
+          >
+            + Adicionar Notícia
+          </button>
+        </form>
+
+        <div id="message" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
+        </div>
+
+        <!-- Preview -->
+        <div class="bg-card border border-border rounded-lg p-6">
+          <h2 class="text-xl font-display font-bold mb-6">
+            <span class="text-primary">Preview</span> da Notícia
+          </h2>
+          
+          <div id="previewCard" class="bg-background border border-border rounded-lg overflow-hidden">
+            <div id="previewImageContainer" class="relative h-48 bg-secondary/30 flex items-center justify-center">
+              <img id="previewImage" class="hidden w-full h-full object-cover" alt="Preview">
+              <span id="previewPlaceholder" class="text-muted-foreground text-sm">📷 Imagem aparecerá aqui</span>
+            </div>
+            <div class="p-4">
+              <span id="previewData" class="text-xs text-muted-foreground">--/--/----</span>
+              <h3 id="previewTitulo" class="text-base font-semibold mt-1 text-muted-foreground">Título da notícia</h3>
+              <p id="previewDescricao" class="text-muted-foreground text-sm mt-2">
+                Descrição da notícia aparecerá aqui...
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center justify-between p-3 bg-background rounded-lg">
+              <span class="text-sm text-muted-foreground">Status do Servidor</span>
+              <span id="serverStatus" class="text-xs px-2 py-1 rounded bg-yellow-500/10 text-yellow-500">Verificando...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de Notícias -->
+      <div class="bg-card border border-border rounded-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-display font-bold">
+            <span class="text-primary">Notícias</span> Cadastradas
+          </h2>
+          <button onclick="loadNoticias()" class="text-sm text-primary hover:underline">
+            ↻ Atualizar
+          </button>
+        </div>
+        <div id="listaNoticias" class="space-y-3">
+          <p class="text-muted-foreground text-center py-8">Carregando notícias...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000';
+
+    // Verificar status do servidor
+    async function checkServerStatus() {
+      try {
+        const response = await fetch(`${API_URL}/api/news`);
+        if (response.ok) {
+          document.getElementById('serverStatus').className = 'text-xs px-2 py-1 rounded bg-green-500/10 text-green-500';
+          document.getElementById('serverStatus').textContent = '✓ Online';
+        }
+      } catch (error) {
+        document.getElementById('serverStatus').className = 'text-xs px-2 py-1 rounded bg-red-500/10 text-red-500';
+        document.getElementById('serverStatus').textContent = '✗ Offline';
+      }
+    }
+
+    // Preview em tempo real
+    const form = document.getElementById('noticiaForm');
+    const previewTitulo = document.getElementById('previewTitulo');
+    const previewDescricao = document.getElementById('previewDescricao');
+    const previewData = document.getElementById('previewData');
+    const previewImage = document.getElementById('previewImage');
+    const previewPlaceholder = document.getElementById('previewPlaceholder');
+
+    form.titulo.addEventListener('input', (e) => {
+      previewTitulo.textContent = e.target.value || 'Título da notícia';
+      previewTitulo.className = e.target.value ? 'text-base font-semibold mt-1' : 'text-base font-semibold mt-1 text-muted-foreground';
+    });
+
+    form.descricao.addEventListener('input', (e) => {
+      previewDescricao.textContent = e.target.value || 'Descrição da notícia aparecerá aqui...';
+      previewDescricao.className = e.target.value ? 'text-sm mt-2' : 'text-muted-foreground text-sm mt-2';
+    });
+
+    form.data.addEventListener('input', (e) => {
+      previewData.textContent = e.target.value || '--/--/----';
+    });
+
+    form.foto.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          previewImage.classList.remove('hidden');
+          previewPlaceholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Auto-formatar data
+    form.data.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2);
+      if (value.length >= 5) value = value.slice(0, 5) + '/' + value.slice(5, 9);
+      e.target.value = value;
+    });
+
+    // Enviar formulário
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const messageDiv = document.getElementById('message');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+      
+      try {
+        const response = await fetch(`${API_URL}/api/news`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          messageDiv.className = 'mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm';
+          messageDiv.textContent = '✓ Notícia adicionada com sucesso!';
+          messageDiv.classList.remove('hidden');
+          
+          // Reset
+          e.target.reset();
+          previewImage.classList.add('hidden');
+          previewPlaceholder.classList.remove('hidden');
+          previewTitulo.textContent = 'Título da notícia';
+          previewTitulo.className = 'text-base font-semibold mt-1 text-muted-foreground';
+          previewDescricao.textContent = 'Descrição da notícia aparecerá aqui...';
+          previewDescricao.className = 'text-muted-foreground text-sm mt-2';
+          previewData.textContent = '--/--/----';
+          
+          loadNoticias();
+          
+          setTimeout(() => messageDiv.classList.add('hidden'), 3000);
+        } else {
+          throw new Error('Erro ao adicionar notícia');
+        }
+      } catch (error) {
+        messageDiv.className = 'mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm';
+        messageDiv.textContent = '✗ Erro ao adicionar. Verifique se o servidor está rodando.';
+        messageDiv.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '+ Adicionar Notícia';
+      }
+    });
+
+    // Carregar e listar notícias
+    async function loadNoticias() {
+      try {
+        const response = await fetch(`${API_URL}/api/news`);
+        const noticias = await response.json();
+        
+        const lista = document.getElementById('listaNoticias');
+        
+        if (noticias.length === 0) {
+          lista.innerHTML = '<p class="text-muted-foreground text-center py-8">Nenhuma notícia cadastrada. Adicione a primeira!</p>';
+          return;
+        }
+        
+        lista.innerHTML = noticias.map((noticia, index) => `
+          <div class="bg-background border border-border rounded-lg p-4 hover:border-primary/50 transition-colors">
+            <div class="flex gap-4">
+              ${noticia.foto 
+                ? `<img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0">`
+                : `<div class="w-20 h-20 bg-secondary/30 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">📰</div>`
+              }
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start gap-2">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">#${noticias.length - index}</span>
+                      <span class="text-xs text-muted-foreground">${noticia.data}</span>
+                    </div>
+                    <h3 class="font-display font-bold text-base truncate">${noticia.titulo}</h3>
+                    <p class="text-sm text-muted-foreground mt-1 line-clamp-2">${noticia.descricao}</p>
+                  </div>
+                  <button 
+                    onclick="deletarNoticia(${noticia.id})"
+                    class="text-red-500 hover:bg-red-500/10 px-3 py-1.5 rounded text-sm border border-red-500/30 hover:border-red-500 transition-colors flex-shrink-0"
+                    title="Deletar notícia"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Erro ao carregar notícias:', error);
+        document.getElementById('listaNoticias').innerHTML = `
+          <div class="text-center py-8">
+            <p class="text-red-500 mb-2">✗ Erro ao carregar notícias</p>
+            <p class="text-sm text-muted-foreground">Verifique se o servidor está rodando em ${API_URL}</p>
+          </div>
+        `;
+      }
+    }
+
+    // Deletar notícia
+    async function deletarNoticia(id) {
+      if (!confirm('⚠️ Tem certeza que deseja deletar esta notícia?\n\nEsta ação não pode ser desfeita.')) return;
+      
+      try {
+        const response = await fetch(`${API_URL}/api/news/${id}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          loadNoticias();
+        } else {
+          alert('✗ Erro ao deletar notícia');
+        }
+      } catch (error) {
+        alert('✗ Erro ao deletar notícia. Verifique sua conexão.');
+      }
+    }
+
+    // Inicializar
+    checkServerStatus();
+    loadNoticias();
+    setInterval(checkServerStatus, 30000); // Verificar servidor a cada 30s
+  </script>
+</body>
+</html>
