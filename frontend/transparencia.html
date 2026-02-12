@@ -20,7 +20,7 @@
 
 
       <div class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="nav-link">Início</a>
+        <a href="index.html" class="nav-link text-primary">Início</a>
         <a href="institucional.html" class="nav-link">Institucional</a>
         <a href="eventos.html" class="nav-link">Eventos</a>
         <a href="loja.html" class="nav-link">Loja</a>
@@ -31,7 +31,6 @@
 
 
         <a href="#contato" class="nav-link">Contato</a>
-      </div>
     </div>
   </nav>
 
@@ -49,126 +48,60 @@
 
     <div class="flex justify-center mb-18">
         <div class="transparencia-tabs">
-            <button class="tab active-tab" data-tab="financeiro"> $ Relatório Financeiro</button>
-            <button class="tab" data-tab="documentos">🗎 Documentos</button>          
-            <button class="tab" data-tab="projetos">🗃 Projetos</button>
+            <button class="tab active-tab" data-tab="financeiro">Relatório Financeiro</button>
+            <button class="tab" data-tab="documentos">Documentos</button>          
+            <button class="tab" data-tab="estatuto">Estatuto</button>
         </div>
     </div>
 
  <!--CONTEUDO-->
-  <section class="container mx-auto px-4 space-y-12">
-      <div id="financeiro" class="tab-content hidden space-y-0">
-        <div class="finance-summary">
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">trending_up</span>
-              <span>Total de Receitas</span>
-            </div>
-          
-            <strong id="total-receitas" class="verde">R$ 0,00</strong>
-            <p>Acumulado do período</p>
-          
-          </div>
-
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">trending_up</span>
-              <span>Total de Despesas</span>
+  <div id="financeiro" class="tab-content hidden space-y-0">
+        <div class="card_financeiro">
+          <div class="financeiro-header">
+            <div class="financeiro-header-icon">
+              <span class="material-icons-sharp financeiro-title-icon">account_balance</span>
             </div>
 
-            <strong id="total-despesas" class="vermelho">R$ 0,00</strong>
-            <p>Acumulado do período</p>
-          </div>
-
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">account_balance</span>
-              <span>Saldo Atual</span>
+            <div class="documents-header-text">
+              <h2 class="text-lg font-semibold mb-0">
+                  Relatório Financeiro
+              </h2>
+              <div class="text-sm text-muted-foreground mb-6">
+                Relatórios Financeiros da AAALDV
             </div>
-
-            <strong id="saldo">R$ 0,00</strong>
-            <p>Fevereiro 2026</p>
           </div>
+        </div>
 
-          <div class="summary-box">
-            <div class="summary-title">
-              <span class="material-icons-sharp">percent</span>
-              <span class="summary-title">Aproveitamento</span>
+
+        <div class="financeiro-body space-y-4">
+          <div class="financeiro-item">
+           <div class="financeiro-left">
+            <span class="material-icons-sharp financeiro-icon">
+              assignment
+            </span>
+
+            <div class="financeiro-text">
+              <h4 class="font-medium">
+                Relatório Financeiro 2026
+              </h4>
+              <p class="text-xs text-muted-foreground">
+                v2026.2 · Atualizado em 02/02/2026 · 245 KB
+              </p>
             </div>
-
-            <strong id="aproveitamento">0%</strong>
-            <p>Despesas/Receitas</p>
           </div>
-        </div>
-      
-      <div class="finance-wrapper">
 
-      <div class="finance-box receitas">
-        <div class="finance-title">
-          <span class="material-icons-sharp">trending_up</span>
-          <h3>Receitas</h3>
-        </div>
-
-        <div class="finance-row header">
-          <span>Descrição</span>
-          <span>Valor</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Mensalidades de associados</span>
-          <span class="valor verde">R$ 2.500,00</span>
-        </div>
-
-        <div class="finance-row">
-        <span>Venda de camisetas</span>
-        <span class="valor verde">R$ 1.200,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Patrocínios</span>
-          <span class="valor verde">R$ 500,00</span>
-        </div>
-    
-        <div class="finance-row">
-          <span>Eventos</span>
-          <span class="valor verde">R$ 7.500,00</span>
-        </div>
-      </div>
-
-    <!-- DESPESAS -->
-      <div class="finance-box despesas">
-        <div class="finance-title">
-          <span class="material-icons-sharp">trending_down</span>
-          <h3>Despesas</h3>
-        </div>
-
-        <div class="finance-row header">
-          <span>Descrição</span>
-          <span>Valor</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Uniformes e materiais esportivos</span>
-          <span class="valor vermelho">R$ 1.500,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Transporte</span>
-          <span class="valor vermelho">R$ 1.000,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Marketing</span>
-          <span class="valor vermelho">R$ 2.000,00</span>
-        </div>
-
-        <div class="finance-row">
-          <span>Despesas administrativas</span>
-          <span class="valor vermelho">R$ 2.000,00</span>
+            <a 
+              href="assets/docs/EstatutoUSP.pdf" 
+              class="btn-download"
+              download
+            >
+              <span class="material-icons-sharp">file_download</span>
+              Download
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </section>
 
       <!--DESENVOLVIMENTO DO DOCUMENTO-->
@@ -200,7 +133,7 @@
 
             <div class="document-text">
               <h4 class="font-medium">
-                Estatuto Social AAALDV
+                ATA
               </h4>
               <p class="text-xs text-muted-foreground">
                 v2026.2 · Atualizado em 02/02/2026 · 245 KB
@@ -292,55 +225,53 @@
   </div>
 </div>
 
-<!--ABINHA DE PROJETOS-->
-      <div id="projetos" class="tab-content hidden">
-        <div class="section-box">
-          <div class="projects-header">
-            <h2 class="projects-title">
-              <span class="material-icons-sharp">folder</span>
-              Projetos da AAALDV
-            </h2>
-            <p class="projects-subtitle">
-              Acompanhe os projetos em andamento e planejados da atlética.
-            </p>
+<!--ABINHA DE ESTATUTO-->
+      <div id="estatuto" class="tab-content hidden space-y-0">
+        <div class="card_estatuto">
+          <div class="estatuto-header">
+            <div class="estatuto-header-icon">
+              <span class="material-icons-sharp estatuto-title-icon">license</span>
+            </div>
+
+            <div class="estatuto-header-text">
+              <h2 class="text-lg font-semibold mb-0">
+                  Estatuto Oficial AAALDV
+              </h2>
+              <div class="text-sm text-muted-foreground mb-6">
+              Documento oficial que rege o funcionamento da AAALDV. O Estatuto define as normas, direitos e deveres dos membros da AAALDV, bem como sua estrutura administrativa e funcionamento interno.
+              </div>
+            </div>
           </div>
-            
 
-          <div class="projects-list">
 
-            <div class="project-card">
-              <div class="project-info">
-                <h3>Campeonato Interatléticas 2025</h3>
-                <div class="project-meta">
-                  <span><span class="material-icons-sharp">group</span> Diretoria de Esportes</span>
-                  <span><span class="material-icons-sharp">event</span> Mar/2025</span>
-                </div>
+          <div class="estatuto-body space-y-4">
+            <div class="estatuto-item">
+              <div class="estatuto-left">
+               <span class="material-icons-sharp estatuto-icon">
+                assignment
+              </span>
+
+              <div class="estatuto-text">
+                <h4 class="font-medium">
+                  Estatuto Social AAALDV
+                </h4>
+                <p class="text-xs text-muted-foreground">
+                  v2026.2 · Atualizado em 02/02/2026 · 245 KB
+                </p>
               </div>
-              <span class="project-status andamento">Em andamento</span>
             </div>
 
-            <div class="project-card">
-              <div class="project-info">
-                <h3>Festa de Integração</h3>
-                <div class="project-meta">
-                  <span><span class="material-icons-sharp">group</span> Diretoria de Eventos</span>
-                  <span><span class="material-icons-sharp">event</span> Abr/2025</span>
-                </div>
-              </div>
-              <span class="project-status planejado">Planejado</span>
+              <a 
+                href="assets/docs/EstatutoUSP.pdf" 
+                class="btn-download"
+                download
+              >
+                <span class="material-icons-sharp">file_download</span>
+                Download
+              </a>
             </div>
-
-            <div class="project-card">
-              <div class="project-info">
-                <h3>Renovação de Uniformes</h3>
-                <div class="project-meta">
-                  <span><span class="material-icons-sharp">group</span> Diretoria Financeira</span>
-                  <span><span class="material-icons-sharp">event</span> Jan/2025</span>
-                </div>
-              </div>
-              <span class="project-status concluido">Concluído</span>
-            </div>
-          
+          </div> 
+        </div>
     </div>
   </div>
 </div>
