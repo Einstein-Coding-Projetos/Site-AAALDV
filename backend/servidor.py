@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import json
 import os
@@ -9,8 +9,9 @@ CORS(app)
 
 ARQUIVO_NOTICIAS = 'noticias.json'
 ARQUIVO_CONTATOS = 'contatos.json'
+ARQUIVO_TRANSPARENCIA = 'transparencia.json'
 
-for arquivo in [ARQUIVO_NOTICIAS, ARQUIVO_CONTATOS]:
+for arquivo in [ARQUIVO_NOTICIAS, ARQUIVO_CONTATOS, ARQUIVO_TRANSPARENCIA]:
     if not os.path.exists(arquivo):
         with open(arquivo, 'w', encoding='utf-8') as f:
             json.dump([], f)
@@ -66,5 +67,7 @@ if __name__ == '__main__':
     print('  🌐 Site: http://localhost:3000')
     print('  📰 API Notícias: http://localhost:3000/api/news')
     print('  📧 API Contatos: http://localhost:3000/api/contacts')
+    print('  🧾 API Transparência: http://localhost:3000/api/transparencia')
+    print('  📦 API Produtos: http://localhost:3000/api/produtos')
     print('═' * 50)
     app.run(debug=True, port=3000)
