@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import json
 import os
@@ -93,6 +94,8 @@ if __name__ == '__main__':
     print('═' * 50)
     print('  🌐 Site: http://localhost:3000')
     print('  📰 API Notícias: http://localhost:3000/api/news')
-    print('  📁 Uploads: http://localhost:3000/uploads/')
+    print('  📧 API Contatos: http://localhost:3000/api/contacts')
+    print('  🧾 API Transparência: http://localhost:3000/api/transparencia')
+    print('  📦 API Produtos: http://localhost:3000/api/produtos')
     print('═' * 50)
     app.run(debug=True, port=3000)

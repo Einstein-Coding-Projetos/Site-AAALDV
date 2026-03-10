@@ -146,6 +146,12 @@ body {
   transition: width 0.3s ease;
 }
 
+header{
+  background-color: hsl(0, 0%, 3%);
+  color: white;
+  width: 100%;
+}
+
 .transparencia-main {
   margin-top: 130px;
 }
@@ -523,10 +529,9 @@ body {
 /*CRIAÇÃO DE PRODUTOS */  
 
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+.produtos-section{
   font-family:'Poppins', sans-serif;
+}
 }
 
 body{

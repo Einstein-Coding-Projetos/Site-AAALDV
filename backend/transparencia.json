@@ -1,0 +1,17 @@
+[
+    {
+        "titulo": "Prestação de Contas 2024",
+        "arquivo": "prestacao_2024.pdf",
+        "categoria": "relatorio"
+    },
+    {
+        "titulo": "Ata de Fundação",
+        "arquivo": "ata_fundacao.pdf",
+        "categoria": "documentos"
+    },
+    {
+        "titulo": "Estatuto Oficial",
+        "arquivo": "estatuto.pdf",
+        "categoria": "estatuto"
+    }
+]
