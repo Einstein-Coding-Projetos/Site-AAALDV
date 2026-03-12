@@ -41,7 +41,7 @@
 
     <img src="assets/produtos/simbolo_aaaldv.png" alt="Símbolo da Atlética" class="logo-atletica">
 
-    <h2>Bem-vindo(a) à nossa loja virtual!</h2>
+    <h2>Bem-vindo(a) à nossa galeria de produtos!</h2>
 
     <p>
     Todos os produtos que produzimos ao longo do ano são disponibilizados para visualização prévia nessa página.     </p>
@@ -58,7 +58,7 @@
 
     </section>
     
-    <div class="products-grid">
+    <div class="products-grid" id="products-grid">
       <div class="product-card">
         <div class="product-image">
           <img src="assets\produtos\camiseta.jpg" alt="Camiseta Calouros 2026">
@@ -99,17 +99,58 @@
         </div>
       </div>
 
-
-
-
-
-
-
-
     </div>
   
   
   </section>
+
+  <script>
+
+  const API_URL = "http://localhost:3000"
+
+  async function carregarProdutos(){
+
+    try{
+
+      const response = await fetch(`${API_URL}/api/produtos`)
+      const produtos = await response.json()
+
+      const grid = document.getElementById("products-grid")
+
+      if(!grid) return
+
+      grid.innerHTML = produtos.map(produto => `
+
+        <div class="product-card">
+
+          <div class="product-image">
+            ${
+              produto.foto
+              ? `<img src="${API_URL}${produto.foto}" alt="${produto.nome}">`
+              : `<div style="height:100%;display:flex;align-items:center;justify-content:center;">🛍️</div>`
+            }
+          </div>
+
+          <div class="product-info">
+            <h3>${produto.nome}</h3>
+            <span>R$ ${produto.preco}</span>
+          </div>
+
+        </div>
+
+      `).join("")
+
+    }catch(error){
+
+      console.error("Erro ao carregar produtos", error)
+
+    }
+
+  }
+
+  carregarProdutos()
+
+  </script>
 
    <footer class="bg-card border-t border-border py-12">
     <div class="container mx-auto px-4">
