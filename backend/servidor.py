@@ -12,7 +12,10 @@ CORS(app)
 ARQUIVO_NOTICIAS = 'noticias.json'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+ALLOWED_EXTENSIONS = {
+    'png', 'jpg', 'jpeg', 'gif', 'webp',
+    'pdf','doc','docx','xls','xlsx'
+    }
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -177,6 +180,84 @@ def deletar_produto(produto_id):
     produtos = [p for p in produtos if p['id'] != produto_id]
 
     salvar_dados(ARQUIVO_PRODUTOS, produtos)
+
+    return jsonify({'message': 'Produto deletado com sucesso'}), 200
+
+#! ========================== TRANSPARÊNCIA  =======================!
+
+ARQUIVO_TRANSPARENCIA = 'transparencia.json'
+
+
+if not os.path.exists(ARQUIVO_TRANSPARENCIA):
+    with open(ARQUIVO_TRANSPARENCIA, 'w', encoding='utf-8') as f:
+        json.dump([], f)
+        
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def ler_dados(arquivo):
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def salvar_dados(arquivo, dados):
+    with open(arquivo, 'w', encoding='utf-8') as f:
+        json.dump(dados, f, indent=2, ensure_ascii=False)
+        
+
+@app.route('/api/transparencia', methods=['GET'])
+def get_transparencia():
+    dados = ler_dados('transparencia.json')
+    return jsonify(dados)
+
+
+@app.route('/api/transparencia', methods=['POST'])
+def criar_transparencia():
+
+    dados = ler_dados('transparencia.json')
+
+    titulo = request.form.get('titulo')
+    categoria = request.form.get('categoria')
+    data = request.form.get('data')
+
+    arquivo = request.files.get('arquivo')
+    arquivo_url = None
+
+    if arquivo and arquivo.filename and allowed_file(arquivo.filename):
+
+        filename = secure_filename(arquivo.filename)
+
+        timestamp = int(datetime.now().timestamp()*1000)
+        filename = f"{timestamp}_{filename}"
+
+        arquivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        arquivo_url = f"/uploads/{filename}"
+
+    novo = {
+        "id": int(datetime.now().timestamp()*1000),
+        "titulo": titulo,
+        "categoria": categoria,
+        "data": data,
+        "arquivo": arquivo_url
+    }
+
+    dados.append(novo)
+
+    salvar_dados('transparencia.json', dados)
+
+    return jsonify(novo), 201
+
+
+@app.route('/api/transparencia/<int:id>', methods=['DELETE'])
+def deletar_transparencia(id):
+
+    dados = ler_dados('transparencia.json')
+
+    dados = [t for t in dados if t['id'] != id]
+
+    salvar_dados('transparencia.json', dados)
 
     return jsonify({'message': 'Produto deletado com sucesso'}), 200
 

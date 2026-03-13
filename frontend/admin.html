@@ -128,7 +128,11 @@
   </div>
 
   <script>
-    const API_URL = "http://localhost:3000";
+    const API_URL = "http://localhost:3000"
+  </script>
+
+
+  <script>
     
     // Verificar status do servidor
     async function checkServerStatus() {
@@ -443,10 +447,10 @@
 
           <div class="flex gap-3 items-center">
 
-            ${produto.foto 
-              ? `<img src="${API_URL}${produto.foto}" class="w-16 h-16 object-cover rounded">`
-              : `<div class="w-16 h-16 bg-secondary/30 rounded flex items-center justify-center">🛍️</div>`
-            }
+            <div class="w-16 h-16 bg-secondary/30 rounded flex items-center justify-center">
+              🛍️
+            </div>
+
 
             <div>
               <h3 class="font-semibold">${produto.nome}</h3>
@@ -489,6 +493,210 @@
   loadProdutos()
 
   </script>
+
+   <!--===================TRANSPARÊNCIA========================= -->
+
+  <div class="max-w-6xl mx-auto mt-16">
+    <h1 class="text-4xl font-display font-bold mb-2 text-center">
+      <span class="text-primary">Gerenciar</span> Transparência
+    </h1>
+
+    <p class="text-center text-muted-foreground mb-12">
+    Adicione ou remova arquivos da página de transparência
+    </p>
+
+  <div class="grid lg:grid-cols-2 gap-8 mb-12">
+
+  <!-- Formulário -->
+  <div class="bg-card border border-border rounded-lg p-6">
+    <h2 class="text-xl font-display font-bold mb-6">
+      <span class="text-primary">Novo</span> Documento
+    </h2>
+
+    <form id="transparenciaForm" class="space-y-4" enctype="multipart/form-data">
+
+  <div>
+    <label class="block text-sm font-medium mb-2">Título:</label>
+    <input
+      type="text"
+      name="titulo"
+      required
+      class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+      placeholder="Título do documento"
+    >
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-2">Categoria:</label>
+
+    <select
+      name="categoria"
+      required
+      class="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground"
+    >
+
+    <option value="relatorio_financeiro">Relatório Financeiro</option>
+    <option value="documentos">Documentos</option>
+    <option value="estatuto">Estatuto</option>
+
+    </select>
+
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-2">Arquivo:</label>
+
+    <input
+      type="file"
+      name="arquivo"
+      accept=".pdf,.doc,.docx,.xls,.xlsx"
+      class="w-full px-4 py-2 bg-background border border-border rounded-lg text-white"
+    >
+  </div>
+
+  <div class="block text-sm font-medium mb-2">
+    <label class="block text-sm font-medium mb-2">Data: </label>
+    <input 
+      type="date" 
+      name="data" 
+      required 
+      pattern="\d{2}/\d{2}/\d{4}"
+      class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+      placeholder="DD/MM/AAAA"
+    >
+  </div>
+
+  <button
+    type="submit"
+    class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg"
+  >
+    + Adicionar Documento
+  </button>
+  </form>
+  </div>
+
+  <!-- Lista -->
+
+  <div class="bg-card border border-border rounded-lg p-6">
+    <h2 class="text-xl font-display font-bold mb-6">
+      <span class="text-primary">Documentos</span> Cadastrados
+    </h2>
+
+  <div id="listaTransparencia" class="space-y-3">
+    <p class="text-muted-foreground text-center py-8">
+    Carregando documentos...
+    </p>
+  </div>
+  </div>
+
+  <script>
+    
+
+    const transparenciaForm = document.getElementById("transparenciaForm")
+    if(transparenciaForm){
+    transparenciaForm.addEventListener("submit", async (e)=>{
+
+    e.preventDefault()
+
+    const formData = new FormData(e.target)
+
+    const response = await fetch(`${API_URL}/api/transparencia`,{
+      method:"POST",
+      body:formData
+    })
+
+    if(response.ok){
+
+      alert("Documento cadastrado!")
+
+      e.target.reset()
+
+      loadTransparencia()
+
+    }else{
+
+      alert("Erro ao cadastrar documento")
+
+        }
+
+    })
+
+    }
+
+
+  async function loadTransparencia(){
+
+  try{
+
+    const response = await fetch(`${API_URL}/api/transparencia`)
+    const dados = await response.json()
+
+    const lista = document.getElementById("listaTransparencia")
+
+    if(!lista) return
+
+    lista.innerHTML = dados.map(doc=>`
+
+      <div class="bg-background border border-border rounded-lg p-4 flex justify-between items-center">
+
+        <div class="flex gap-3 items-center">
+
+          <div class="w-16 h-16 bg-secondary/30 rounded flex items-center justify-center">
+            📄
+          </div>
+
+          <div>
+
+            <h3 class="font-semibold">${doc.titulo}</h3>
+
+            <p class="text-sm text-muted-foreground">
+              ${doc.categoria} • ${doc.data || ""}
+            </p>
+
+            ${doc.arquivo 
+              ? `<a href="${API_URL}${doc.arquivo}" target="_blank" class="text-primary text-sm">Abrir arquivo</a>`
+              : ""
+            }
+
+          </div>
+
+        </div>
+
+        <button 
+          onclick="deletarTransparencia(${doc.id})"
+          class="text-red-500 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/10"
+        >
+          🗑️
+        </button>
+
+      </div>
+
+    `).join("")
+
+  }catch(error){
+
+    console.error("Erro ao carregar documentos")
+
+  }
+
+}
+
+
+async function deletarTransparencia(id){
+
+  if(!confirm("Tem certeza que deseja deletar este documento?")) return
+
+  await fetch(`${API_URL}/api/transparencia/${id}`,{
+    method:"DELETE"
+  })
+
+  loadTransparencia()
+
+}
+
+
+loadTransparencia()
+</script>
 
 </body>
 </html>
