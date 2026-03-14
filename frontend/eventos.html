@@ -7,10 +7,12 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border ">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-background/80 border-b border-border">
+    <header class="w-full bg-black">
     <div class="container mx-auto px-4 flex items-center justify-between h-20">
-      <a href="index.html" class="font-display text-2xl tracking-tight hidden sm:block">
-        <span class="text-primary">AAA</span>LDV
+      <a href="index.html" class="font-display text-2xl tracking-tight flex items-center gap-2">
+        <img src="assets/produtos/simbolo_aaaldv.png" alt="Logo AAALDV" class="h-8 w-8 object-contain">
+        <span><span class="text-primary">AAA</span>LDV</span>
       </a>
       <div class="hidden md:flex items-center gap-8">
         <a href="index.html" class="nav-link">Início</a>
@@ -22,12 +24,13 @@
         <a href="#contato" class="nav-link">Contato</a>
       </div>
     </div>
+    </header>
   </nav>
 
   <main class="pt-20">
-    <section class="py-20 bg-background">
+    <section class="hero-eventos-bg eventos-banner" aria-label="Banner de eventos">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
+        <div class="text-center">
           <h1 class="section-title mb-4">
             <span class="text-primary">Eventos</span> & Calendário
           </h1>
@@ -35,19 +38,23 @@
             Confira os eventos da AAALDV e fique por dentro de todas as atividades, competições e confraternizações
           </p>
         </div>
+      </div>
+    </section>
 
+    <section class="py-20 bg-background">
+      <div class="container mx-auto px-4">
         <!-- Notícias Recentes -->
         <div class="mb-20">
           <h2 class="text-2xl font-display font-bold mb-8">
             <span class="text-primary">Últimas</span> Notícias
           </h2>
           <div id="noticias-recentes" class="grid md:grid-cols-3 gap-6">
-            <div class="bg-card border border-border rounded-lg overflow-hidden">
-              <div class="relative h-32 bg-secondary/30 flex items-center justify-center">
+            <div class="content-card">
+              <div class="content-card-media content-card-media--default flex items-center justify-center">
                 <span class="text-muted-foreground text-sm">Carregando...</span>
               </div>
-              <div class="p-4">
-                <h3 class="text-base font-semibold mt-1">Carregando notícias...</h3>
+              <div class="content-card-body">
+                <h3 class="content-card-title">Carregando notícias...</h3>
               </div>
             </div>
           </div>
@@ -71,7 +78,7 @@
           <h2 class="text-2xl font-display font-bold mb-8">
             <span class="text-primary">Galeria</span> de Fotos
           </h2>
-          <div id="galeria-fotos" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div id="galeria-fotos" class="gallery-grid-large">
             <!-- Fotos serão carregadas aqui -->
             <div class="col-span-4 text-center py-8">
               <p class="text-muted-foreground">Carregando galeria...</p>
@@ -173,17 +180,17 @@
           } else {
             const noticiasRecentes = noticias.slice(0, 3);
             noticiasContainer.innerHTML = noticiasRecentes.map(noticia => `
-              <div class="bg-card border border-border rounded-lg overflow-hidden">
-                <div class="relative h-32 bg-secondary/30 flex items-center justify-center overflow-hidden">
+              <div class="content-card">
+                <div class="content-card-media content-card-media--default flex items-center justify-center">
                   ${noticia.foto 
-                    ? `<img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}" class="w-full h-full object-cover">`
+                    ? `<img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}">`
                     : `<span class="text-muted-foreground text-sm">Imagem do Evento</span>`
                   }
                 </div>
-                <div class="p-4">
-                  <span class="text-xs text-muted-foreground">${noticia.data}</span>
-                  <h3 class="text-base font-semibold mt-1">${noticia.titulo}</h3>
-                  <p class="text-muted-foreground text-sm mt-2">
+                <div class="content-card-body">
+                  <span class="content-card-date">${noticia.data}</span>
+                  <h3 class="content-card-title">${noticia.titulo}</h3>
+                  <p class="content-card-copy">
                     ${noticia.descricao || 'Sem descrição'}
                   </p>
                 </div>
@@ -209,16 +216,14 @@
               const mesNome = meses[parseInt(mes) - 1];
               
               return `
-                <div class="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors">
-                  <div class="flex items-start gap-4">
-                    <div class="bg-primary/10 rounded-lg p-3 text-center min-w-[60px]">
-                      <div class="text-primary font-display text-2xl font-bold">${dia}</div>
-                      <div class="text-primary text-xs">${mesNome}</div>
-                    </div>
-                    <div class="flex-1">
-                      <h3 class="font-display font-bold text-lg mb-1">${noticia.titulo}</h3>
-                      <p class="text-muted-foreground text-sm mb-2 line-clamp-2">${noticia.descricao || 'Sem descrição'}</p>
-                    </div>
+                <div class="event-calendar-card">
+                  <div class="event-calendar-date">
+                    <div class="event-calendar-day">${dia}</div>
+                    <div class="event-calendar-month">${mesNome}</div>
+                  </div>
+                  <div>
+                    <h3 class="event-calendar-title">${noticia.titulo}</h3>
+                    <p class="event-calendar-copy">${noticia.descricao || 'Sem descrição'}</p>
                   </div>
                 </div>
               `;
@@ -238,8 +243,8 @@
             `;
           } else {
             galeriaContainer.innerHTML = noticiasComFoto.map(noticia => `
-              <div class="aspect-square bg-secondary/30 rounded-lg overflow-hidden hover:opacity-80 transition-opacity cursor-pointer">
-                <img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}" class="w-full h-full object-cover">
+              <div class="gallery-item-large">
+                <img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}">
               </div>
             `).join('');
           }

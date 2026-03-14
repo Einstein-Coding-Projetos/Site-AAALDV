@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": 1773502945265,
+    "titulo": "Integras",
+    "descricao": "Integração da T4",
+    "foto": "/uploads/1773502945263_WhatsApp_Image_2026-03-13_at_11.43.52.jpeg",
+    "data": "27/02/2026"
+  },
+  {
+    "id": 1773502982152,
+    "titulo": "Calouriadas",
+    "descricao": "Jogos dos calouros 2025",
+    "foto": "/uploads/1773502982151_WhatsApp_Image_2026-03-13_at_11.47.40.jpeg",
+    "data": "31/03/2025"
+  },
+  {
+    "id": 1773503029263,
+    "titulo": "Jusa 2025",
+    "descricao": "Jogos universitários da saúde",
+    "foto": "/uploads/1773503029262_WhatsApp_Image_2026-03-13_at_11.42.24.jpeg",
+    "data": "29/11/2025"
+  },
+  {
+    "id": 1773503109059,
+    "titulo": "Dia do esporte",
+    "descricao": "Professores X Alunos",
+    "foto": "/uploads/1773503109059_WhatsApp_Image_2026-03-14_at_08.07.07.jpeg",
+    "data": "20/02/2024"
+  }
+]
