@@ -152,6 +152,205 @@ header{
   width: 100%;
 }
 
+.hero-inicio-bg {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.62)), url('assets/inicio.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-eventos-bg {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.68)), url('assets/eventos.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.eventos-banner {
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.content-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+.content-card-media {
+  position: relative;
+  overflow: hidden;
+  background: hsl(0, 0%, 12%);
+}
+
+.content-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.content-card:hover .content-card-media img {
+  transform: scale(1.04);
+}
+
+.content-card-media--compact {
+  height: 7.5rem;
+}
+
+.content-card-media--default {
+  height: 12rem;
+}
+
+.content-card-body {
+  padding: 1rem;
+}
+
+.content-card-date {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.content-card-title {
+  margin-top: 0.35rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.45rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.content-card-copy {
+  margin-top: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.content-card--compact .content-card-body {
+  padding: 0.9rem;
+}
+
+.content-card--compact .content-card-title {
+  font-size: 1.2rem;
+}
+
+.event-calendar-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  min-height: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(180deg, hsl(0, 0%, 8%), hsl(0, 0%, 6%));
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.event-calendar-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+}
+
+.event-calendar-date {
+  min-width: 72px;
+  padding: 0.85rem 0.6rem;
+  border-radius: 0.9rem;
+  background: rgba(255, 98, 0, 0.12);
+  border: 1px solid rgba(255, 98, 0, 0.25);
+  text-align: center;
+}
+
+.event-calendar-day {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.event-calendar-month {
+  margin-top: 0.15rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+}
+
+.event-calendar-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.55rem;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+}
+
+.event-calendar-copy {
+  margin-top: 0.45rem;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gallery-grid-large {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.gallery-item-large {
+  aspect-ratio: 5 / 4;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: hsl(0, 0%, 12%);
+  border: 1px solid var(--border);
+}
+
+.gallery-item-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.gallery-item-large:hover img {
+  transform: scale(1.04);
+  opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+  .eventos-banner {
+    min-height: 560px;
+  }
+
+  .gallery-grid-large {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-grid-large {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .transparencia-main {
   margin-top: 130px;
 }
@@ -534,6 +733,51 @@ header{
 }
 }
 
+.banner-loja{
+  height: 300px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+                    url("assets/produtos/background_produtos.png"); 
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-loja h1{
+  color: white;
+  font-size: 60px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.intro-loja{
+  text-align: center;
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 20px;
+}
+
+.logo-atletica{
+  width: 175px;
+  margin-bottom: 30px;
+}
+
+.intro-loja h2{
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+.intro-loja p{
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
 body{
   background:#0b0b0b;
   color:#fff;
@@ -550,6 +794,7 @@ body{
   letter-spacing:2px;
   margin-bottom:0px;
   margin-top: 40px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .products-section p{

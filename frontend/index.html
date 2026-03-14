@@ -10,18 +10,19 @@
 
 </head>
 <body>
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-background/80 border-b border-border ">
-    <header class="w-full bg-black">  
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-background/80 border-b border-border">
+    <header class="w-full bg-black">
     <div class="container mx-auto px-4 flex items-center justify-between h-20">
-      <a href="index.html" class="font-display text-2xl tracking-tight hidden sm:block">
-        <span class="text-primary">AAA</span>LDV
+      <a href="index.html" class="font-display text-2xl tracking-tight flex items-center gap-2">
+        <img src="assets/produtos/simbolo_aaaldv.png" alt="Logo AAALDV" class="h-8 w-8 object-contain">
+        <span><span class="text-primary">AAA</span>LDV</span>
       </a>
       <div class="hidden md:flex items-center gap-8">
         <a href="index.html" class="nav-link text-primary">Início</a>
         <a href="institucional.html" class="nav-link">Institucional</a>
         <a href="liga.html" class="nav-link">Liga Einstein</a>
         <a href="eventos.html" class="nav-link">Eventos</a>
-        <a href="produtos.html" class="nav-link">Loja</a>
+        <a href="produtos.html" class="nav-link">Produtos</a>
         <a href="transparencia.html" class="nav-link">Transparência</a>
         <a href="#contato" class="nav-link">Contato</a>
       </div>
@@ -30,7 +31,7 @@
   </nav>
 
   <main>
-    <section class="relative min-h-screen flex items-center justify-center bg-background">
+    <section class="relative min-h-screen flex items-center justify-center hero-inicio-bg">
       <div class="container mx-auto px-4 text-center">
         <h1 class="section-title mb-4">
           <span class="section-title mb-4 text-primary">AAA</span> Leonardo da Vinci
@@ -42,27 +43,14 @@
           Unindo força, ciência e paixão pelo esporte. A atlética que representa a engenharia do futuro.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onclick="document.getElementById('content').scrollIntoView({behavior: 'smooth'})" class="inline-flex items-center justify-center rounded-md border border-primary/50 h-11 px-8 font-display">
+          <a href="institucional.html#quem-somos" class="inline-flex items-center justify-center rounded-md border border-primary/50 h-11 px-8 font-display">
             Conheça Mais
-          </button>
+          </a>
         </div>
       </div>
     </section>
 
     <div id="content">
-      <section class="py-20 bg-secondary/30">
-        <div class="container mx-auto px-4 text-center">
-          <h2 class="section-title mb-4">
-            <span class="text-primary">Quem</span> Somos
-          </h2>
-          <p class="text-muted-foreground text-lg max-w-3xl mx-auto">
-            A Associação Atlética Acadêmica Leonardo da Vinci (AAALDV) é a representação esportiva e social dos estudantes de Engenharia Biomédica do Instituto Israelita de Ensino e Pesquisa Albert Einstein. Fundada com o propósito de promover a integração entre os alunos através do esporte, cultura e eventos sociais.
-          </p>
-        </div>
-      </section>
-
-      
-
       <section class="py-20">
         <div class="container mx-auto px-4">
           <div class="text-center mb-12">
@@ -74,15 +62,15 @@
             </p>
           </div>
 
-          <div id="noticias-container" class="grid md:grid-cols-3 gap-6">
+          <div id="noticias-container" class="grid md:grid-cols-3 gap-5">
             <!-- Notícias serão carregadas aqui -->
-            <div class="bg-card border border-border rounded-lg overflow-hidden">
-              <div class="relative h-32 bg-secondary/30 flex items-center justify-center">
+            <div class="content-card content-card--compact">
+              <div class="content-card-media content-card-media--compact flex items-center justify-center">
                 <span class="text-muted-foreground text-sm">Carregando...</span>
               </div>
-              <div class="p-4">
-                <span class="text-xs text-muted-foreground">...</span>
-                <h3 class="text-base font-semibold mt-1">Carregando notícias...</h3>
+              <div class="content-card-body">
+                <span class="content-card-date">...</span>
+                <h3 class="content-card-title">Carregando notícias...</h3>
               </div>
             </div>
           </div>
@@ -116,8 +104,9 @@
           <h4 class="font-display text-lg mb-4 text-primary">Links</h4>
           <ul class="space-y-2 text-sm text-muted-foreground">
             <li><a href="institucional.html">Institucional</a></li>
+            <li><a href="liga.html">Liga Einstein</a></li>
             <li><a href="eventos.html">Eventos</a></li>
-            <li><a href="loja.html">Loja</a></li>
+            <li><a href="produtos.html">Produtos</a></li>
             <li><a href="transparencia.html">Transparência</a></li>
           </ul>
         </div>
@@ -190,17 +179,17 @@
         const noticiasRecentes = noticias.slice(0, 3);
         
         container.innerHTML = noticiasRecentes.map(noticia => `
-          <div class="bg-card border border-border rounded-lg overflow-hidden">
-            <div class="relative h-32 bg-secondary/30 flex items-center justify-center overflow-hidden">
+          <div class="content-card content-card--compact">
+            <div class="content-card-media content-card-media--compact flex items-center justify-center">
               ${noticia.foto 
-                ? `<img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}" class="w-full h-full object-cover">`
+                ? `<img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}">`
                 : `<span class="text-muted-foreground text-sm">Imagem do Evento</span>`
               }
             </div>
-            <div class="p-4">
-              <span class="text-xs text-muted-foreground">${noticia.data}</span>
-              <h3 class="text-base font-semibold mt-1">${noticia.titulo}</h3>
-              <p class="text-muted-foreground text-sm mt-2 line-clamp-2">
+            <div class="content-card-body">
+              <span class="content-card-date">${noticia.data}</span>
+              <h3 class="content-card-title">${noticia.titulo}</h3>
+              <p class="content-card-copy">
                 ${noticia.descricao || 'Sem descrição'}
               </p>
             </div>
