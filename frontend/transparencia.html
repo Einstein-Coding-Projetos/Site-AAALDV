@@ -53,7 +53,7 @@
     </div>
 
  <!--CONTEUDO-->
-  <div id="financeiro" class="tab-content hidden space-y-0">
+      <div id="financeiro" class="tab-content hidden space-y-0">
         <div class="card_financeiro">
           <div class="financeiro-header">
             <div class="financeiro-header-icon">
@@ -62,44 +62,14 @@
 
             <div class="documents-header-text">
               <h2 class="text-lg font-semibold mb-0"> Relatório Financeiro</h2>
-              <div id="listaRelatorio"></div>
               <div class="text-sm text-muted-foreground mb-6">
                 Relatórios Financeiros da AAALDV
+              </div>
             </div>
           </div>
-        </div>
-
-
-        <div class="financeiro-body space-y-4">
-          <div class="financeiro-item">
-           <div class="financeiro-left">
-            <span class="material-icons-sharp financeiro-icon">
-              assignment
-            </span>
-
-            <div class="financeiro-text">
-              <h4 class="font-medium">
-                Relatório Financeiro 2026
-              </h4>
-              <p class="text-xs text-muted-foreground">
-                v2026.2 · Atualizado em 02/02/2026 · 245 KB
-              </p>
-            </div>
-          </div>
-
-            <a 
-              href="assets/docs/EstatutoUSP.pdf" 
-              class="btn-download"
-              download
-            >
-              <span class="material-icons-sharp">file_download</span>
-              Download
-            </a>
-          </div>
+            <div id="listaRelatorio"></div>
         </div>
       </div>
-    </div>
-</section>
 
       <!--DESENVOLVIMENTO DO DOCUMENTO-->
 
@@ -112,49 +82,17 @@
 
             <div class="documents-header-text">
               <h2 class="text-lg font-semibold mb-0"> Documentos Institucionais </h2>
-              <div id="listaDocumentos"></div>
               <div class="text-sm text-muted-foreground mb-6">
-              Estatutos, regimentos e políticas oficiais da AAALDV
+              Regimentos e políticas oficiais da AAALDV
             </div>
           </div>
         </div>
-
-
-        <div class="documents-body space-y-4">
-          <div class="document-item">
-           <div class="document-left">
-            <span class="material-icons-sharp document-icon">
-              assignment
-            </span>
-
-            <div class="document-text">
-              <h4 class="font-medium">
-                ATA
-              </h4>
-              <p class="text-xs text-muted-foreground">
-                v2026.2 · Atualizado em 02/02/2026 · 245 KB
-              </p>
-            </div>
-          </div>
-
-            <a 
-              href="assets/docs/EstatutoUSP.pdf" 
-              class="btn-download"
-              download
-            >
-              <span class="material-icons-sharp">file_download</span>
-              Download
-            </a>
-          </div>
-          </div>
-        </div> 
+         <div id="listaDocumentos"></div>
       </div>
- </div>
-</div>      
-      </div> 
-  </div>
-</div>
-
+    </div>
+  </div>      
+</div> 
+ 
 <!--ABINHA DE ESTATUTO-->
       <div id="estatuto" class="tab-content hidden space-y-0">
         <div class="card_estatuto">
@@ -171,7 +109,7 @@
               </div>
             </div>
           </div>
-          
+
             <div id="listaEstatuto"></div>
           </div> 
         </div>
@@ -271,68 +209,62 @@
 
   async function carregarTransparencia(){
 
-  const response = await fetch(`${API_URL}/api/transparencia`)
-  const dados = await response.json()
+  try{
 
-  const listaRelatorio = document.getElementById("listaRelatorio")
-  const listaDocumentos = document.getElementById("listaDocumentos")
-  const listaEstatuto = document.getElementById("listaEstatuto")
+    const response = await fetch(`${API_URL}/api/transparencia`)
+    const dados = await response.json()
 
-  listaRelatorio.innerHTML = ""
-  listaDocumentos.innerHTML = ""
-  listaEstatuto.innerHTML = ""
+    const listaRelatorio = document.getElementById("listaRelatorio")
+    const listaDocumentos = document.getElementById("listaDocumentos")
+    const listaEstatuto = document.getElementById("listaEstatuto")
 
-  dados.forEach(doc => {
+    dados.forEach(doc => {
 
-    const card = `
-    <div class="estatuto-item">
+      console.log(doc.categoria)
 
-      <div class="estatuto-left">
+      const card = `
+      <div class="estatuto-item">
 
-      <span class="material-icons-sharp estatuto-icon">
-        assignment
-      </span>
+        <div class="estatuto-left">
 
-      <div class="estatuto-text">
-        <h4 class="font-medium">
-          ${doc.titulo}
-        </h4>
+          <span class="material-icons-sharp estatuto-icon">
+            assignment
+          </span>
 
-        <p class="text-xs text-muted-foreground">
-          ${doc.data || ""}
-        </p>
+          <div class="estatuto-text">
+            <h4 class="font-medium">${doc.titulo}</h4>
+            <p class="text-xs text-muted-foreground">${doc.data || ""}</p>
+          </div>
+
+        </div>
+
+        <a href="${API_URL}${doc.arquivo}" class="btn-download" download>
+          <span class="material-icons-sharp">file_download</span>
+          Download
+        </a>
+
       </div>
+      `
 
-    </div>
+      if(doc.categoria === "relatorio_financeiro" && listaRelatorio){
+        listaRelatorio.innerHTML += card
+      }
 
-    <a 
-      href="${API_URL}${doc.arquivo}" 
-      class="btn-download"
-      download
-    >
-      <span class="material-icons-sharp">
-        file_download
-      </span>
+      else if(doc.categoria === "documentos" && listaDocumentos){
+        listaDocumentos.innerHTML += card
+      }
 
-      Download
-    </a>
+      else if(doc.categoria === "estatuto" && listaEstatuto){
+        listaEstatuto.innerHTML += card
+      }
 
-</div>
-    `
+    })
 
-    if(doc.categoria === "relatorio"){
-      listaRelatorio.innerHTML += card
-    }
+  }catch(error){
 
-    else if(doc.categoria === "documentos"){
-      listaDocumentos.innerHTML += card
-    }
+    console.error("Erro ao carregar transparência:", error)
 
-    else if(doc.categoria === "estatuto"){
-      listaEstatuto.innerHTML += card
-    }
-
-  })
+  }
 
 }
 
