@@ -1,22 +1,21 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-import json
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
+from dotenv import load_dotenv
 
+# Carrega as variáveis do arquivo .env (onde deve estar seu DATABASE_URL)
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-
-ARQUIVO_NOTICIAS = 'noticias.json'
+# --- CONFIGURAÇÕES ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
-ALLOWED_EXTENSIONS = {
-    'png', 'jpg', 'jpeg', 'gif', 'webp',
-    'pdf','doc','docx','xls','xlsx'
-    }
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx'}
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -24,386 +23,189 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-if not os.path.exists(ARQUIVO_NOTICIAS):
-    with open(ARQUIVO_NOTICIAS, 'w', encoding='utf-8') as f:
-        json.dump([], f)
+# Configuração do Banco de Dados Neon
+# Certifique-se de que no seu .env a URL comece com postgresql:// (e não postgres://)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
+
+# --- MODELOS DO BANCO DE DADOS ---
+
+class Noticia(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    titulo = db.Column(db.String(255), nullable=False)
+    descricao = db.Column(db.Text, nullable=False)
+    foto = db.Column(db.String(500))
+    data = db.Column(db.String(20))
+
+class Produto(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    nome = db.Column(db.String(255), nullable=False)
+    preco = db.Column(db.String(50), nullable=False)
+    foto = db.Column(db.String(500))
+
+class Transparencia(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    titulo = db.Column(db.String(255), nullable=False)
+    categoria = db.Column(db.String(100))
+    data = db.Column(db.String(20))
+    arquivo = db.Column(db.String(500))
+
+class Carrossel(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    url = db.Column(db.String(500), nullable=False)
+    legenda = db.Column(db.String(255))
+
+class ValorMensalidade(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    valor_sem_campeonato = db.Column(db.String(50))
+    valor_com_campeonato = db.Column(db.String(50))
+
+class MembroDiretoria(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    periodo = db.Column(db.String(100))
+    presidente = db.Column(db.String(100))
+    membros = db.Column(db.JSON) # Salva a lista de membros como JSON no banco
+
+
+# Cria as tabelas se não existirem
+with app.app_context():
+    db.create_all()
+
+# --- FUNÇÕES AUXILIARES ---
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def ler_dados(arquivo):
-    with open(arquivo, 'r', encoding='utf-8') as f:
-        return json.load(f)
+def save_uploaded_file(file):
+    if file and file.filename != '' and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        timestamp = int(datetime.now().timestamp() * 1000)
+        filename = f"{timestamp}_{filename}"
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return f"/uploads/{filename}"
+    return None
 
-def salvar_dados(arquivo, dados):
-    with open(arquivo, 'w', encoding='utf-8') as f:
-        json.dump(dados, f, indent=2, ensure_ascii=False)
-
-
-
-@app.route('/api/news', methods=['GET'])
-def listar_noticias():
-    noticias = ler_dados(ARQUIVO_NOTICIAS)
-    noticias_sorted = sorted(noticias, key=lambda x: datetime.strptime(x['data'], '%d/%m/%Y'), reverse=True)
-    return jsonify(noticias_sorted)
-
-@app.route('/api/news', methods=['POST'])
-def criar_noticia():
-    try:
-        noticias = ler_dados(ARQUIVO_NOTICIAS)
-        
-        titulo = request.form.get('titulo')
-        descricao = request.form.get('descricao')
-        
-        if not titulo or not descricao:
-            return jsonify({'error': 'Título e descrição são obrigatórios'}), 400
-        
-        foto_url = None
-        if 'foto' in request.files:
-            file = request.files['foto']
-            if file and file.filename and file.filename != '' and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                timestamp = int(datetime.now().timestamp() * 1000)
-                filename = f"{timestamp}_{filename}"
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                foto_url = f"/uploads/{filename}"
-        
-        data = request.form.get('data', datetime.now().strftime('%d/%m/%Y'))
-        
-        nova_noticia = {
-            'id': int(datetime.now().timestamp() * 1000),
-            'titulo': titulo,
-            'descricao': descricao,
-            'foto': foto_url,
-            'data': data
-        }
-        
-        noticias.append(nova_noticia)
-        salvar_dados(ARQUIVO_NOTICIAS, noticias)
-        return jsonify(nova_noticia), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
-@app.route('/api/news/<int:noticia_id>', methods=['DELETE'])
-def deletar_noticia(noticia_id):
-    noticias = ler_dados(ARQUIVO_NOTICIAS)
-    noticias = [n for n in noticias if n['id'] != noticia_id]
-    salvar_dados(ARQUIVO_NOTICIAS, noticias)
-    return jsonify({'message': 'Notícia deletada com sucesso'}), 200
-
-
-#! ========================== PRODUTOS =======================!
-
-
-
-ARQUIVO_PRODUTOS = 'produtos.json'
-
-
-if not os.path.exists(ARQUIVO_PRODUTOS):
-    with open(ARQUIVO_PRODUTOS, 'w', encoding='utf-8') as f:
-        json.dump([], f)
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def ler_dados(arquivo):
-    with open(arquivo, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-
-def salvar_dados(arquivo, dados):
-    with open(arquivo, 'w', encoding='utf-8') as f:
-        json.dump(dados, f, indent=2, ensure_ascii=False)
+# --- ROTAS API ---
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+# Notícias
+@app.route('/api/news', methods=['GET'])
+def listar_noticias():
+    noticias = Noticia.query.all()
+    # Ordenação simples por data pode ser feita via SQL se preferir
+    return jsonify([{"id": n.id, "titulo": n.titulo, "descricao": n.descricao, "foto": n.foto, "data": n.data} for n in noticias])
 
+@app.route('/api/news', methods=['POST'])
+def criar_noticia():
+    foto_url = save_uploaded_file(request.files.get('foto'))
+    nova = Noticia(
+        id=int(datetime.now().timestamp() * 1000),
+        titulo=request.form.get('titulo'),
+        descricao=request.form.get('descricao'),
+        foto=foto_url,
+        data=request.form.get('data', datetime.now().strftime('%d/%m/%Y'))
+    )
+    db.session.add(nova)
+    db.session.commit()
+    return jsonify({"message": "Notícia criada"}), 201
+
+# Produtos
 @app.route('/api/produtos', methods=['GET'])
 def listar_produtos():
-    produtos = ler_dados(ARQUIVO_PRODUTOS)
-    return jsonify(produtos)
-
+    produtos = Produto.query.all()
+    return jsonify([{"id": p.id, "nome": p.nome, "preco": p.preco, "foto": p.foto} for p in produtos])
 
 @app.route('/api/produtos', methods=['POST'])
 def criar_produto():
-    try:
-        produtos = ler_dados(ARQUIVO_PRODUTOS)
+    foto_url = save_uploaded_file(request.files.get('foto'))
+    novo = Produto(
+        id=int(datetime.now().timestamp() * 1000),
+        nome=request.form.get('nome'),
+        preco=request.form.get('preco'),
+        foto=foto_url
+    )
+    db.session.add(novo)
+    db.session.commit()
+    return jsonify({"message": "Produto criado"}), 201
 
-        print(request.files)
-
-        nome = request.form.get('nome')
-        descricao = request.form.get('descricao')
-        preco = request.form.get('preco')
-
-        if not nome or not preco:
-            return jsonify({'error': 'Nome e preço são obrigatórios'}), 400
-
-        foto_url = None
-
-        if 'foto' in request.files:
-            file = request.files['foto']
-
-            if file and file.filename and file.filename != '' and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-
-                timestamp = int(datetime.now().timestamp() * 1000)
-                filename = f"{timestamp}_{filename}"
-
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-                foto_url = f"/uploads/{filename}"
-
-        novo_produto = {
-            'id': int(datetime.now().timestamp() * 1000),
-            'nome': nome,
-            'preco': preco,
-            'foto': foto_url
-        }
-
-        produtos.append(novo_produto)
-
-        salvar_dados(ARQUIVO_PRODUTOS, produtos)
-
-        return jsonify(novo_produto), 201
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
-
-@app.route('/api/produtos/<int:produto_id>', methods=['DELETE'])
-def deletar_produto(produto_id):
-
-    produtos = ler_dados(ARQUIVO_PRODUTOS)
-
-    produtos = [p for p in produtos if p['id'] != produto_id]
-
-    salvar_dados(ARQUIVO_PRODUTOS, produtos)
-
-    return jsonify({'message': 'Produto deletado com sucesso'}), 200
-
-#! ========================== TRANSPARÊNCIA  =======================!
-
-ARQUIVO_TRANSPARENCIA = 'transparencia.json'
-
-
-if not os.path.exists(ARQUIVO_TRANSPARENCIA):
-    with open(ARQUIVO_TRANSPARENCIA, 'w', encoding='utf-8') as f:
-        json.dump([], f)
-        
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def ler_dados(arquivo):
-    with open(arquivo, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-
-def salvar_dados(arquivo, dados):
-    with open(arquivo, 'w', encoding='utf-8') as f:
-        json.dump(dados, f, indent=2, ensure_ascii=False)
-        
-
+# Transparência
 @app.route('/api/transparencia', methods=['GET'])
 def get_transparencia():
-    dados = ler_dados('transparencia.json')
-    return jsonify(dados)
-
+    docs = Transparencia.query.all()
+    return jsonify([{"id": d.id, "titulo": d.titulo, "categoria": d.categoria, "data": d.data, "arquivo": d.arquivo} for d in docs])
 
 @app.route('/api/transparencia', methods=['POST'])
 def criar_transparencia():
+    arquivo_url = save_uploaded_file(request.files.get('arquivo'))
+    novo = Transparencia(
+        id=int(datetime.now().timestamp() * 1000),
+        titulo=request.form.get('titulo'),
+        categoria=request.form.get('categoria'),
+        data=request.form.get('data'),
+        arquivo=arquivo_url
+    )
+    db.session.add(novo)
+    db.session.commit()
+    return jsonify({"message": "Documento adicionado"}), 201
 
-    dados = ler_dados('transparencia.json')
+# Mensalidade
+@app.route('/api/mensalidade', methods=['GET'])
+def obter_valor():
+    valor = ValorMensalidade.query.first()
+    if not valor: return jsonify({})
+    return jsonify({"valor_sem_campeonato": valor.valor_sem_campeonato, "valor_com_campeonato": valor.valor_com_campeonato})
 
-    titulo = request.form.get('titulo')
-    categoria = request.form.get('categoria')
-    data = request.form.get('data')
-
-    arquivo = request.files.get('arquivo')
-    arquivo_url = None
-
-    if arquivo and arquivo.filename and allowed_file(arquivo.filename):
-
-        filename = secure_filename(arquivo.filename)
-
-        timestamp = int(datetime.now().timestamp()*1000)
-        filename = f"{timestamp}_{filename}"
-
-        arquivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        arquivo_url = f"/uploads/{filename}"
-
-    novo = {
-        "id": int(datetime.now().timestamp()*1000),
-        "titulo": titulo,
-        "categoria": categoria,
-        "data": data,
-        "arquivo": arquivo_url
-    }
-
-    dados.append(novo)
-
-    salvar_dados('transparencia.json', dados)
-
-    return jsonify(novo), 201
-
-
-@app.route('/api/transparencia/<int:id>', methods=['DELETE'])
-def deletar_transparencia(id):
-
-    dados = ler_dados('transparencia.json')
-
-    dados = [t for t in dados if t['id'] != id]
-
-    salvar_dados('transparencia.json', dados)
-
-    return jsonify({'message': 'Produto deletado com sucesso'}), 200
-
-
-#! ===================== INSTITUCIONAL ===================== !#
-
-ARQUIVO_DIRETORIA = 'diretoria.json'
-
-if not os.path.exists(ARQUIVO_DIRETORIA):
-    with open(ARQUIVO_DIRETORIA, 'w', encoding='utf-8') as f:
-        json.dump({"atual": {}, "historico": []}, f)  
-        
-
-def ler_dados(arquivo):
-    with open(arquivo, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-def salvar_dados(arquivo, dados):
-    with open(arquivo, 'w', encoding='utf-8') as f:
-        json.dump(dados, f, indent=2, ensure_ascii=False)
-
-@app.route('/api/board', methods=['GET'])
-def listar_diretoria():
-    dados = ler_dados(ARQUIVO_DIRETORIA)
-    return jsonify(dados)
-
-
-@app.route('/api/board/archive', methods=['POST'])
-def arquivar_gestao_atual():
-    dados = ler_dados(ARQUIVO_DIRETORIA)
+@app.route('/api/mensalidade', methods=['POST'])
+def alterar_valor():
+    valor = ValorMensalidade.query.first()
+    if not valor:
+        valor = ValorMensalidade()
+        db.session.add(valor)
     
-    if dados.get('atual') and dados['atual'] != {}:
-        dados['historico'].insert(0, dados['atual'])
-        dados['atual'] = {}
-        salvar_dados(ARQUIVO_DIRETORIA, dados)
-        return jsonify({'message': 'Gestão arquivada com sucesso!'}), 200
-    return jsonify({'error': 'Não há gestão atual para arquivar'}), 400
+    valor.valor_sem_campeonato = request.json.get('valor_sem_campeonato')
+    valor.valor_com_campeonato = request.json.get('valor_com_campeonato')
+    db.session.commit()
+    return jsonify({"message": "Valor atualizado"}), 201
 
-@app.route('/api/board/atual', methods=['POST'])
-def definir_gestao_atual():
-    dados = ler_dados(ARQUIVO_DIRETORIA)
-    dados['atual'] = {
-        'periodo': request.json.get('periodo'), 
-        'presidente': request.json.get('presidente'),
-        'membros': request.json.get('membros') 
-    }
-    salvar_dados(ARQUIVO_DIRETORIA, dados)
-    return jsonify(dados['atual']), 201
-
-#! ===================== LIGA ===================== !#
-
-ARQUIVO_CARROSSEL = 'carrossel.json'
-ARQUIVO_VALOR = 'valor.json'
-
-
-for arquivo in [ARQUIVO_CARROSSEL, ARQUIVO_VALOR]:
-    if not os.path.exists(arquivo):
-        with open(arquivo, 'w', encoding='utf-8') as f:
-            json.dump([], f)
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def ler_dados(arquivo):
-    with open(arquivo, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-def salvar_dados(arquivo, dados):
-    with open(arquivo, 'w', encoding='utf-8') as f:
-        json.dump(dados, f, indent=2, ensure_ascii=False)
-
-
+# --- ROTA CARROSSEL ---
 @app.route('/api/carousel', methods=['GET'])
 def listar_carrossel():
-    fotos = ler_dados(ARQUIVO_CARROSSEL)
-    return jsonify(fotos)
+    fotos = Carrossel.query.all()
+    return jsonify([{"id": f.id, "url": f.url, "legenda": f.legenda} for f in fotos])
 
 @app.route('/api/carousel', methods=['POST'])
 def criar_carrossel():
     try:
-        fotos = ler_dados(ARQUIVO_CARROSSEL)
-        legenda = request.form.get('legenda', 'Sem legenda')
-
-        if 'foto' not in request.files:
-            return jsonify({'error': 'Nenhuma imagem enviada'}), 400
+        foto_url = save_uploaded_file(request.files.get('foto'))
+        if not foto_url:
+            return jsonify({'error': 'Arquivo inválido ou ausente'}), 400
             
-        file = request.files['foto']
-        
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            timestamp = int(datetime.now().timestamp() * 1000)
-            filename = f"{timestamp}_{filename}"
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            
-            nova_foto = {
-                'id': timestamp,
-                'url': f"/uploads/{filename}",
-                'legenda': legenda
-            }
-            
-            fotos.append(nova_foto)
-            salvar_dados(ARQUIVO_CARROSSEL, fotos)
-            return jsonify(nova_foto), 201
-            
-        return jsonify({'error': 'Arquivo inválido'}), 400
+        nova_foto = Carrossel(
+            id=int(datetime.now().timestamp() * 1000),
+            url=foto_url,
+            legenda=request.form.get('legenda', 'Sem legenda')
+        )
+        db.session.add(nova_foto)
+        db.session.commit()
+        return jsonify({"id": nova_foto.id, "url": nova_foto.url}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-@app.route('/api/carousel/<int:foto_id>', methods=['DELETE'])
-def deletar_foto(foto_id):
-    fotos = ler_dados(ARQUIVO_CARROSSEL)
-    fotos = [f for f in fotos if f['id'] != foto_id]
-    salvar_dados(ARQUIVO_CARROSSEL, fotos)
-    return jsonify({'message': 'Foto removida com sucesso'}), 200
-
-@app.route('/api/mensalidade', methods=['GET'])
-def obter_valor():
-    valor = ler_dados(ARQUIVO_VALOR)
-    return jsonify(valor)
-
-@app.route('/api/mensalidade', methods=['POST'])
-def alterar_valor():
-    valor_sem_campeonato = request.json.get('valor_sem_campeonato')
-    valor_com_campeonato = request.json.get('valor_com_campeonato')
-
-    if valor_sem_campeonato is None or valor_com_campeonato is None:
-        return jsonify({"erro": "Valores não fornecidos"}), 400
-
-    valores_atualizados = {
-        'valor_sem_campeonato': valor_sem_campeonato,
-        'valor_com_campeonato': valor_com_campeonato
-    }
-
-    salvar_dados(ARQUIVO_VALOR, valores_atualizados)
-    return jsonify(valores_atualizados), 201
-
+# --- ROTA DIRETORIA (BOARD) ---
+@app.route('/api/board', methods=['GET'])
+def listar_diretoria():
+    # Busca a gestão atual (exemplo simplificado)
+    dados = MembroDiretoria.query.order_by(MembroDiretoria.id.desc()).first()
+    if not dados:
+        return jsonify({"atual": {}, "historico": []})
+    return jsonify({"atual": {"periodo": dados.periodo, "presidente": dados.presidente, "membros": dados.membros}, "historico": []})
 
 if __name__ == '__main__':
     print('═' * 50)
-    print('  ✓ SERVIDOR RODANDO COM SUCESSO!')
-    print('═' * 50)
-    print('  🌐 Site: http://localhost:3000')
-    print('  📰 API Notícias: http://localhost:3000/api/news')
-    print('  📧 API Contatos: http://localhost:3000/api/contacts')
-    print('  📦 API Produtos: http://localhost:3000/api/produtos')
-    print('  🗂️ API Transparência: http://localhost:3000/api/transparencia')
+    print('  ✓ SERVIDOR CONECTADO AO NEON!')
     print('═' * 50)
     app.run(debug=True, port=3000)
