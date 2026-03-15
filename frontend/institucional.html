@@ -32,20 +32,25 @@
   </nav>
 
   <main class= "bg-background"> 
-    <!--QUEM SOMOS-->
-    <section id="quem-somos" class="relative min-h-screen flex items-center justify-center bg-background">
-        <div class="container mx-auto px-4 text-center">
-          <h1 class="section-title mb-4">
-            <span class="section-title text-primary">Quem</span> Somos
-          </h1>
-          <p class="text-lg text-muted-foreground max-w-3xl mx-auto mb-8">
-            A Associação Atlética Acadêmica Leonardo da Vinci (AAALDV) é a entidade que representa os estudantes de Engenharia Biomédica da Faculdade Einstein. Fundada com o propósito de promover a integração entre os alunos, incentivar a prática esportiva e fomentar atividades culturais e sociais, a AAALDV tem se destacado como um pilar fundamental na vida acadêmica dos futuros engenheiros biomédicos.
-          </p>
-        </div>
+
+    <section class="institu">
+          <!-- QUEM SOMOS -->
+      <div class="relative flex items-center justify-center">
+          <div class="container mx-auto px-4 text-center">
+            <h1 class="section-title mb-4">
+              <span class="section-title text-primary">Quem</span> Somos
+            </h1>
+            <p class="text-lg text-muted-foreground max-w-3xl mx-auto mb-8">
+              A Associação Atlética Acadêmica Leonardo da Vinci (AAALDV) é a entidade que representa os estudantes de Engenharia Biomédica da Faculdade Einstein. Fundada com o propósito de promover a integração entre os alunos, incentivar a prática esportiva e fomentar atividades culturais e sociais, a AAALDV tem se destacado como um pilar fundamental na vida acadêmica dos futuros engenheiros biomédicos.
+            </p>
+          </div>
+      </div>
     </section>
+
+
  
     <!--GESTAO-->
-    <section>
+    <br><br><br><br><br><br><br><br><section>
         <div class="container mx-auto px-4 text-center">
             <h1 class="section-title mb-4">
                 <span class="section-title text-primary">Composição da</span> diretoria executiva
@@ -528,6 +533,77 @@
       </div>
     </div>
   </footer>
+
+<script>
+        const API_URL = 'http://localhost:3000';
+
+        async function carregarDiretoria() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error("Erro ao buscar dados");
+                const dados = await response.json();
+
+                renderizarGestaoAtual(dados.atual);
+                renderizarHistorico(dados.historico);
+            } catch (error) {
+                console.error("Erro ao carregar diretoria:", error);
+                document.querySelector('.section-header h2').innerText = "Erro ao carregar diretoria.";
+            }
+        }
+
+        function renderizarGestaoAtual(atual) {
+            const container = document.querySelector('.board-grid');
+            const tituloGestao = document.querySelector('.section-header h2');
+            
+            if (!atual || !atual.membros) return;
+
+            tituloGestao.innerText = `Membros eleitos para a gestão de ${atual.periodo}`;
+            container.innerHTML = atual.membros.map(membro => `
+                <div class="board-card p-6 border border-border rounded-lg bg-card">
+                    <div class="avatar w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mb-4 mx-auto font-bold text-xl">
+                        ${membro.nome.charAt(0)}
+                    </div>
+                    <span class="role text-xs uppercase tracking-widest text-primary font-bold block mb-1 text-center">${membro.cargo}</span>
+                    <h3 class="text-lg font-bold text-center">${membro.nome}</h3>
+                    <p class="course text-sm text-muted-foreground text-center mb-3">${membro.curso}</p>
+                    <p class="email text-xs text-center flex items-center justify-center gap-1">
+                        <span class="material-icons-sharp text-sm">mail</span>
+                        ${membro.email}
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        function renderizarHistorico(historico) {
+            const timeline = document.querySelector('.history-timeline');
+            if (!historico) return;
+
+            timeline.innerHTML = historico.map((gestao) => `
+                <div class="history-item mb-8 pl-6 border-l-2 border-primary relative">
+                    <span class="dot-past absolute -left-[9px] top-0 w-4 h-4 bg-primary rounded-full"></span>
+                    <div class="history-content">
+                        <h3 class="font-bold text-lg">Gestão ${gestao.periodo}</h3>
+                        <p class="text-sm text-muted-foreground mb-2">Presidência: ${gestao.presidente}</p>
+                        <details class="history-details cursor-pointer">
+                            <summary class="history-toggle text-primary text-sm font-semibold">Ver diretoria completa</summary>
+                            <div class="board-grid grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 bg-black/5 p-4 rounded-lg">
+                                ${gestao.membros.map(m => `
+                                    <div class="text-center">
+                                        <p class="font-bold text-sm">${m.nome}</p>
+                                        <p class="text-[10px] uppercase text-muted-foreground">${m.cargo}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', carregarDiretoria);
+    </script>
+
+
 </body>
 
 </html>

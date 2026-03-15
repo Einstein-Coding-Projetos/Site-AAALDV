@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import json
-import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
+import os
+
 
 app = Flask(__name__)
 CORS(app)
@@ -260,6 +261,139 @@ def deletar_transparencia(id):
     salvar_dados('transparencia.json', dados)
 
     return jsonify({'message': 'Produto deletado com sucesso'}), 200
+
+
+#! ===================== INSTITUCIONAL ===================== !#
+
+ARQUIVO_DIRETORIA = 'diretoria.json'
+
+if not os.path.exists(ARQUIVO_DIRETORIA):
+    with open(ARQUIVO_DIRETORIA, 'w', encoding='utf-8') as f:
+        json.dump({"atual": {}, "historico": []}, f)  
+        
+
+def ler_dados(arquivo):
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+def salvar_dados(arquivo, dados):
+    with open(arquivo, 'w', encoding='utf-8') as f:
+        json.dump(dados, f, indent=2, ensure_ascii=False)
+
+@app.route('/api/board', methods=['GET'])
+def listar_diretoria():
+    dados = ler_dados(ARQUIVO_DIRETORIA)
+    return jsonify(dados)
+
+
+@app.route('/api/board/archive', methods=['POST'])
+def arquivar_gestao_atual():
+    dados = ler_dados(ARQUIVO_DIRETORIA)
+    
+    if dados.get('atual') and dados['atual'] != {}:
+        dados['historico'].insert(0, dados['atual'])
+        dados['atual'] = {}
+        salvar_dados(ARQUIVO_DIRETORIA, dados)
+        return jsonify({'message': 'Gestão arquivada com sucesso!'}), 200
+    return jsonify({'error': 'Não há gestão atual para arquivar'}), 400
+
+@app.route('/api/board/atual', methods=['POST'])
+def definir_gestao_atual():
+    dados = ler_dados(ARQUIVO_DIRETORIA)
+    dados['atual'] = {
+        'periodo': request.json.get('periodo'), 
+        'presidente': request.json.get('presidente'),
+        'membros': request.json.get('membros') 
+    }
+    salvar_dados(ARQUIVO_DIRETORIA, dados)
+    return jsonify(dados['atual']), 201
+
+#! ===================== LIGA ===================== !#
+
+ARQUIVO_CARROSSEL = 'carrossel.json'
+ARQUIVO_VALOR = 'valor.json'
+
+
+for arquivo in [ARQUIVO_CARROSSEL, ARQUIVO_VALOR]:
+    if not os.path.exists(arquivo):
+        with open(arquivo, 'w', encoding='utf-8') as f:
+            json.dump([], f)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def ler_dados(arquivo):
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+def salvar_dados(arquivo, dados):
+    with open(arquivo, 'w', encoding='utf-8') as f:
+        json.dump(dados, f, indent=2, ensure_ascii=False)
+
+
+@app.route('/api/carousel', methods=['GET'])
+def listar_carrossel():
+    fotos = ler_dados(ARQUIVO_CARROSSEL)
+    return jsonify(fotos)
+
+@app.route('/api/carousel', methods=['POST'])
+def criar_carrossel():
+    try:
+        fotos = ler_dados(ARQUIVO_CARROSSEL)
+        legenda = request.form.get('legenda', 'Sem legenda')
+
+        if 'foto' not in request.files:
+            return jsonify({'error': 'Nenhuma imagem enviada'}), 400
+            
+        file = request.files['foto']
+        
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            timestamp = int(datetime.now().timestamp() * 1000)
+            filename = f"{timestamp}_{filename}"
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
+            nova_foto = {
+                'id': timestamp,
+                'url': f"/uploads/{filename}",
+                'legenda': legenda
+            }
+            
+            fotos.append(nova_foto)
+            salvar_dados(ARQUIVO_CARROSSEL, fotos)
+            return jsonify(nova_foto), 201
+            
+        return jsonify({'error': 'Arquivo inválido'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/api/carousel/<int:foto_id>', methods=['DELETE'])
+def deletar_foto(foto_id):
+    fotos = ler_dados(ARQUIVO_CARROSSEL)
+    fotos = [f for f in fotos if f['id'] != foto_id]
+    salvar_dados(ARQUIVO_CARROSSEL, fotos)
+    return jsonify({'message': 'Foto removida com sucesso'}), 200
+
+@app.route('/api/mensalidade', methods=['GET'])
+def obter_valor():
+    valor = ler_dados(ARQUIVO_VALOR)
+    return jsonify(valor)
+
+@app.route('/api/mensalidade', methods=['POST'])
+def alterar_valor():
+    valor_sem_campeonato = request.json.get('valor_sem_campeonato')
+    valor_com_campeonato = request.json.get('valor_com_campeonato')
+
+    if valor_sem_campeonato is None or valor_com_campeonato is None:
+        return jsonify({"erro": "Valores não fornecidos"}), 400
+
+    valores_atualizados = {
+        'valor_sem_campeonato': valor_sem_campeonato,
+        'valor_com_campeonato': valor_com_campeonato
+    }
+
+    salvar_dados(ARQUIVO_VALOR, valores_atualizados)
+    return jsonify(valores_atualizados), 201
 
 
 if __name__ == '__main__':

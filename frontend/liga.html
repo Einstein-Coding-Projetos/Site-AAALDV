@@ -46,7 +46,7 @@
 
     </section>
 
-    <div= class ="relative min-h-screen">
+    <div class ="relative min-h-screen">
       <p class="text-xl md:text-2xl text-muted-foreground mb-2 font-display tracking-wide text-center">
           Engenharia Biomédica • Enfermagem • Nutrição • Psicologia • Fisioterapia • ADM
       </p>
@@ -57,7 +57,7 @@
 
 
     <!--MODALIDADES-->
-    <br><br><br><br><br><section>
+      <section>
       <div class="container mx-auto px-4 text-center">
         <h1 class="section-title mb-4">
             <span class="section-title text-primary">Treinos</span> Liga Einstein
@@ -69,7 +69,7 @@
         <div class="modalidade-grid">
 
             <article class="modalidade-card">
-                <img src="assets/liga/futebol.png" alt="Futsal" class="modalidade-img">
+                <img src="assets/liga/futsal.jpeg" alt="Futsal" class="modalidade-img">
                 <h3 class="modalidade-title">Futsal</h3>
 
                 <div class="modalidade-overlay">
@@ -98,7 +98,7 @@
             </article>
 
             <article class="modalidade-card">
-                <img src="assets/liga/volei.png" alt="Volei" class="modalidade-img">
+                <img src="assets/liga/volei.jpeg" alt="Volei" class="modalidade-img">
                 <h3 class="modalidade-title">Volei</h3>
 
                 <div class="modalidade-overlay">
@@ -127,7 +127,7 @@
             </article>
 
             <article class="modalidade-card">
-                <img src="assets/liga/handebol.jpg" alt="Handebol" class="modalidade-img">
+                <img src="assets/liga/handebol.jpeg" alt="Handebol" class="modalidade-img">
                 <h3 class="modalidade-title">Handebol</h3>
 
                 <div class="modalidade-overlay">
@@ -147,7 +147,7 @@
             </article>
 
             <article class="modalidade-card">
-                <img src="assets/liga/basquete.jpg" alt="Basquete" class="modalidade-img">
+                <img src="assets/liga/basquete.jpeg" alt="Basquete" class="modalidade-img">
                 <h3 class="modalidade-title">Basquete</h3>
 
                 <div class="modalidade-overlay">
@@ -180,10 +180,21 @@
       </div>
 
       <div class="card text-center mx-auto max-w-md p-6">
-        <h2 class="text-xl md:text-2xl text-muted-foreground mb-2 font-display tracking-wide text-center">Plano Esportes</h2>
+        <h2 class="text-xl md:text-2xl text-muted-foreground mb-2 font-display tracking-wide text-center">Plano Esportes sem campeonato semestral</h2>
 
         <p class="mensalidade-preco">
-           <span class="section-title mb-4">R$ 60</span> <span class="periodo">/ mês</span>
+           R$ <span class="section-title mb-4 valor-dinamico">70</span> <span class="periodo">/ mês</span>
+        </p>
+        <p><strong>+ R$ 5</strong> por esporte adicionado</p>
+        <br><p>Inclúi acesso aos treinos e descontos atleta.</p>
+    
+      </div>
+
+      <div class="card text-center mx-auto max-w-md p-6">
+        <h2 class="text-xl md:text-2xl text-muted-foreground mb-2 font-display tracking-wide text-center">Plano Esportes com campeonato semestral</h2>
+
+        <p class="mensalidade-preco">
+           R$ <span class="section-title mb-4 valor-dinamico">80</span> <span class="periodo">/ mês</span>
         </p>
         <p><strong>+ R$ 5</strong> por esporte adicionado</p>
         <br><p>Inclúi acesso aos treinos, descontos atleta e participação de campeonatos semestrais.</p>
@@ -209,19 +220,19 @@
         <div class="carousel-viewport">
           <div class="carousel-track">
             <figure class="slide">
-              <img src="./assets/liga/foto1.jpg" alt="Foto 1">
+              <img src="./assets/liga/foto1.jpeg" alt="Foto 1">
               <figcaption>Terceiro lugar geral no JUSA 24</figvaption>
             </figure>
              <figure class="slide">
-              <img src="./assets/liga/foto2.jpg" alt="Foto 2">
+              <img src="./assets/liga/foto2.jpeg" alt="Foto 2">
               <figcaption>Primeiro lugar geral no JUCAMP 25</figvaption>
             </figure>
              <figure class="slide">
-              <img src="./assets/liga/foto3.jpg" alt="Foto 3">
+              <img src="./assets/liga/foto3.jpeg" alt="Foto 3">
               <figcaption>Primeiro lugar na segunda divisão masculina de futsal da Liga Interatléticas</figvaption>
             </figure>
              <figure class="slide">
-              <img src="./assets/liga/foto4.jpg" alt="Foto 4">
+              <img src="./assets/liga/foto4.jpeg" alt="Foto 4">
               <figcaption>Primeiro lugar na segunda divisão feminina de vôlei da Liga Interatléticas</figvaption>
             </figure>
           </div>
@@ -306,29 +317,90 @@
     </div>
   </footer>
 
+<script>
 
-  <script>
+    const API_URL = 'http://localhost:3000';
+    
+    // Variáveis globais para o controle do carrossel
+    let currentSlideIndex = 0;
     const track = document.querySelector(".carousel-track");
-    const slides = Array.from(track.querySelectorAll("img"));
-    const btnPrev = document.querySelector(".carousel-btn.prev");
-    const btnNext = document.querySelector(".carousel-btn.next");
 
-    let index = 0;
-
-    function updateCarousel() {
-      track.style.transform = `translateX(-${index * 100}%)`;
+    // 1. FUNÇÃO PARA CARREGAR O PREÇO
+    async function carregarPrecoAtualizado() {
+      try {
+        const response = await fetch(`${API_URL}/api/mensalidade`);
+        const dados = await response.json();
+        
+        const camposDePreco = document.querySelectorAll('.valor-dinamico');
+        
+        // Verifica se dados.valor existe (caso o JSON seja um objeto)
+        // ou usa um valor padrão se a API retornar lista vazia []
+        const precoFinal = (dados && dados.valor) ? dados.valor : "70";
+        
+        camposDePreco.forEach(campo => {
+          campo.innerText = precoFinal;
+        });
+      } catch (error) {
+        console.error("Erro ao carregar o preço:", error);
+      }
     }
 
-    btnNext.addEventListener("click", () => {
-      index = (index + 1) % slides.length;
+    // 2. FUNÇÃO PARA CARREGAR FOTOS DO CARROSSEL
+    async function carregarFotos() {
+      try {
+        const response = await fetch(`${API_URL}/api/carousel`);
+        const fotosDoServidor = await response.json();
+
+        fotosDoServidor.forEach(foto => {
+          const figure = document.createElement('figure');
+          figure.className = 'slide';
+          
+          // Ajusta a URL: se começar com /uploads, adiciona o endereço do servidor
+          const imgUrl = foto.url.startsWith('http') ? foto.url : `${API_URL}${foto.url}`;
+          
+          figure.innerHTML = `
+            <img src="${imgUrl}" alt="${foto.legenda}">
+            <figcaption>${foto.legenda}</figcaption>
+          `;
+          track.appendChild(figure);
+        });
+      } catch (e) {
+        console.error("Erro ao carregar fotos do carrossel:", e);
+      }
+    }
+
+    // 3. LÓGICA DE MOVIMENTAÇÃO DO CARROSSEL
+    function updateCarousel() {
+      const allSlides = track.querySelectorAll(".slide");
+      if (allSlides.length === 0) return;
+      
+      // Garante que o índice não saia do limite
+      if (currentSlideIndex >= allSlides.length) currentSlideIndex = 0;
+      if (currentSlideIndex < 0) currentSlideIndex = allSlides.length - 1;
+      
+      track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+    }
+
+    // Configuração dos botões
+    document.querySelector(".carousel-btn.next").addEventListener("click", () => {
+      currentSlideIndex++;
       updateCarousel();
     });
 
-    btnPrev.addEventListener("click", () => {
-      index = (index - 1 + slides.length) % slides.length;
+    document.querySelector(".carousel-btn.prev").addEventListener("click", () => {
+      currentSlideIndex--;
+      updateCarousel();
+    });
+
+    // 4. INICIALIZAÇÃO AO CARREGAR A PÁGINA
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Carrega os dados do servidor
+      await carregarPrecoAtualizado();
+      await carregarFotos();
+      
+      // Pequeno delay opcional para garantir que as imagens foram renderizadas
       updateCarousel();
     });
   </script>
-
 </body>
 </html>
