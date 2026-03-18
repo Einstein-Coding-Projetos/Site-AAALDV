@@ -88,6 +88,10 @@ def save_uploaded_file(file):
 
 # --- ROTAS API ---
 
+@app.route('/')
+def index():
+    return jsonify({"status": "online", "message": "API AAALDV funcionando!"})
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
