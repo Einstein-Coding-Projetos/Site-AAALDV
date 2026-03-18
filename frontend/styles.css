@@ -746,6 +746,13 @@ header{
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px){
+  .banner-loja{
+    background-attachment: scroll;
+     height: 220px;
+  }
+}
 }
 
 .banner-loja h1{
