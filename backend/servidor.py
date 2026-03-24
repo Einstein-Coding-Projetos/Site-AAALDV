@@ -137,6 +137,7 @@ def listar_noticias():
     return jsonify([{"id": n.id, "titulo": n.titulo, "descricao": n.descricao, "foto": n.foto, "data": n.data} for n in noticias])
 
 @app.route('/api/news', methods=['POST'])
+@rota_admin_protegida
 def criar_noticia():
     foto_url = save_uploaded_file(request.files.get('foto'))
     nova = Noticia(
@@ -149,6 +150,13 @@ def criar_noticia():
     db.session.add(nova)
     db.session.commit()
     return jsonify({"message": "Notícia criada"}), 201
+
+@app.route('/api/news/<int:id>', methods=['DELETE'])
+def deletar_noticia(id):
+    noticia = Noticia.query.get_or_404(id)
+    db.session.delete(noticia)
+    db.session.commit()
+    return jsonify({"message": "Notícia deletada"}), 200
 
 # Produtos
 @app.route('/api/produtos', methods=['GET'])
@@ -169,6 +177,13 @@ def criar_produto():
     db.session.commit()
     return jsonify({"message": "Produto criado"}), 201
 
+@app.route('/api/produtos/<int:id>', methods=['DELETE'])
+def deletar_produto(id):
+    produto = Produto.query.get_or_404(id)
+    db.session.delete(produto)
+    db.session.commit()
+    return jsonify({"message": "Produto deletado"}), 200
+
 # Transparência
 @app.route('/api/transparencia', methods=['GET'])
 def get_transparencia():
@@ -188,6 +203,13 @@ def criar_transparencia():
     db.session.add(novo)
     db.session.commit()
     return jsonify({"message": "Documento adicionado"}), 201
+
+@app.route('/api/transparencia/<int:id>', methods=['DELETE'])
+def deletar_transparencia(id):
+    doc = Transparencia.query.get_or_404(id)
+    db.session.delete(doc)
+    db.session.commit()
+    return jsonify({"message": "Documento deletado"}), 200
 
 # Mensalidade
 @app.route('/api/mensalidade', methods=['GET'])
@@ -232,6 +254,13 @@ def criar_carrossel():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
+@app.route('/api/carousel/<int:id>', methods=['DELETE'])
+def deletar_carrossel(id):
+    foto = Carrossel.query.get_or_404(id)
+    db.session.delete(foto)
+    db.session.commit()
+    return jsonify({"message": "Foto deletada"}), 200
+
 # --- ROTA DIRETORIA (BOARD) ---
 @app.route('/api/board', methods=['GET'])
 def listar_diretoria():
@@ -242,9 +271,9 @@ def listar_diretoria():
     return jsonify({"atual": {"periodo": dados.periodo, "presidente": dados.presidente, "membros": dados.membros}, "historico": []})
 
 if __name__ == '__main__':
-    print('=' * 50)
-    print(' ✓ SERVIDOR CONECTADO AO NEON!')
-    print('=' * 50)
+    print('═' * 50)
+    print('  ✓ SERVIDOR CONECTADO AO NEON!')
+    print('═' * 50)
     port = int(os.getenv('PORT', 3000))
     debug = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
     app.run(host='0.0.0.0', port=port, debug=debug)
