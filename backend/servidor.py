@@ -1,3 +1,36 @@
+# --- ROTAS DELETE ---
+
+# Deletar notícia
+@app.route('/api/news/<int:id>', methods=['DELETE'])
+def deletar_noticia(id):
+    noticia = Noticia.query.get_or_404(id)
+    db.session.delete(noticia)
+    db.session.commit()
+    return jsonify({"message": "Notícia deletada"}), 200
+
+# Deletar produto
+@app.route('/api/produtos/<int:id>', methods=['DELETE'])
+def deletar_produto(id):
+    produto = Produto.query.get_or_404(id)
+    db.session.delete(produto)
+    db.session.commit()
+    return jsonify({"message": "Produto deletado"}), 200
+
+# Deletar documento de transparência
+@app.route('/api/transparencia/<int:id>', methods=['DELETE'])
+def deletar_transparencia(id):
+    doc = Transparencia.query.get_or_404(id)
+    db.session.delete(doc)
+    db.session.commit()
+    return jsonify({"message": "Documento deletado"}), 200
+
+# Deletar foto do carrossel
+@app.route('/api/carousel/<int:id>', methods=['DELETE'])
+def deletar_carrossel(id):
+    foto = Carrossel.query.get_or_404(id)
+    db.session.delete(foto)
+    db.session.commit()
+    return jsonify({"message": "Foto deletada"}), 200
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -87,6 +120,10 @@ def save_uploaded_file(file):
     return None
 
 # --- ROTAS API ---
+
+@app.route('/')
+def index():
+    return jsonify({"status": "online", "message": "API AAALDV funcionando!"})
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -205,7 +242,9 @@ def listar_diretoria():
     return jsonify({"atual": {"periodo": dados.periodo, "presidente": dados.presidente, "membros": dados.membros}, "historico": []})
 
 if __name__ == '__main__':
-    print('═' * 50)
-    print('  ✓ SERVIDOR CONECTADO AO NEON!')
-    print('═' * 50)
-    app.run(debug=True, port=3000)
+    print('=' * 50)
+    print(' ✓ SERVIDOR CONECTADO AO NEON!')
+    print('=' * 50)
+    port = int(os.getenv('PORT', 3000))
+    debug = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
+    app.run(host='0.0.0.0', port=port, debug=debug)
