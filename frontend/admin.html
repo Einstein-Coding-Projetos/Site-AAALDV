@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - AAALDV</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-background">
+  <div class="container mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl font-display font-bold mb-2 text-center">
+        <span class="text-primary">Gerenciar</span> Notícias
+      </h1>
+      <p class="text-center text-muted-foreground mb-12">Adicione, visualize e remova notícias do site</p>
+
+      <div class="grid lg:grid-cols-2 gap-8 mb-12">
+        <!-- Formulário -->
+        <div class="bg-card border border-border rounded-lg p-6">
+          <h2 class="text-xl font-display font-bold mb-6">
+            <span class="text-primary">Nova</span> Notícia
+          </h2>
+          
+        <form id="noticiaForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-2">Título: </label>
+            <input 
+              type="text" 
+              name="titulo" 
+              required 
+              class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+              placeholder="Título da notícia"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2">Descrição: </label>
+            <textarea 
+              name="descricao" 
+              required 
+              rows="5"
+              class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none text-foreground"
+              placeholder="Descreva o evento ou notícia..."
+            ></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Data: </label>
+              <input 
+                type="text" 
+                name="data" 
+                required 
+                pattern="\d{2}/\d{2}/\d{4}"
+                class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                placeholder="DD/MM/AAAA"
+              >
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium mb-2">Foto:</label>
+              <input 
+                type="file" 
+                name="foto" 
+                accept="image/*"
+                class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:cursor-pointer hover:file:bg-primary/90"
+              >
+            </div>
+          </div>
+          
+          <p class="text-xs text-muted-foreground">* Campos obrigatórios | Imagens: PNG, JPG, JPEG, GIF, WEBP (máx. 16MB)</p>
+
+          <button 
+            type="submit" 
+            class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
+          >
+            + Adicionar Notícia
+          </button>
+        </form>
+
+        <div id="message" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
+        </div>
+
+        <!-- Preview -->
+        <div class="bg-card border border-border rounded-lg p-6">
+          <h2 class="text-xl font-display font-bold mb-6">
+            <span class="text-primary">Preview</span> da Notícia
+          </h2>
+          
+          <div id="previewCard" class="bg-background border border-border rounded-lg overflow-hidden">
+            <div id="previewImageContainer" class="relative h-48 bg-secondary/30 flex items-center justify-center">
+              <img id="previewImage" class="hidden w-full h-full object-cover" alt="Preview">
+              <span id="previewPlaceholder" class="text-muted-foreground text-sm">📷 Imagem aparecerá aqui</span>
+            </div>
+            <div class="p-4">
+              <span id="previewData" class="text-xs text-muted-foreground">--/--/----</span>
+              <h3 id="previewTitulo" class="text-base font-semibold mt-1 text-muted-foreground">Título da notícia</h3>
+              <p id="previewDescricao" class="text-muted-foreground text-sm mt-2">
+                Descrição da notícia aparecerá aqui...
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center justify-between p-3 bg-background rounded-lg">
+              <span class="text-sm text-muted-foreground">Status do Servidor</span>
+              <span id="serverStatus" class="text-xs px-2 py-1 rounded bg-yellow-500/10 text-yellow-500">Verificando...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de Notícias -->
+      <div class="bg-card border border-border rounded-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-display font-bold">
+            <span class="text-primary">Notícias</span> Cadastradas
+          </h2>
+          <button onclick="loadNoticias()" class="text-sm text-primary hover:underline">
+            ↻ Atualizar
+          </button>
+        </div>
+        <div id="listaNoticias" class="space-y-3">
+          <p class="text-muted-foreground text-center py-8">Carregando notícias...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://site-aaaldv-back.onrender.com"
+  </script>
+
+
+  <script>
+    
+    // Verificar status do servidor
+    async function checkServerStatus() {
+      try {
+        const response = await fetch(`${API_URL}/api/news`);
+        if (response.ok) {
+          document.getElementById('serverStatus').className = 'text-xs px-2 py-1 rounded bg-green-500/10 text-green-500';
+          document.getElementById('serverStatus').textContent = '✓ Online';
+        }
+      } catch (error) {
+        document.getElementById('serverStatus').className = 'text-xs px-2 py-1 rounded bg-red-500/10 text-red-500';
+        document.getElementById('serverStatus').textContent = '✗ Offline';
+      }
+    }
+
+    // Preview em tempo real
+    const form = document.getElementById('noticiaForm');
+    const previewTitulo = document.getElementById('previewTitulo');
+    const previewDescricao = document.getElementById('previewDescricao');
+    const previewData = document.getElementById('previewData');
+    const previewImage = document.getElementById('previewImage');
+    const previewPlaceholder = document.getElementById('previewPlaceholder');
+
+    form.titulo.addEventListener('input', (e) => {
+      previewTitulo.textContent = e.target.value || 'Título da notícia';
+      previewTitulo.className = e.target.value ? 'text-base font-semibold mt-1' : 'text-base font-semibold mt-1 text-muted-foreground';
+    });
+
+    form.descricao.addEventListener('input', (e) => {
+      previewDescricao.textContent = e.target.value || 'Descrição da notícia aparecerá aqui...';
+      previewDescricao.className = e.target.value ? 'text-sm mt-2' : 'text-muted-foreground text-sm mt-2';
+    });
+
+    form.data.addEventListener('input', (e) => {
+      previewData.textContent = e.target.value || '--/--/----';
+    });
+
+    form.foto.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          previewImage.classList.remove('hidden');
+          previewPlaceholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Auto-formatar data
+    form.data.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2);
+      if (value.length >= 5) value = value.slice(0, 5) + '/' + value.slice(5, 9);
+      e.target.value = value;
+    });
+
+    // Enviar formulário
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const messageDiv = document.getElementById('message');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+      
+      try {
+        const response = await fetch(`${API_URL}/api/news`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          messageDiv.className = 'mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm';
+          messageDiv.textContent = '✓ Notícia adicionada com sucesso!';
+          messageDiv.classList.remove('hidden');
+          
+          // Reset
+          e.target.reset();
+          previewImage.classList.add('hidden');
+          previewPlaceholder.classList.remove('hidden');
+          previewTitulo.textContent = 'Título da notícia';
+          previewTitulo.className = 'text-base font-semibold mt-1 text-muted-foreground';
+          previewDescricao.textContent = 'Descrição da notícia aparecerá aqui...';
+          previewDescricao.className = 'text-muted-foreground text-sm mt-2';
+          previewData.textContent = '--/--/----';
+          
+          loadNoticias();
+          
+          setTimeout(() => messageDiv.classList.add('hidden'), 3000);
+        } else {
+          throw new Error('Erro ao adicionar notícia');
+        }
+      } catch (error) {
+        messageDiv.className = 'mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm';
+        messageDiv.textContent = '✗ Erro ao adicionar. Verifique se o servidor está rodando.';
+        messageDiv.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '+ Adicionar Notícia';
+      }
+    });
+
+    // Carregar e listar notícias
+    async function loadNoticias() {
+      try {
+        const response = await fetch(`${API_URL}/api/news`);
+        const noticias = await response.json();
+        
+        const lista = document.getElementById('listaNoticias');
+        
+        if (noticias.length === 0) {
+          lista.innerHTML = '<p class="text-muted-foreground text-center py-8">Nenhuma notícia cadastrada. Adicione a primeira!</p>';
+          return;
+        }
+        
+        lista.innerHTML = noticias.map((noticia, index) => `
+          <div class="bg-background border border-border rounded-lg p-4 hover:border-primary/50 transition-colors">
+            <div class="flex gap-4">
+              ${noticia.foto 
+                ? `<img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0">`
+                : `<div class="w-20 h-20 bg-secondary/30 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">📰</div>`
+              }
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start gap-2">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">#${noticias.length - index}</span>
+                      <span class="text-xs text-muted-foreground">${noticia.data}</span>
+                    </div>
+                    <h3 class="font-display font-bold text-base truncate">${noticia.titulo}</h3>
+                    <p class="text-sm text-muted-foreground mt-1 line-clamp-2">${noticia.descricao}</p>
+                  </div>
+                  <button 
+                    onclick="deletarNoticia(${noticia.id})"
+                    class="text-red-500 hover:bg-red-500/10 px-3 py-1.5 rounded text-sm border border-red-500/30 hover:border-red-500 transition-colors flex-shrink-0"
+                    title="Deletar notícia"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Erro ao carregar notícias:', error);
+        document.getElementById('listaNoticias').innerHTML = `
+          <div class="text-center py-8">
+            <p class="text-red-500 mb-2">✗ Erro ao carregar notícias</p>
+            <p class="text-sm text-muted-foreground">Verifique se o servidor está rodando em ${API_URL}</p>
+          </div>
+        `;
+      }
+    }
+
+    // Deletar notícia
+    async function deletarNoticia(id) {
+      if (!confirm('⚠️ Tem certeza que deseja deletar esta notícia?\n\nEsta ação não pode ser desfeita.')) return;
+      
+      try {
+        const response = await fetch(`${API_URL}/api/news/${id}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          loadNoticias();
+        } else {
+          alert('✗ Erro ao deletar notícia');
+        }
+      } catch (error) {
+        alert('✗ Erro ao deletar notícia. Verifique sua conexão.');
+      }
+    }
+
+    // Inicializar
+    checkServerStatus();
+    loadNoticias();
+    setInterval(checkServerStatus, 30000); // Verificar servidor a cada 30s
+
+</script>  
+
+  <!--===================PRODUTOS========================= -->
+
+  <div class="max-w-6xl mx-auto mt-16">
+
+    <h1 class="text-4xl font-display font-bold mb-2 text-center"> 
+      <span class="text-primary">Gerenciar</span> Produtos 
+    </h1> 
+    
+    <p class="text-center text-muted-foreground mb-12"> 
+      Adicione ou remova produtos da aba de produtos 
+    </p> 
+    
+    <div class="grid lg:grid-cols-2 gap-8 mb-12"> 
+      
+      <!--Formulário-->
+      <div class="bg-card border border-border rounded-lg p-6"> 
+        <h2 class="text-xl font-display font-bold mb-6"> 
+          <span class="text-primary">Novo</span> Produto 
+        </h2> 
+        
+        <form id="produtoForm" class="space-y-4" enctype="multipart/form-data"> 
+      <div> 
+        <label class="block text-sm font-medium mb-2">Nome: </label> 
+        <input 
+          type="text" 
+          name="nome" 
+          required class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" 
+          placeholder="Nome do produto" 
+        > 
+      </div> 
+      
+      <div> 
+        <label class="block text-sm font-medium mb-2">Preço: </label> 
+        <input
+         type="number" 
+         name="preco" 
+         min="0"
+         step="0.01"
+         required class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" 
+         placeholder="Exemplo:R$ 79,90" 
+        > 
+      </div> 
+        
+      <div> 
+        <label class="block text-sm font-medium mb-2">Foto: </label> 
+        <input
+         type="file" 
+         name="foto"
+         accept="image/*" 
+         class="w-full px-4 py-2 bg-background border border-border rounded-lg text-white" 
+        > 
+      </div> 
+      
+      <button 
+        type="submit" 
+        class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg" 
+      > 
+        + Adicionar Produto
+      </button> 
+    
+    </form> 
+
+  </div>
+  
+  <div class="bg-card border border-border rounded-lg p-6"> 
+    <h2 class="text-xl font-display font-bold mb-6">
+      <span class="text-primary">Produtos</span> Cadastrados 
+    </h2> 
+    
+    <div id="listaProdutos" class="space-y-3"> 
+      <p class="text-muted-foreground text-center py-8"> 
+        Carregando produtos... 
+      </p> 
+    </div> 
+  </div> 
+</div> 
+</div>
+
+  <script>
+
+
+  const produtoForm = document.getElementById("produtoForm")
+
+  if(produtoForm){
+
+  produtoForm.addEventListener("submit", async (e)=>{
+
+    e.preventDefault()
+
+    const formData = new FormData(e.target)
+
+    const response = await fetch(`${API_URL}/api/produtos`,{
+      method:"POST",
+      body:formData
+    })
+
+    if(response.ok){
+
+      alert("Produto cadastrado!")
+
+      e.target.reset()
+
+      loadProdutos()
+
+    }else{
+
+      alert("Erro ao cadastrar produto")
+
+    }
+
+  })
+
+  }
+
+  async function loadProdutos(){
+
+    try{
+
+      const response = await fetch(`${API_URL}/api/produtos`)
+      const produtos = await response.json()
+      const lista = document.getElementById("listaProdutos")
+      if(!lista) return
+
+      lista.innerHTML = produtos.map(produto=>`
+
+        <div class="bg-background border border-border rounded-lg p-4 flex justify-between items-center">
+
+          <div class="flex gap-3 items-center">
+
+            <div class="w-16 h-16 bg-secondary/30 rounded flex items-center justify-center">
+              🛍️
+            </div>
+
+
+            <div>
+              <h3 class="font-semibold">${produto.nome}</h3>
+              <p class="text-sm text-muted-foreground">R$ ${produto.preco}</p>
+            </div>
+
+          </div>
+
+          <button 
+            onclick="deletarProduto(${produto.id})"
+            class="text-red-500 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/10"
+          >
+            🗑️
+          </button>
+
+        </div>
+
+      `).join("")
+
+    }catch(error){
+
+      console.error("Erro ao carregar produtos")
+
+    }
+
+  }
+
+  async function deletarProduto(id){
+
+    if(!confirm("Tem certeza que deseja deletar este produto?")) return
+
+    await fetch(`${API_URL}/api/produtos/${id}`,{
+      method:"DELETE"
+    })
+
+    loadProdutos()
+
+  }
+
+  loadProdutos()
+
+  </script>
+
+   <!--===================TRANSPARÊNCIA========================= -->
+
+  <div class="max-w-6xl mx-auto mt-16">
+    <h1 class="text-4xl font-display font-bold mb-2 text-center">
+      <span class="text-primary">Gerenciar</span> Transparência
+    </h1>
+
+    <p class="text-center text-muted-foreground mb-12">
+    Adicione ou remova arquivos da página de transparência
+    </p>
+
+  <div class="grid lg:grid-cols-2 gap-8 mb-12">
+
+  <!-- Formulário -->
+  <div class="bg-card border border-border rounded-lg p-6">
+    <h2 class="text-xl font-display font-bold mb-6">
+      <span class="text-primary">Novo</span> Documento
+    </h2>
+
+    <form id="transparenciaForm" class="space-y-4" enctype="multipart/form-data">
+
+  <div>
+    <label class="block text-sm font-medium mb-2">Título:</label>
+    <input
+      type="text"
+      name="titulo"
+      required
+      class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+      placeholder="Título do documento"
+    >
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-2">Categoria:</label>
+
+    <select
+      name="categoria"
+      required
+      class="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground"
+    >
+
+    <option value="relatorio_financeiro">Relatório Financeiro</option>
+    <option value="documentos">Documentos</option>
+    <option value="estatuto">Estatuto</option>
+
+    </select>
+
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-2">Arquivo:</label>
+
+    <input
+      type="file"
+      name="arquivo"
+      accept=".pdf,.doc,.docx,.xls,.xlsx"
+      class="w-full px-4 py-2 bg-background border border-border rounded-lg text-white"
+    >
+  </div>
+
+  <div class="block text-sm font-medium mb-2">
+    <label class="block text-sm font-medium mb-2">Data: </label>
+    <input 
+      type="date" 
+      name="data" 
+      required 
+      pattern="\d{2}/\d{2}/\d{4}"
+      class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+      placeholder="DD/MM/AAAA"
+    >
+  </div>
+
+  <button
+    type="submit"
+    class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg"
+  >
+    + Adicionar Documento
+  </button>
+  </form>
+  </div>
+
+  <!-- Lista -->
+
+  <div class="bg-card border border-border rounded-lg p-6">
+    <h2 class="text-xl font-display font-bold mb-6">
+      <span class="text-primary">Documentos</span> Cadastrados
+    </h2>
+
+  <div id="listaTransparencia" class="space-y-3">
+    <p class="text-muted-foreground text-center py-8">
+    Carregando documentos...
+    </p>
+  </div>
+  </div>
+
+  <script>
+    
+
+    const transparenciaForm = document.getElementById("transparenciaForm")
+    if(transparenciaForm){
+    transparenciaForm.addEventListener("submit", async (e)=>{
+
+    e.preventDefault()
+
+    const formData = new FormData(e.target)
+
+    const response = await fetch(`${API_URL}/api/transparencia`,{
+      method:"POST",
+      body:formData
+    })
+
+    if(response.ok){
+
+      alert("Documento cadastrado!")
+
+      e.target.reset()
+
+      loadTransparencia()
+
+    }else{
+
+      alert("Erro ao cadastrar documento")
+
+        }
+
+    })
+
+    }
+
+
+  async function loadTransparencia(){
+
+  try{
+
+    const response = await fetch(`${API_URL}/api/transparencia`)
+    const dados = await response.json()
+
+    const lista = document.getElementById("listaTransparencia")
+
+    if(!lista) return
+
+    lista.innerHTML = dados.map(doc=>`
+
+      <div class="bg-background border border-border rounded-lg p-4 flex justify-between items-center">
+
+        <div class="flex gap-3 items-center">
+
+          <div class="w-16 h-16 bg-secondary/30 rounded flex items-center justify-center">
+            📄
+          </div>
+
+          <div>
+
+            <h3 class="font-semibold">${doc.titulo}</h3>
+
+            <p class="text-sm text-muted-foreground">
+              ${doc.categoria} • ${doc.data || ""}
+            </p>
+
+            ${doc.arquivo 
+              ? `<a href="${API_URL}${doc.arquivo}" target="_blank" class="text-primary text-sm">Abrir arquivo</a>`
+              : ""
+            }
+
+          </div>
+
+        </div>
+
+        <button 
+          onclick="deletarTransparencia(${doc.id})"
+          class="text-red-500 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/10"
+        >
+          🗑️
+        </button>
+
+      </div>
+
+    `).join("")
+
+  }catch(error){
+
+    console.error("Erro ao carregar documentos")
+
+  }
+
+}
+
+
+async function deletarTransparencia(id){
+
+  if(!confirm("Tem certeza que deseja deletar este documento?")) return
+
+  await fetch(`${API_URL}/api/transparencia/${id}`,{
+    method:"DELETE"
+  })
+
+  loadTransparencia()
+
+}
+
+
+loadTransparencia()
+</script>
+
+<!-- =================== GESTÃO =================== -->
+<div class="max-w-6xl mx-auto mt-16">
+  <h1 class="text-4xl font-display font-bold mb-2 text-center">
+    <span class="text-primary">Gerenciar</span> Gestão
+  </h1>
+  <p class="text-center text-muted-foreground mb-12">
+    Defina a gestão atual, adicione membros e arquive a gestão vigente no histórico
+  </p>
+
+  <div class="grid lg:grid-cols-2 gap-8 mb-12">
+    <!-- Formulário -->
+    <div class="bg-card border border-border rounded-lg p-6">
+      <h2 class="text-xl font-display font-bold mb-6">
+        <span class="text-primary">Nova</span> Gestão Atual
+      </h2>
+
+      <form id="gestaoForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Período:</label>
+          <input
+            type="text"
+            name="periodo"
+            required
+            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            placeholder="Ex: 2026-2027"
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Presidente:</label>
+          <input
+            type="text"
+            name="presidente"
+            required
+            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            placeholder="Nome da presidência"
+          >
+        </div>
+
+        <div class="border border-border rounded-lg p-4 bg-background">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold">Membros da diretoria</h3>
+            <button
+              type="button"
+              id="addMembroBtn"
+              class="text-sm text-primary hover:underline"
+            >
+              + Adicionar membro
+            </button>
+          </div>
+
+          <div id="membrosContainer" class="space-y-4">
+            <!-- membros dinâmicos -->
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
+        >
+          + Salvar Gestão Atual
+        </button>
+
+        <button
+          type="button"
+          id="arquivarGestaoBtn"
+          class="w-full border border-yellow-500/40 text-yellow-500 py-3 rounded-lg font-display text-lg hover:bg-yellow-500/10 transition-colors"
+        >
+          Arquivar Gestão Atual
+        </button>
+      </form>
+
+      <div id="gestaoMessage" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
+    </div>
+
+    <!-- Preview -->
+    <div class="bg-card border border-border rounded-lg p-6">
+      <h2 class="text-xl font-display font-bold mb-6">
+        <span class="text-primary">Preview</span> da Gestão
+      </h2>
+
+      <div class="bg-background border border-border rounded-lg p-4 mb-6">
+        <p class="text-sm text-muted-foreground mb-2">Período</p>
+        <h3 id="previewPeriodoGestao" class="text-lg font-bold">--</h3>
+        <p class="text-sm text-muted-foreground mt-3 mb-1">Presidência</p>
+        <p id="previewPresidenteGestao" class="text-base">--</p>
+      </div>
+
+      <div class="bg-background border border-border rounded-lg p-4">
+        <h3 class="font-semibold mb-4">Membros cadastrados</h3>
+        <div id="previewMembrosGestao" class="space-y-3">
+          <p class="text-sm text-muted-foreground">Nenhum membro adicionado ainda.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gestão atual e histórico -->
+  <div class="bg-card border border-border rounded-lg p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-display font-bold">
+        <span class="text-primary">Gestão</span> Cadastrada
+      </h2>
+      <button onclick="loadGestao()" class="text-sm text-primary hover:underline">
+        ↻ Atualizar
+      </button>
+    </div>
+
+    <div id="gestaoAtualBox" class="mb-8">
+      <p class="text-muted-foreground text-center py-8">Carregando gestão atual...</p>
+    </div>
+
+    <div>
+      <h3 class="text-xl font-display font-bold mb-4">
+        <span class="text-primary">Histórico</span> de Gestões
+      </h3>
+      <div id="historicoGestoes" class="space-y-4">
+        <p class="text-muted-foreground text-center py-8">Carregando histórico...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  
+
+
+const gestaoForm = document.getElementById("gestaoForm");
+const membrosContainer = document.getElementById("membrosContainer");
+const gestaoMessage = document.getElementById("gestaoMessage");
+const previewPeriodoGestao = document.getElementById("previewPeriodoGestao");
+const previewPresidenteGestao = document.getElementById("previewPresidenteGestao");
+const previewMembrosGestao = document.getElementById("previewMembrosGestao");
+const addMembroBtn = document.getElementById("addMembroBtn");
+const arquivarGestaoBtn = document.getElementById("arquivarGestaoBtn");
+
+let membroIndex = 0;
+
+function gerarAvatar(nome) {
+  if (!nome || !nome.trim()) return "?";
+  return nome.trim().charAt(0).toUpperCase();
+}
+
+function criarBlocoMembro(membro = {}) {
+  membroIndex++;
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "border border-border rounded-lg p-4 space-y-3";
+  wrapper.dataset.index = membroIndex;
+
+  wrapper.innerHTML = `
+    <div class="flex items-center justify-between">
+      <h4 class="font-medium">Membro ${membroIndex}</h4>
+      <button type="button" class="text-red-500 hover:underline text-sm remove-membro-btn">
+        Remover
+      </button>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-2">Nome:</label>
+      <input
+        type="text"
+        name="membro_nome_${membroIndex}"
+        value="${membro.nome || ""}"
+        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-nome"
+        placeholder="Nome do membro"
+      >
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-2">Cargo:</label>
+      <input
+        type="text"
+        name="membro_cargo_${membroIndex}"
+        value="${membro.cargo || ""}"
+        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-cargo"
+        placeholder="Ex: Presidente, Diretor de Marketing..."
+      >
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-2">Curso:</label>
+      <input
+        type="text"
+        name="membro_curso_${membroIndex}"
+        value="${membro.curso || ""}"
+        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-curso"
+        placeholder="Ex: Engenharia Biomédica"
+      >
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-2">Email:</label>
+      <input
+        type="email"
+        name="membro_email_${membroIndex}"
+        value="${membro.email || ""}"
+        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-email"
+        placeholder="email@aaaldv.com"
+      >
+    </div>
+  `;
+
+  wrapper.querySelector(".remove-membro-btn").addEventListener("click", () => {
+    wrapper.remove();
+    atualizarPreviewGestao();
+  });
+
+  wrapper.querySelectorAll(".membro-input").forEach(input => {
+    input.addEventListener("input", atualizarPreviewGestao);
+  });
+
+  membrosContainer.appendChild(wrapper);
+  atualizarPreviewGestao();
+}
+
+function coletarMembros() {
+  const blocos = membrosContainer.querySelectorAll("[data-index]");
+  const membros = [];
+
+  blocos.forEach(bloco => {
+    const nome = bloco.querySelector(".membro-nome")?.value?.trim() || "";
+    const cargo = bloco.querySelector(".membro-cargo")?.value?.trim() || "";
+    const curso = bloco.querySelector(".membro-curso")?.value?.trim() || "";
+    const email = bloco.querySelector(".membro-email")?.value?.trim() || "";
+
+    if (nome || cargo || curso || email) {
+      membros.push({
+        nome,
+        cargo,
+        curso,
+        email,
+        avatar: gerarAvatar(nome)
+      });
+    }
+  });
+
+  return membros;
+}
+
+function atualizarPreviewGestao() {
+  const periodo = gestaoForm.periodo.value.trim();
+  const presidente = gestaoForm.presidente.value.trim();
+  const membros = coletarMembros();
+
+  previewPeriodoGestao.textContent = periodo || "--";
+  previewPresidenteGestao.textContent = presidente || "--";
+
+  if (membros.length === 0) {
+    previewMembrosGestao.innerHTML = `<p class="text-sm text-muted-foreground">Nenhum membro adicionado ainda.</p>`;
+    return;
+  }
+
+  previewMembrosGestao.innerHTML = membros.map(membro => `
+    <div class="border border-border rounded-lg p-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+          ${membro.avatar}
+        </div>
+        <div>
+          <p class="font-semibold">${membro.nome || "Sem nome"}</p>
+          <p class="text-sm text-muted-foreground">${membro.cargo || "Sem cargo"}</p>
+          <p class="text-sm text-muted-foreground">${membro.curso || ""}</p>
+          <p class="text-sm text-muted-foreground">${membro.email || ""}</p>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function mostrarMensagemGestao(tipo, texto) {
+  gestaoMessage.className =
+    tipo === "success"
+      ? "mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm"
+      : "mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm";
+
+  gestaoMessage.textContent = texto;
+  gestaoMessage.classList.remove("hidden");
+
+  setTimeout(() => {
+    gestaoMessage.classList.add("hidden");
+  }, 4000);
+}
+
+gestaoForm.periodo.addEventListener("input", atualizarPreviewGestao);
+gestaoForm.presidente.addEventListener("input", atualizarPreviewGestao);
+
+addMembroBtn.addEventListener("click", () => criarBlocoMembro());
+
+gestaoForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    periodo: gestaoForm.periodo.value.trim(),
+    presidente: gestaoForm.presidente.value.trim(),
+    membros: coletarMembros()
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/api/board/atual`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error("Erro ao salvar gestão");
+
+    mostrarMensagemGestao("success", "✓ Gestão atual salva com sucesso!");
+    loadGestao();
+  } catch (error) {
+    mostrarMensagemGestao("error", "✗ Erro ao salvar gestão atual.");
+  }
+});
+
+arquivarGestaoBtn.addEventListener("click", async () => {
+  const confirmar = confirm("Tem certeza que deseja arquivar a gestão atual?");
+  if (!confirmar) return;
+
+  try {
+    const response = await fetch(`${API_URL}/api/board/archive`, {
+      method: "POST"
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Erro ao arquivar");
+    }
+
+    mostrarMensagemGestao("success", "✓ Gestão arquivada com sucesso!");
+    loadGestao();
+  } catch (error) {
+    mostrarMensagemGestao("error", "✗ Não foi possível arquivar a gestão atual.");
+  }
+});
+
+async function loadGestao() {
+  try {
+    const response = await fetch(`${API_URL}/api/board`);
+    const dados = await response.json();
+
+    const gestaoAtualBox = document.getElementById("gestaoAtualBox");
+    const historicoGestoes = document.getElementById("historicoGestoes");
+
+    if (dados.atual && Object.keys(dados.atual).length > 0) {
+      const membros = dados.atual.membros || [];
+
+      gestaoAtualBox.innerHTML = `
+        <div class="bg-background border border-border rounded-lg p-6">
+          <div class="flex items-center justify-between gap-4 mb-4">
+            <div>
+              <h3 class="text-xl font-display font-bold">Gestão ${dados.atual.periodo || "--"}</h3>
+              <p class="text-sm text-muted-foreground">Presidência: ${dados.atual.presidente || "--"}</p>
+            </div>
+            <span class="text-xs px-2 py-1 rounded bg-green-500/10 text-green-500">Atual</span>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            ${membros.length > 0
+              ? membros.map(membro => `
+                <div class="border border-border rounded-lg p-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                      ${membro.avatar || gerarAvatar(membro.nome)}
+                    </div>
+                    <div>
+                      <h4 class="font-semibold">${membro.nome || "Sem nome"}</h4>
+                      <p class="text-sm text-muted-foreground">${membro.cargo || "Sem cargo"}</p>
+                      <p class="text-sm text-muted-foreground">${membro.curso || ""}</p>
+                      <p class="text-sm text-muted-foreground">${membro.email || ""}</p>
+                    </div>
+                  </div>
+                </div>
+              `).join("")
+              : `<p class="text-muted-foreground">Nenhum membro cadastrado.</p>`
+            }
+          </div>
+        </div>
+      `;
+    } else {
+      gestaoAtualBox.innerHTML = `
+        <p class="text-muted-foreground text-center py-8">
+          Nenhuma gestão atual cadastrada.
+        </p>
+      `;
+    }
+
+    if (dados.historico && dados.historico.length > 0) {
+      historicoGestoes.innerHTML = dados.historico.map((gestao, index) => `
+        <div class="bg-background border border-border rounded-lg p-5">
+          <div class="flex items-center justify-between gap-4 mb-3">
+            <div>
+              <h4 class="font-display font-bold">Gestão ${gestao.periodo || "--"}</h4>
+              <p class="text-sm text-muted-foreground">Presidência: ${gestao.presidente || "--"}</p>
+            </div>
+            <span class="text-xs px-2 py-1 rounded bg-primary/10 text-primary">#${dados.historico.length - index}</span>
+          </div>
+
+          <details class="group">
+            <summary class="cursor-pointer text-sm text-primary hover:underline">
+              Ver diretoria completa
+            </summary>
+
+            <div class="grid md:grid-cols-2 gap-4 mt-4">
+              ${(gestao.membros || []).map(membro => `
+                <div class="border border-border rounded-lg p-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                      ${membro.avatar || gerarAvatar(membro.nome)}
+                    </div>
+                    <div>
+                      <h5 class="font-semibold">${membro.nome || "Sem nome"}</h5>
+                      <p class="text-sm text-muted-foreground">${membro.cargo || "Sem cargo"}</p>
+                      <p class="text-sm text-muted-foreground">${membro.curso || ""}</p>
+                      <p class="text-sm text-muted-foreground">${membro.email || ""}</p>
+                    </div>
+                  </div>
+                </div>
+              `).join("") || `<p class="text-muted-foreground">Sem membros cadastrados.</p>`}
+            </div>
+          </details>
+        </div>
+      `).join("");
+    } else {
+      historicoGestoes.innerHTML = `
+        <p class="text-muted-foreground text-center py-8">
+          Nenhuma gestão no histórico ainda.
+        </p>
+      `;
+    }
+  } catch (error) {
+    document.getElementById("gestaoAtualBox").innerHTML = `
+      <p class="text-red-500 text-center py-8">✗ Erro ao carregar gestão atual.</p>
+    `;
+    document.getElementById("historicoGestoes").innerHTML = `
+      <p class="text-red-500 text-center py-8">✗ Erro ao carregar histórico.</p>
+    `;
+  }
+}
+
+criarBlocoMembro();
+loadGestao();
+</script>
+
+<!-- =================== MENSALIDADE E CARROSSEL =================== -->
+<div class="max-w-6xl mx-auto mt-16">
+  <h1 class="text-4xl font-display font-bold mb-2 text-center">
+    <span class="text-primary">Gerenciar</span> Mensalidade e Carrossel
+  </h1>
+  <p class="text-center text-muted-foreground mb-12">
+    Atualize os valores dos planos e adicione fotos ao carrossel de conquistas
+  </p>
+
+  <div class="grid lg:grid-cols-2 gap-8 mb-12">
+    <!-- Mensalidade -->
+    <div class="bg-card border border-border rounded-lg p-6">
+      <h2 class="text-xl font-display font-bold mb-6">
+        <span class="text-primary">Mensalidade</span> dos Planos
+      </h2>
+
+      <form id="mensalidadeForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Plano sem campeonato:</label>
+          <input
+            type="number"
+            name="valor_sem_campeonato"
+            min="0"
+            step="0.01"
+            required
+            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            placeholder="Ex: 70"
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Plano com campeonato:</label>
+          <input
+            type="number"
+            name="valor_com_campeonato"
+            min="0"
+            step="0.01"
+            required
+            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            placeholder="Ex: 80"
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
+        >
+          Salvar Mensalidades
+        </button>
+      </form>
+
+      <div id="mensalidadeMessage" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
+
+      <div class="mt-6 bg-background border border-border rounded-lg p-4">
+        <h3 class="font-semibold mb-4">Preview</h3>
+
+        <div class="space-y-4">
+          <div class="border border-border rounded-lg p-4">
+            <p class="text-sm text-muted-foreground">Plano esportes sem campeonato semestral</p>
+            <p class="text-2xl font-display font-bold mt-2">
+              R$ <span id="previewSemCampeonato">70</span>
+              <span class="text-sm text-muted-foreground">/ mês</span>
+            </p>
+          </div>
+
+          <div class="border border-border rounded-lg p-4">
+            <p class="text-sm text-muted-foreground">Plano esportes com campeonato semestral</p>
+            <p class="text-2xl font-display font-bold mt-2">
+              R$ <span id="previewComCampeonato">80</span>
+              <span class="text-sm text-muted-foreground">/ mês</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carrossel -->
+    <div class="bg-card border border-border rounded-lg p-6">
+      <h2 class="text-xl font-display font-bold mb-6">
+        <span class="text-primary">Nova</span> Foto do Carrossel
+      </h2>
+
+      <form id="carouselForm" class="space-y-4" enctype="multipart/form-data">
+        <div>
+          <label class="block text-sm font-medium mb-2">Legenda:</label>
+          <input
+            type="text"
+            name="legenda"
+            required
+            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            placeholder="Ex: Primeiro lugar geral no JUCAMP 25"
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2">Foto:</label>
+          <input
+            type="file"
+            name="foto"
+            accept="image/*"
+            required
+            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:cursor-pointer hover:file:bg-primary/90"
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
+        >
+          + Adicionar Foto
+        </button>
+      </form>
+
+      <div id="carouselMessage" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
+
+      <div class="mt-6 bg-background border border-border rounded-lg overflow-hidden">
+        <div id="carouselPreviewImageContainer" class="relative h-48 bg-secondary/30 flex items-center justify-center">
+          <img id="carouselPreviewImage" class="hidden w-full h-full object-cover" alt="Preview da foto">
+          <span id="carouselPreviewPlaceholder" class="text-muted-foreground text-sm">📷 Imagem aparecerá aqui</span>
+        </div>
+        <div class="p-4">
+          <p id="carouselPreviewLegenda" class="text-muted-foreground text-sm">
+            A legenda aparecerá aqui...
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de fotos -->
+  <div class="bg-card border border-border rounded-lg p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-display font-bold">
+        <span class="text-primary">Fotos</span> do Carrossel
+      </h2>
+      <button onclick="loadCarousel()" class="text-sm text-primary hover:underline">
+        ↻ Atualizar
+      </button>
+    </div>
+
+    <div id="listaCarousel" class="space-y-3">
+      <p class="text-muted-foreground text-center py-8">Carregando fotos...</p>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  
+const mensalidadeForm = document.getElementById("mensalidadeForm");
+const mensalidadeMessage = document.getElementById("mensalidadeMessage");
+const previewSemCampeonato = document.getElementById("previewSemCampeonato");
+const previewComCampeonato = document.getElementById("previewComCampeonato");
+
+const carouselForm = document.getElementById("carouselForm");
+const carouselMessage = document.getElementById("carouselMessage");
+const carouselPreviewLegenda = document.getElementById("carouselPreviewLegenda");
+const carouselPreviewImage = document.getElementById("carouselPreviewImage");
+const carouselPreviewPlaceholder = document.getElementById("carouselPreviewPlaceholder");
+
+function mostrarMensagemMensalidade(tipo, texto) {
+  mensalidadeMessage.className =
+    tipo === "success"
+      ? "mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm"
+      : "mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm";
+
+  mensalidadeMessage.textContent = texto;
+  mensalidadeMessage.classList.remove("hidden");
+
+  setTimeout(() => mensalidadeMessage.classList.add("hidden"), 4000);
+}
+
+function mostrarMensagemCarousel(tipo, texto) {
+  carouselMessage.className =
+    tipo === "success"
+      ? "mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm"
+      : "mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm";
+
+  carouselMessage.textContent = texto;
+  carouselMessage.classList.remove("hidden");
+
+  setTimeout(() => carouselMessage.classList.add("hidden"), 4000);
+}
+
+mensalidadeForm.valor_sem_campeonato.addEventListener("input", (e) => {
+  previewSemCampeonato.textContent = e.target.value || "70";
+});
+
+mensalidadeForm.valor_com_campeonato.addEventListener("input", (e) => {
+  previewComCampeonato.textContent = e.target.value || "80";
+});
+
+mensalidadeForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    valor_sem_campeonato: mensalidadeForm.valor_sem_campeonato.value,
+    valor_com_campeonato: mensalidadeForm.valor_com_campeonato.value
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/api/mensalidade`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error("Erro ao salvar mensalidades");
+
+    mostrarMensagemMensalidade("success", "✓ Mensalidades atualizadas com sucesso!");
+  } catch (error) {
+    mostrarMensagemMensalidade("error", "✗ Erro ao atualizar mensalidades.");
+  }
+});
+
+async function loadMensalidade() {
+  try {
+    const response = await fetch(`${API_URL}/api/mensalidade`);
+    const dados = await response.json();
+
+    if (dados.valor_sem_campeonato !== undefined) {
+      mensalidadeForm.valor_sem_campeonato.value = dados.valor_sem_campeonato;
+      previewSemCampeonato.textContent = dados.valor_sem_campeonato;
+    }
+
+    if (dados.valor_com_campeonato !== undefined) {
+      mensalidadeForm.valor_com_campeonato.value = dados.valor_com_campeonato;
+      previewComCampeonato.textContent = dados.valor_com_campeonato;
+    }
+  } catch (error) {
+    console.error("Erro ao carregar mensalidades");
+  }
+}
+
+carouselForm.legenda.addEventListener("input", (e) => {
+  carouselPreviewLegenda.textContent = e.target.value || "A legenda aparecerá aqui...";
+});
+
+carouselForm.foto.addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      carouselPreviewImage.src = ev.target.result;
+      carouselPreviewImage.classList.remove("hidden");
+      carouselPreviewPlaceholder.classList.add("hidden");
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+carouselForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+
+  try {
+    const response = await fetch(`${API_URL}/api/carousel`, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!response.ok) throw new Error("Erro ao adicionar foto");
+
+    mostrarMensagemCarousel("success", "✓ Foto adicionada ao carrossel!");
+    e.target.reset();
+    carouselPreviewLegenda.textContent = "A legenda aparecerá aqui...";
+    carouselPreviewImage.classList.add("hidden");
+    carouselPreviewPlaceholder.classList.remove("hidden");
+    loadCarousel();
+  } catch (error) {
+    mostrarMensagemCarousel("error", "✗ Erro ao adicionar foto ao carrossel.");
+  }
+});
+
+async function loadCarousel() {
+  try {
+    const response = await fetch(`${API_URL}/api/carousel`);
+    const fotos = await response.json();
+    const lista = document.getElementById("listaCarousel");
+
+    if (!fotos || fotos.length === 0) {
+      lista.innerHTML = `
+        <p class="text-muted-foreground text-center py-8">
+          Nenhuma foto cadastrada no carrossel.
+        </p>
+      `;
+      return;
+    }
+
+    lista.innerHTML = fotos.map((foto, index) => `
+      <div class="bg-background border border-border rounded-lg p-4 hover:border-primary/50 transition-colors">
+        <div class="flex gap-4 items-start">
+          <img
+            src="${API_URL}${foto.url}"
+            alt="Foto do carrossel"
+            class="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+          >
+
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between items-start gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">
+                    #${fotos.length - index}
+                  </span>
+                </div>
+
+                <p class="text-sm text-muted-foreground break-words">
+                  ${foto.legenda || "Sem legenda"}
+                </p>
+              </div>
+
+              <button
+                onclick="deletarFotoCarousel(${foto.id})"
+                class="text-red-500 hover:bg-red-500/10 px-3 py-1.5 rounded text-sm border border-red-500/30 hover:border-red-500 transition-colors flex-shrink-0"
+                title="Deletar foto"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  } catch (error) {
+    document.getElementById("listaCarousel").innerHTML = `
+      <div class="text-center py-8">
+        <p class="text-red-500 mb-2">✗ Erro ao carregar fotos do carrossel</p>
+      </div>
+    `;
+  }
+}
+
+async function deletarFotoCarousel(id) {
+  const confirmar = confirm("Tem certeza que deseja deletar esta foto do carrossel?");
+  if (!confirmar) return;
+
+  try {
+    const response = await fetch(`${API_URL}/api/carousel/${id}`, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) throw new Error("Erro ao deletar foto");
+
+    loadCarousel();
+  } catch (error) {
+    alert("✗ Erro ao deletar foto.");
+  }
+}
+
+loadMensalidade();
+loadCarousel();
+</script>
+
+</body>
+</html>

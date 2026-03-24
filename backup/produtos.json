@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1773413618164,
+    "nome": "Camiseta - Calouros 2026",
+    "preco": "60.00",
+    "foto": "/uploads/1773413618161_camiseta.jpg"
+  },
+  {
+    "id": 1773413637653,
+    "nome": "Cordão",
+    "preco": "12.00",
+    "foto": "/uploads/1773413637649_cordao.jpg"
+  },
+  {
+    "id": 1773413648727,
+    "nome": "Roller",
+    "preco": "12.00",
+    "foto": "/uploads/1773413648725_roller.jpg"
+  },
+  {
+    "id": 1773413664492,
+    "nome": "Combo Roller + Cordão",
+    "preco": "20.00",
+    "foto": "/uploads/1773413664477_rollercordao.png"
+  },
+  {
+    "id": 1773414616894,
+    "nome": "Abadá",
+    "preco": "45.00",
+    "foto": "/uploads/1773414616885_Design_sem_nome.jpg"
+  }
+]
