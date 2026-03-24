@@ -1,3 +1,36 @@
+# --- ROTAS DELETE ---
+
+# Deletar notícia
+@app.route('/api/news/<int:id>', methods=['DELETE'])
+def deletar_noticia(id):
+    noticia = Noticia.query.get_or_404(id)
+    db.session.delete(noticia)
+    db.session.commit()
+    return jsonify({"message": "Notícia deletada"}), 200
+
+# Deletar produto
+@app.route('/api/produtos/<int:id>', methods=['DELETE'])
+def deletar_produto(id):
+    produto = Produto.query.get_or_404(id)
+    db.session.delete(produto)
+    db.session.commit()
+    return jsonify({"message": "Produto deletado"}), 200
+
+# Deletar documento de transparência
+@app.route('/api/transparencia/<int:id>', methods=['DELETE'])
+def deletar_transparencia(id):
+    doc = Transparencia.query.get_or_404(id)
+    db.session.delete(doc)
+    db.session.commit()
+    return jsonify({"message": "Documento deletado"}), 200
+
+# Deletar foto do carrossel
+@app.route('/api/carousel/<int:id>', methods=['DELETE'])
+def deletar_carrossel(id):
+    foto = Carrossel.query.get_or_404(id)
+    db.session.delete(foto)
+    db.session.commit()
+    return jsonify({"message": "Foto deletada"}), 200
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
