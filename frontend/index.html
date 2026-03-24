@@ -6,15 +6,19 @@
   <title>AAALDV - Atlética Leonardo da Vinci | Engenharia Biomédica Einstein</title>
 
   <meta name="description" content="Associação Atlética Acadêmica Leonardo da Vinci - A atlética de Engenharia Biomédica da Faculdade Einstein. Esporte, integração e muito mais!" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
 </head>
 <body>
   <nav class="fixed top-0 left-0 right-0 z-50 bg-background/80 border-b border-border ">
-    <div class="container mx-auto px-4 flex items-center justify-between h-20">
-      <a href="index.html" class="font-display text-2xl tracking-tight hidden sm:block">
+    <div class="container mx-auto px-4 nav-shell">
+      <a href="index.html" class="brand-link font-display text-2xl tracking-tight">
         <span class="text-primary">AAA</span>LDV
       </a>
+      <button class="mobile-menu-button md:hidden" type="button" aria-label="Abrir menu" aria-expanded="false" data-mobile-menu-button>
+        <span class="material-icons-sharp">menu</span>
+      </button>
       <div class="hidden md:flex items-center gap-8">
         <a href="index.html" class="nav-link text-primary">Início</a>
         <a href="institucional.html" class="nav-link">Institucional</a>
@@ -25,6 +29,16 @@
         <a href="socios.html" class="nav-link">Vitruvianos</a>
         <a href="#contato" class="nav-link">Contato</a>
       </div>
+    </div>
+    <div class="mobile-nav md:hidden" data-mobile-menu>
+      <a href="index.html" class="nav-link text-primary">Início</a>
+      <a href="institucional.html" class="nav-link">Institucional</a>
+      <a href="calendario.html" class="nav-link">Calendário</a>
+      <a href="noticias.html" class="nav-link">Notícias</a>
+      <a href="loja.html" class="nav-link">Loja</a>
+      <a href="transparencia.html" class="nav-link">Transparência</a>
+      <a href="socios.html" class="nav-link">Vitruvianos</a>
+      <a href="#contato" class="nav-link">Contato</a>
     </div>
   </nav>
 
@@ -185,6 +199,46 @@
       </div>
     </div>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const button = document.querySelector('[data-mobile-menu-button]');
+      const menu = document.querySelector('[data-mobile-menu]');
+
+      if (!button || !menu) {
+        return;
+      }
+
+      const closeMenu = () => {
+        menu.classList.remove('open');
+        button.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-open');
+      };
+
+      button.addEventListener('click', () => {
+        const isOpen = menu.classList.toggle('open');
+        button.setAttribute('aria-expanded', String(isOpen));
+        document.body.classList.toggle('nav-open', isOpen);
+      });
+
+      menu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          closeMenu();
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+          closeMenu();
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeMenu();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
 
