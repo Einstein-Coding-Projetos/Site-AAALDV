@@ -104,6 +104,7 @@ def listar_noticias():
     return jsonify([{"id": n.id, "titulo": n.titulo, "descricao": n.descricao, "foto": n.foto, "data": n.data} for n in noticias])
 
 @app.route('/api/news', methods=['POST'])
+@rota_admin_protegida
 def criar_noticia():
     foto_url = save_uploaded_file(request.files.get('foto'))
     nova = Noticia(
