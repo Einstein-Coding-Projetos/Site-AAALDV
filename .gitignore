@@ -1,9 +1,34 @@
-.env
+# Python
 venv/
 __pycache__/
-uploads/
-node_modules/
-*.db
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Environment variables
 .env
+.env.*
+
+# Node
+node_modules/
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
 *.log
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Uploads (managed by backend, not versioned)
+backend/uploads/*
+!backend/uploads/.gitkeep
