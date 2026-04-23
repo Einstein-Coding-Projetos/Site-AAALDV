@@ -15,7 +15,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # --- CORS RESTRITO ---
-ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'https://site-aaaldv.onrender.com,http://localhost:5500,http://127.0.0.1:5500').split(',')
+ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'https://site-aaaldv-frontend.onrender.com,https://site-aaaldv.onrender.com,http://localhost:5500,http://127.0.0.1:5500').split(',')
 CORS(app, origins=ALLOWED_ORIGINS)
 
 # --- CONFIGURAÇÕES ---
