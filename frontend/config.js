@@ -1,5 +1,5 @@
 // Configuração centralizada — altere apenas aqui ao trocar de ambiente
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://site-aaaldv-back.onrender.com';
 
 // --- Helpers de autenticação ---
 function getToken() {
