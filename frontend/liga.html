@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liga Einsten</title>
+    <title>Liga Einstein</title>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outilined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=22">
 
@@ -19,7 +19,7 @@
       <div class="container mx-auto px-4 flex items-center justify-between h-20" style="position:relative;">
         <a href="index.html" class="font-display text-2xl tracking-tight flex items-center gap-2">
           <img src="assets/produtos/simbolo_aaaldv.png" alt="Logo AAALDV" class="h-8 w-8 object-contain">
-          <span><span class="text-primary">AAA</span>LDV</span>
+          <span class="font-gagalin"><span class="text-primary">AAA</span>LDV</span>
         </a>
         <div class="hidden md:flex items-center gap-8">
           <a href="index.html" class="nav-link">Início</a>
@@ -301,10 +301,10 @@
     <div class="container mx-auto px-4">
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-2">
-          <h3 class="font-display text-2xl mb-1">
-            <span class="font-display text-2xl mb-1 text-primary">AAA</span>LDV
+          <h3 class="font-display text-2xl mb-1 font-gagalin">
+            <span class="text-primary">AAA</span>LDV
           </h3>
-          <p class="text-xs text-muted-foreground mb-4">Leonardo da Vinci</p>
+          <p class="text-xs text-muted-foreground mb-4 font-gagalin">Leonardo da Vinci</p>
           <p class="text-muted-foreground text-sm">
             A Associação Atlética Acadêmica Leonardo da Vinci representa os estudantes de 
             Engenharia Biomédica do Einstein, promovendo esporte, integração e muito mais!
@@ -361,15 +361,14 @@
       </div>
 
       <div class="border-t border-border mt-24 pt-12 pb-12 text-center">
-        <p class="text-sm text-muted-foreground">© 2024 AAALDV. Todos os direitos reservados.</p>
+        <p class="text-sm text-muted-foreground">© 2025 AAALDV. Todos os direitos reservados.</p>
       </div>
     </div>
   </footer>
 
+<script src="config.js"></script>
 <script>
 
-    const API_URL = 'https://site-aaaldv-back.onrender.com';
-    
     // Variáveis globais para o controle do carrossel
     let currentSlideIndex = 0;
     const track = document.querySelector(".carousel-track");
@@ -407,10 +406,13 @@
           // Ajusta a URL: se começar com /uploads, adiciona o endereço do servidor
           const imgUrl = foto.url.startsWith('http') ? foto.url : `${API_URL}${foto.url}`;
           
-          figure.innerHTML = `
-            <img src="${imgUrl}" alt="${foto.legenda}">
-            <figcaption>${foto.legenda}</figcaption>
-          `;
+          const img = document.createElement('img');
+          img.src = imgUrl;
+          img.alt = foto.legenda || '';
+          const caption = document.createElement('figcaption');
+          caption.textContent = foto.legenda || '';
+          figure.appendChild(img);
+          figure.appendChild(caption);
           track.appendChild(figure);
         });
       } catch (e) {

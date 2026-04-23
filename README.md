@@ -1,6 +1,6 @@
 # Site-AAALDV
 
-Repositório destinado à elaboração do site institucional da Associação Atlética Acadêmica Leonardo Da Vinci.
+Repositório destinado ao site institucional da Associação Atlética Acadêmica Leonardo Da Vinci.
 
 ## Especificação Técnica
 
@@ -13,79 +13,104 @@ Repositório destinado à elaboração do site institucional da Associação Atl
 #### Backend
 - **Linguagem**: Python 3.8+
 - **Framework**: Flask (micro-framework)
-- **Armazenamento**: Arquivos JSON (sem banco de dados)
-- **Middleware**: Flask-CORS
+- **Banco de Dados**: PostgreSQL (Neon - serverless)
+- **ORM**: SQLAlchemy
+- **Autenticação**: JWT (PyJWT) + bcrypt
+- **Middleware**: Flask-CORS (restrito por domínio)
+- **Deploy**: Render
 
 #### Frontend
 - **Tecnologias**: HTML5, CSS3, JavaScript
 - **Estilo**: CSS customizado (utility classes)
 - **Renderização**: Client-Side
+- **Auth**: JWT armazenado em sessionStorage
 
 ### Estrutura do Projeto
 ```
-MVP-AAALDV/
-├── frontend/          # Interface HTML/CSS
-│   ├── index.html
-│   └── styles.css
-└── backend/           # API REST simplificada
-    ├── servidor.py    # Servidor Flask (código em português)
-    ├── requirements.txt # Dependências Python
-    ├── noticias.json  # Dados das notícias
-    └── contatos.json  # Dados dos contatos
+Site-AAALDV/
+├── frontend/
+│   ├── index.html           # Página inicial + carrossel
+│   ├── institucional.html   # Quem somos + diretoria
+│   ├── liga.html            # Liga Einstein + modalidades
+│   ├── eventos.html         # Eventos e galeria
+│   ├── produtos.html        # Loja de produtos
+│   ├── transparencia.html   # Documentos e relatórios
+│   ├── admin.html           # Painel administrativo (protegido por senha)
+│   ├── config.js            # URL da API centralizada + helpers de auth
+│   ├── styles.css           # Estilos globais
+│   └── assets/              # Imagens e fontes
+└── backend/
+    ├── servidor.py          # API Flask + modelos + autenticação
+    ├── requirements.txt     # Dependências Python
+    ├── uploads/             # Arquivos enviados pelo admin
+    └── migrar_dados.py      # Script de migração de dados
 ```
 
+### Variáveis de Ambiente (backend)
+| Variável | Obrigatória | Descrição |
+|---|---|---|
+| `DATABASE_URL` | Sim | Connection string PostgreSQL (Neon) |
+| `ADMIN_PASSWORD` | Sim | Hash bcrypt da senha de admin |
+| `JWT_SECRET` | Sim | Segredo para assinar tokens JWT |
+| `ALLOWED_ORIGINS` | Não | Domínios permitidos no CORS (default: `https://site-aaaldv.onrender.com`) |
+| `PORT` | Não | Porta do servidor (default: 3000) |
+| `FLASK_DEBUG` | Não | Ativar modo debug (default: false) |
+
+#### Gerando o hash da senha de admin
+```bash
+python -c "import bcrypt; print(bcrypt.hashpw(b'sua-senha-aqui', bcrypt.gensalt()).decode())"
+```
+Copie o resultado e configure como `ADMIN_PASSWORD` no Render.
+
 ### API Endpoints
-- `GET/POST /api/news` - Notícias
-- `GET/POST /api/contacts` - Contatos
 
-### Armazenamento
-- `news.json` - Array com notícias (id, titulo, conteudo, data)
-- `contacts.json` - Array com contatos (id, nome, email, mensagem)
+#### Públicas (GET)
+- `GET /api/news` - Lista notícias (ordenadas por mais recente)
+- `GET /api/produtos` - Lista produtos
+- `GET /api/transparencia` - Lista documentos (ordenados por mais recente)
+- `GET /api/carousel` - Lista fotos do carrossel
+- `GET /api/mensalidade` - Valores de mensalidade
+- `GET /api/board` - Diretoria atual e histórico
 
-## Requisitos Funcionais
-
-**RF01** - Página Inicial: Apresentação da atlética, links para redes sociais, informações de contato.
-
-**RF02** - Gestão de Conteúdo: Seções "Quem Somos", notícias e informações institucionais.
-
-**RF03** - Formulário de Contato: Sistema para receber mensagens dos visitantes.
-
-**RF04** - Portal de Notícias: Publicação e exibição de notícias da atlética.
-
-## Requisitos Não Funcionais
-
-**RNF01** - Simplicidade: Código limpo e fácil de manter.
-
-**RNF02** - Performance: API leve e rápida com arquivos JSON.
-
-**RNF03** - Manutenibilidade: Estrutura simples para facilitar atualizações.
+#### Autenticadas (requer header `Authorization: Bearer <token>`)
+- `POST /api/login` - Autentica com senha e retorna JWT (8h)
+- `POST /api/news` - Cria notícia
+- `DELETE /api/news/:id` - Remove notícia
+- `POST /api/produtos` - Cria produto
+- `DELETE /api/produtos/:id` - Remove produto
+- `POST /api/transparencia` - Adiciona documento
+- `DELETE /api/transparencia/:id` - Remove documento
+- `POST /api/carousel` - Adiciona foto ao carrossel
+- `DELETE /api/carousel/:id` - Remove foto do carrossel
+- `POST /api/mensalidade` - Atualiza valores de mensalidade
+- `POST /api/board/atual` - Salva gestão atual
+- `POST /api/board/archive` - Arquiva gestão
 
 ## Como Usar
 
 ### Pré-requisitos
-**IMPORTANTE:** Python precisa estar instalado!
+- Python 3.8+ instalado
+- Banco de dados PostgreSQL (ou conta no Neon)
 
-**Instalar Python:**
-- **Microsoft Store**: Procure "Python 3.12" e instale
-- **Site oficial**: https://www.python.org/downloads/
-  - Durante instalação, marque "Add Python to PATH"
-
-### Backend
+### Desenvolvimento local
 ```bash
 cd backend
 pip install -r requirements.txt
+
+# Crie um arquivo .env com:
+# DATABASE_URL=postgresql://...
+# ADMIN_PASSWORD=$2b$12$... (hash bcrypt)
+# JWT_SECRET=um-segredo-forte
+
 python servidor.py
 ```
 
-**Link do site:** http://localhost:3000
+O servidor roda em `http://localhost:3000`.
 
 ### Frontend
-Abra o arquivo `frontend/index.html` no navegador.
+Abra `frontend/index.html` no navegador, ou sirva via servidor estático.
 
-### API Disponível
-- `GET http://localhost:3000/api/news` - Lista notícias
-- `POST http://localhost:3000/api/news` - Cria notícia
-- `GET http://localhost:3000/api/contacts` - Lista contatos
-- `POST http://localhost:3000/api/contacts` - Cria contato
-
-
+### Deploy (Render)
+1. Backend: deploy como Web Service apontando para `backend/`
+2. Frontend: deploy como Static Site apontando para `frontend/`
+3. Configure as variáveis de ambiente no dashboard do Render

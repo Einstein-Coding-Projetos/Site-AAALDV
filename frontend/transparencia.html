@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Transparência | AAALDV</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outilined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     
@@ -17,7 +17,7 @@
     <div class="container mx-auto px-4 flex items-center justify-between h-20">
       <a href="index.html" class="font-display text-2xl tracking-tight flex items-center gap-2">
         <img src="assets/produtos/simbolo_aaaldv.png" alt="Logo AAALDV" class="h-8 w-8 object-contain">
-        <span><span class="text-primary">AAA</span>LDV</span>
+        <span class="font-gagalin"><span class="text-primary">AAA</span>LDV</span>
       </a>
 
 
@@ -30,8 +30,39 @@
         <a href="transparencia.html" class="nav-link text-primary">Transparência</a>
         <a href="#contato" class="nav-link">Contato</a>
     </div>
+        <!-- Botão hambúrguer -->
+        <div class="hamburger" id="hamburger-menu" aria-label="Abrir menu" tabindex="0" style="display:none;">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <!-- Menu mobile -->
+        <div class="mobile-menu" id="mobile-menu">
+          <a href="index.html">Início</a>
+          <a href="institucional.html">Institucional</a>
+          <a href="liga.html">Liga Einstein</a>
+          <a href="eventos.html">Eventos</a>
+          <a href="produtos.html">Produtos</a>
+          <a href="transparencia.html" class="text-primary">Transparência</a>
+          <a href="#contato">Contato</a>
+        </div>
     </header>
     </nav>
+  <script>
+    function checkMobileMenu() {
+      const hamburger = document.getElementById('hamburger-menu');
+      if(window.innerWidth < 1200) { hamburger.style.display = 'inline-flex'; }
+      else { hamburger.style.display = 'none'; document.getElementById('mobile-menu').style.display = 'none'; }
+    }
+    window.addEventListener('resize', checkMobileMenu);
+    window.addEventListener('DOMContentLoaded', checkMobileMenu);
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      hamburger.addEventListener('click', function() { mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex'; });
+      Array.from(mobileMenu.getElementsByTagName('a')).forEach(link => { link.addEventListener('click', () => { mobileMenu.style.display = 'none'; }); });
+    });
+  </script>
 
   <main class="transparencia-main">
     <section class="container mx-auto px-4 text-center mb-12">
@@ -140,10 +171,10 @@
     <div class="container mx-auto px-4">
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-2">
-          <h3 class="font-display text-2xl mb-1">
-            <span class="font-display text-2xl mb-1 text-primary">AAA</span>LDV
+          <h3 class="font-display text-2xl mb-1 font-gagalin">
+            <span class="text-primary">AAA</span>LDV
           </h3>
-          <p class="text-xs text-muted-foreground mb-4">Leonardo da Vinci</p>
+          <p class="text-xs text-muted-foreground mb-4 font-gagalin">Leonardo da Vinci</p>
           <p class="text-muted-foreground text-sm">
             A Associação Atlética Acadêmica Leonardo da Vinci representa os estudantes de 
             Engenharia Biomédica do Einstein, promovendo esporte, integração e muito mais!
@@ -200,14 +231,19 @@
       </div>
 
       <div class="border-t border-border mt-24 pt-12 pb-12 text-center">
-        <p class="text-sm text-muted-foreground">© 2024 AAALDV. Todos os direitos reservados.</p>
+        <p class="text-sm text-muted-foreground">&copy; 2025 AAALDV. Todos os direitos reservados.</p>
       </div>
     </div>
   </footer>
   
+  <script src="config.js"></script>
   <script>
 
-  const API_URL = "https://site-aaaldv-back.onrender.com"
+  function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
 
   async function carregarTransparencia(){
 
@@ -234,13 +270,13 @@
           </span>
 
           <div class="estatuto-text">
-            <h4 class="font-medium">${doc.titulo}</h4>
-            <p class="text-xs text-muted-foreground">${doc.data || ""}</p>
+            <h4 class="font-medium">${escapeHTML(doc.titulo)}</h4>
+            <p class="text-xs text-muted-foreground">${escapeHTML(doc.data || "")}</p>
           </div>
 
         </div>
 
-        <a href="${API_URL}${doc.arquivo}" class="btn-download" download>
+        <a href="${escapeHTML(API_URL + doc.arquivo)}" class="btn-download" download>
           <span class="material-icons-sharp">file_download</span>
           Download
         </a>

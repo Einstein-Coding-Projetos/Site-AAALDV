@@ -116,6 +116,11 @@
   transition: all 0.3s;
 }
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/gagalin');
+
+.font-gagalin {
+  font-family: 'Gagalin', 'Bebas Neue', sans-serif;
+}
 
 * {
   margin: 0;

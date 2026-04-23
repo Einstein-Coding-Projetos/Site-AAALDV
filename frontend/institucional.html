@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Institucional</title>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outilined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 
@@ -16,7 +16,7 @@
     <div class="container mx-auto px-4 flex items-center justify-between h-20">
       <a href="index.html" class="font-display text-2xl tracking-tight flex items-center gap-2">
         <img src="assets/produtos/simbolo_aaaldv.png" alt="Logo AAALDV" class="h-8 w-8 object-contain">
-        <span><span class="text-primary">AAA</span>LDV</span>
+        <span class="font-gagalin"><span class="text-primary">AAA</span>LDV</span>
       </a>
       <div class="hidden md:flex items-center gap-8">
         <a href="index.html" class="nav-link">Início</a>
@@ -27,9 +27,40 @@
         <a href="transparencia.html" class="nav-link">Transparência</a>
         <a href="#contato" class="nav-link">Contato</a>
       </div>
+        <!-- Botão hambúrguer -->
+        <div class="hamburger" id="hamburger-menu" aria-label="Abrir menu" tabindex="0" style="display:none;">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <!-- Menu mobile -->
+        <div class="mobile-menu" id="mobile-menu">
+          <a href="index.html">Início</a>
+          <a href="institucional.html" class="text-primary">Institucional</a>
+          <a href="liga.html">Liga Einstein</a>
+          <a href="eventos.html">Eventos</a>
+          <a href="produtos.html">Produtos</a>
+          <a href="transparencia.html">Transparência</a>
+          <a href="#contato">Contato</a>
+        </div>
     </div>
     </header>
   </nav>
+  <script>
+    function checkMobileMenu() {
+      const hamburger = document.getElementById('hamburger-menu');
+      if(window.innerWidth < 1200) { hamburger.style.display = 'inline-flex'; }
+      else { hamburger.style.display = 'none'; document.getElementById('mobile-menu').style.display = 'none'; }
+    }
+    window.addEventListener('resize', checkMobileMenu);
+    window.addEventListener('DOMContentLoaded', checkMobileMenu);
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.getElementById('hamburger-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      hamburger.addEventListener('click', function() { mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex'; });
+      Array.from(mobileMenu.getElementsByTagName('a')).forEach(link => { link.addEventListener('click', () => { mobileMenu.style.display = 'none'; }); });
+    });
+  </script>
 
   <main class= "bg-background"> 
 
@@ -469,10 +500,10 @@
     <div class="container mx-auto px-4">
       <div class="grid md:grid-cols-4 gap-8">
         <div class="md:col-span-2">
-          <h3 class="font-display text-2xl mb-1">
-            <span class="font-display text-2xl mb-1 text-primary">AAA</span>LDV
+          <h3 class="font-display text-2xl mb-1 font-gagalin">
+            <span class="text-primary">AAA</span>LDV
           </h3>
-          <p class="text-xs text-muted-foreground mb-4">Leonardo da Vinci</p>
+          <p class="text-xs text-muted-foreground mb-4 font-gagalin">Leonardo da Vinci</p>
           <p class="text-muted-foreground text-sm">
             A Associação Atlética Acadêmica Leonardo da Vinci representa os estudantes de 
             Engenharia Biomédica do Einstein, promovendo esporte, integração e muito mais!
@@ -529,13 +560,18 @@
       </div>
 
       <div class="border-t border-border mt-24 pt-12 pb-12 text-center">
-        <p class="text-sm text-muted-foreground">© 2024 AAALDV. Todos os direitos reservados.</p>
+        <p class="text-sm text-muted-foreground">&copy; 2025 AAALDV. Todos os direitos reservados.</p>
       </div>
     </div>
   </footer>
 
+<script src="config.js"></script>
 <script>
-        const API_URL = 'https://site-aaaldv-back.onrender.com';
+        function escapeHTML(str) {
+          const div = document.createElement('div');
+          div.textContent = str || '';
+          return div.innerHTML;
+        }
 
         async function carregarDiretoria() {
             try {
@@ -557,18 +593,18 @@
             
             if (!atual || !atual.membros) return;
 
-            tituloGestao.innerText = `Membros eleitos para a gestão de ${atual.periodo}`;
+            tituloGestao.textContent = `Membros eleitos para a gestão de ${atual.periodo}`;
             container.innerHTML = atual.membros.map(membro => `
                 <div class="board-card p-6 border border-border rounded-lg bg-card">
                     <div class="avatar w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mb-4 mx-auto font-bold text-xl">
-                        ${membro.nome.charAt(0)}
+                        ${escapeHTML(membro.nome.charAt(0))}
                     </div>
-                    <span class="role text-xs uppercase tracking-widest text-primary font-bold block mb-1 text-center">${membro.cargo}</span>
-                    <h3 class="text-lg font-bold text-center">${membro.nome}</h3>
-                    <p class="course text-sm text-muted-foreground text-center mb-3">${membro.curso}</p>
+                    <span class="role text-xs uppercase tracking-widest text-primary font-bold block mb-1 text-center">${escapeHTML(membro.cargo)}</span>
+                    <h3 class="text-lg font-bold text-center">${escapeHTML(membro.nome)}</h3>
+                    <p class="course text-sm text-muted-foreground text-center mb-3">${escapeHTML(membro.curso)}</p>
                     <p class="email text-xs text-center flex items-center justify-center gap-1">
                         <span class="material-icons-sharp text-sm">mail</span>
-                        ${membro.email}
+                        ${escapeHTML(membro.email)}
                     </p>
                 </div>
             `).join('');
@@ -582,15 +618,15 @@
                 <div class="history-item mb-8 pl-6 border-l-2 border-primary relative">
                     <span class="dot-past absolute -left-[9px] top-0 w-4 h-4 bg-primary rounded-full"></span>
                     <div class="history-content">
-                        <h3 class="font-bold text-lg">Gestão ${gestao.periodo}</h3>
-                        <p class="text-sm text-muted-foreground mb-2">Presidência: ${gestao.presidente}</p>
+                        <h3 class="font-bold text-lg">Gestão ${escapeHTML(gestao.periodo)}</h3>
+                        <p class="text-sm text-muted-foreground mb-2">Presidência: ${escapeHTML(gestao.presidente)}</p>
                         <details class="history-details cursor-pointer">
                             <summary class="history-toggle text-primary text-sm font-semibold">Ver diretoria completa</summary>
                             <div class="board-grid grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 bg-black/5 p-4 rounded-lg">
                                 ${gestao.membros.map(m => `
                                     <div class="text-center">
-                                        <p class="font-bold text-sm">${m.nome}</p>
-                                        <p class="text-[10px] uppercase text-muted-foreground">${m.cargo}</p>
+                                        <p class="font-bold text-sm">${escapeHTML(m.nome)}</p>
+                                        <p class="text-[10px] uppercase text-muted-foreground">${escapeHTML(m.cargo)}</p>
                                     </div>
                                 `).join('')}
                             </div>

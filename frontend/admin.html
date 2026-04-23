@@ -7,6 +7,40 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-background">
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center">
+    <div class="bg-card border border-border rounded-lg p-8 max-w-sm w-full mx-4">
+      <h1 class="text-2xl font-display font-bold mb-2 text-center">
+        <span class="text-primary">Admin</span> AAALDV
+      </h1>
+      <p class="text-center text-muted-foreground mb-6 text-sm">Digite a senha para acessar o painel</p>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <input
+            type="password"
+            id="loginSenha"
+            required
+            class="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            placeholder="Senha de administrador"
+            autocomplete="current-password"
+          >
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
+        >
+          Entrar
+        </button>
+        <p id="loginError" class="text-red-500 text-sm text-center hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN CONTENT (hidden until login) -->
+  <div id="admin-content" class="container mx-auto px-4 py-12" style="display:none;">
+    <div class="text-right mb-4">
+      <button onclick="logout()" class="text-sm text-red-500 hover:underline">Sair</button>
+    </div>
   <div class="container mx-auto px-4 py-12">
     <div class="max-w-6xl mx-auto">
       <h1 class="text-4xl font-display font-bold mb-2 text-center">
@@ -127,8 +161,48 @@
     </div>
   </div>
 
+  <script src="config.js"></script>
   <script>
-    const API_URL = "https://site-aaaldv-back.onrender.com"
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    // --- Login logic ---
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const senha = document.getElementById('loginSenha').value;
+      const errorEl = document.getElementById('loginError');
+      errorEl.classList.add('hidden');
+      try {
+        const res = await fetch(`${API_URL}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ senha })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Senha incorreta');
+        setToken(data.token);
+        showAdmin();
+      } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.classList.remove('hidden');
+      }
+    });
+
+    function showAdmin() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-content').style.display = '';
+    }
+
+    function logout() {
+      removeToken();
+      location.reload();
+    }
+
+    // Auto-login if token exists
+    if (isLoggedIn()) { showAdmin(); }
   </script>
 
 
@@ -205,6 +279,7 @@
       try {
         const response = await fetch(`${API_URL}/api/news`, {
           method: 'POST',
+          headers: authHeaders(),
           body: formData
         });
         
@@ -255,8 +330,8 @@
         lista.innerHTML = noticias.map((noticia, index) => `
           <div class="bg-background border border-border rounded-lg p-4 hover:border-primary/50 transition-colors">
             <div class="flex gap-4">
-              ${noticia.foto 
-                ? `<img src="${API_URL}${noticia.foto}" alt="${noticia.titulo}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0">`
+              ${noticia.foto
+                ? `<img src="${escapeHTML(API_URL + noticia.foto)}" alt="${escapeHTML(noticia.titulo)}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0">`
                 : `<div class="w-20 h-20 bg-secondary/30 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">📰</div>`
               }
               <div class="flex-1 min-w-0">
@@ -266,8 +341,8 @@
                       <span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">#${noticias.length - index}</span>
                       <span class="text-xs text-muted-foreground">${noticia.data}</span>
                     </div>
-                    <h3 class="font-display font-bold text-base truncate">${noticia.titulo}</h3>
-                    <p class="text-sm text-muted-foreground mt-1 line-clamp-2">${noticia.descricao}</p>
+                    <h3 class="font-display font-bold text-base truncate">${escapeHTML(noticia.titulo)}</h3>
+                    <p class="text-sm text-muted-foreground mt-1 line-clamp-2">${escapeHTML(noticia.descricao)}</p>
                   </div>
                   <button 
                     onclick="deletarNoticia(${noticia.id})"
@@ -298,7 +373,8 @@
       
       try {
         const response = await fetch(`${API_URL}/api/news/${id}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: authHeaders()
         });
         
         if (response.ok) {
@@ -411,6 +487,7 @@
 
     const response = await fetch(`${API_URL}/api/produtos`,{
       method:"POST",
+      headers: authHeaders(),
       body:formData
     })
 
@@ -453,8 +530,8 @@
 
 
             <div>
-              <h3 class="font-semibold">${produto.nome}</h3>
-              <p class="text-sm text-muted-foreground">R$ ${produto.preco}</p>
+              <h3 class="font-semibold">${escapeHTML(produto.nome)}</h3>
+              <p class="text-sm text-muted-foreground">R$ ${escapeHTML(produto.preco)}</p>
             </div>
 
           </div>
@@ -483,7 +560,8 @@
     if(!confirm("Tem certeza que deseja deletar este produto?")) return
 
     await fetch(`${API_URL}/api/produtos/${id}`,{
-      method:"DELETE"
+      method:"DELETE",
+      headers: authHeaders()
     })
 
     loadProdutos()
@@ -602,6 +680,7 @@
 
     const response = await fetch(`${API_URL}/api/transparencia`,{
       method:"POST",
+      headers: authHeaders(),
       body:formData
     })
 
@@ -647,14 +726,14 @@
 
           <div>
 
-            <h3 class="font-semibold">${doc.titulo}</h3>
+            <h3 class="font-semibold">${escapeHTML(doc.titulo)}</h3>
 
             <p class="text-sm text-muted-foreground">
-              ${doc.categoria} • ${doc.data || ""}
+              ${escapeHTML(doc.categoria)} • ${escapeHTML(doc.data || "")}
             </p>
 
-            ${doc.arquivo 
-              ? `<a href="${API_URL}${doc.arquivo}" target="_blank" class="text-primary text-sm">Abrir arquivo</a>`
+            ${doc.arquivo
+              ? `<a href="${escapeHTML(API_URL + doc.arquivo)}" target="_blank" class="text-primary text-sm">Abrir arquivo</a>`
               : ""
             }
 
@@ -687,7 +766,8 @@ async function deletarTransparencia(id){
   if(!confirm("Tem certeza que deseja deletar este documento?")) return
 
   await fetch(`${API_URL}/api/transparencia/${id}`,{
-    method:"DELETE"
+    method:"DELETE",
+    headers: authHeaders()
   })
 
   loadTransparencia()
@@ -999,9 +1079,7 @@ gestaoForm.addEventListener("submit", async (e) => {
   try {
     const response = await fetch(`${API_URL}/api/board/atual`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: authHeaders(true),
       body: JSON.stringify(payload)
     });
 
@@ -1020,7 +1098,8 @@ arquivarGestaoBtn.addEventListener("click", async () => {
 
   try {
     const response = await fetch(`${API_URL}/api/board/archive`, {
-      method: "POST"
+      method: "POST",
+      headers: authHeaders()
     });
 
     const data = await response.json();
@@ -1347,9 +1426,7 @@ mensalidadeForm.addEventListener("submit", async (e) => {
   try {
     const response = await fetch(`${API_URL}/api/mensalidade`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: authHeaders(true),
       body: JSON.stringify(payload)
     });
 
@@ -1405,6 +1482,7 @@ carouselForm.addEventListener("submit", async (e) => {
   try {
     const response = await fetch(`${API_URL}/api/carousel`, {
       method: "POST",
+      headers: authHeaders(),
       body: formData
     });
 
@@ -1486,7 +1564,8 @@ async function deletarFotoCarousel(id) {
 
   try {
     const response = await fetch(`${API_URL}/api/carousel/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: authHeaders()
     });
 
     if (!response.ok) throw new Error("Erro ao deletar foto");
@@ -1501,5 +1580,6 @@ loadMensalidade();
 loadCarousel();
 </script>
 
+  </div><!-- close admin-content -->
 </body>
 </html>

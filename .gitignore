@@ -29,6 +29,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Uploads (managed by backend, not versioned)
+# Uploads
 backend/uploads/*
 !backend/uploads/.gitkeep
