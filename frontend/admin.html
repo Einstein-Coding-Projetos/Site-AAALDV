@@ -5,13 +5,240 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - AAALDV</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+      /* Admin-specific styles */
+      .admin-section {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding-top: 4rem;
+      }
+      .admin-section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .admin-section-header h1 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: -0.025em;
+      }
+      .admin-section-header p {
+        color: var(--muted-foreground);
+        font-size: 0.875rem;
+      }
+      .admin-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+      }
+      .admin-card-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: -0.025em;
+      }
+      .admin-input {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        background: var(--background);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        color: var(--foreground);
+        font-size: 0.875rem;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .admin-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 220 38 38), 0.15);
+      }
+      .admin-input::placeholder {
+        color: var(--muted-foreground);
+      }
+      .admin-file-input {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        background: var(--background);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        color: var(--foreground);
+        font-size: 0.875rem;
+      }
+      .admin-file-input::file-selector-button {
+        margin-right: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.375rem;
+        border: none;
+        font-size: 0.75rem;
+        background: var(--primary);
+        color: var(--primary-foreground);
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .admin-file-input::file-selector-button:hover {
+        opacity: 0.9;
+      }
+      .admin-label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--muted-foreground);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .admin-btn-primary {
+        width: 100%;
+        background: var(--primary);
+        color: var(--primary-foreground);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.125rem;
+        letter-spacing: 0.025em;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .admin-btn-primary:hover {
+        opacity: 0.9;
+      }
+      .admin-btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .admin-btn-secondary {
+        width: 100%;
+        background: transparent;
+        color: var(--yellow, #eab308);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.125rem;
+        letter-spacing: 0.025em;
+        border: 1px solid rgba(234, 179, 8, 0.4);
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .admin-btn-secondary:hover {
+        background: rgba(234, 179, 8, 0.1);
+      }
+      .admin-btn-delete {
+        color: #ef4444;
+        background: transparent;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+        flex-shrink: 0;
+      }
+      .admin-btn-delete:hover {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: #ef4444;
+      }
+      .admin-list-item {
+        background: var(--background);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        transition: border-color 0.2s;
+      }
+      .admin-list-item:hover {
+        border-color: rgba(var(--primary-rgb, 220 38 38), 0.5);
+      }
+      .admin-badge {
+        font-size: 0.625rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 9999px;
+        font-weight: 500;
+        background: rgba(var(--primary-rgb, 220 38 38), 0.1);
+        color: var(--primary);
+      }
+      .admin-preview-box {
+        background: var(--background);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+      .admin-message {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        display: none;
+      }
+      .admin-message.success {
+        display: block;
+        background: rgba(34, 197, 94, 0.1);
+        color: #22c55e;
+      }
+      .admin-message.error {
+        display: block;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+      }
+      .admin-divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 4rem 0;
+      }
+      .admin-refresh-btn {
+        font-size: 0.875rem;
+        color: var(--primary);
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .admin-refresh-btn:hover {
+        text-decoration: underline;
+      }
+      .admin-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+      @media (min-width: 1024px) {
+        .admin-grid-2 {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .admin-form-group {
+        margin-bottom: 1rem;
+      }
+      .admin-form-group:last-of-type {
+        margin-bottom: 0;
+      }
+      .admin-hint {
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+        margin-top: 0.5rem;
+      }
+      .admin-img-placeholder {
+        height: 12rem;
+        background: rgba(var(--secondary-rgb, 128 128 128), 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted-foreground);
+        font-size: 0.875rem;
+      }
+    </style>
 </head>
 <body class="bg-background">
   <!-- LOGIN SCREEN -->
   <div id="login-screen" class="min-h-screen flex items-center justify-center">
     <div class="bg-card border border-border rounded-lg p-8 max-w-sm w-full mx-4">
       <h1 class="text-2xl font-display font-bold mb-2 text-center">
-        <span class="text-primary">Admin</span> AAALDV
+        <span class="text-primary">Admin</span> <span class="font-gagalin">AAALDV</span>
       </h1>
       <p class="text-center text-muted-foreground mb-6 text-sm">Digite a senha para acessar o painel</p>
       <form id="loginForm" class="space-y-4">
@@ -20,14 +247,15 @@
             type="password"
             id="loginSenha"
             required
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+            class="admin-input"
             placeholder="Senha de administrador"
             autocomplete="current-password"
+            style="padding:0.75rem 1rem;"
           >
         </div>
         <button
           type="submit"
-          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
+          class="admin-btn-primary"
         >
           Entrar
         </button>
@@ -37,129 +265,485 @@
   </div>
 
   <!-- ADMIN CONTENT (hidden until login) -->
-  <div id="admin-content" class="container mx-auto px-4 py-12" style="display:none;">
-    <div class="text-right mb-4">
-      <button onclick="logout()" class="text-sm text-red-500 hover:underline">Sair</button>
-    </div>
+  <div id="admin-content" style="display:none;">
+
+    <!-- Hero section matching index.html -->
+    <section id="admin-hero-section" style="position:relative;min-height:45vh;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+      <div id="admin-hero-bg-container" style="position:absolute;inset:0;z-index:0;">
+        <img src="assets/inicio.jpeg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;" class="admin-hero-bg-slide" data-index="fallback">
+      </div>
+      <div style="position:absolute;inset:0;z-index:1;background:rgba(0,0,0,0.7);"></div>
+
+      <!-- Admin navbar (absolute on top of hero) -->
+      <nav style="position:absolute;top:0;left:0;right:0;z-index:50;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.08);">
+        <div class="container mx-auto px-4 flex items-center justify-between h-16">
+          <a href="index.html" class="font-display text-xl tracking-tight flex items-center gap-2" style="text-decoration:none;color:var(--foreground);">
+            <img src="assets/produtos/simbolo_aaaldv.png" alt="Logo AAALDV" class="h-7 w-7 object-contain">
+            <span class="font-gagalin"><span class="text-primary">AAA</span>LDV</span>
+            <span style="font-size:0.625rem;color:var(--muted-foreground);margin-left:0.5rem;border:1px solid var(--border);border-radius:0.25rem;padding:0.125rem 0.5rem;">Admin</span>
+          </a>
+          <div class="flex items-center gap-6">
+            <a href="index.html" style="font-size:0.875rem;color:var(--muted-foreground);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--foreground)'" onmouseout="this.style.color='var(--muted-foreground)'">Ver site</a>
+            <button onclick="logout()" style="font-size:0.875rem;color:#ef4444;border:1px solid rgba(239,68,68,0.3);border-radius:0.375rem;padding:0.375rem 0.75rem;background:transparent;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.1)'" onmouseout="this.style.background='transparent'">Sair</button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Hero content -->
+      <div class="container mx-auto px-4 text-center" style="position:relative;z-index:10;">
+        <h1 class="section-title mb-4">
+          <span class="font-gagalin text-primary">Painel</span> <span class="font-gagalin">Administrativo</span>
+        </h1>
+        <p style="color:var(--muted-foreground);font-size:1rem;max-width:32rem;margin:0 auto;">Gerencie o conteúdo do site AAALDV</p>
+        <div style="margin-top:1.5rem;display:flex;align-items:center;justify-content:center;gap:1rem;">
+          <span id="serverStatus" style="font-size:0.75rem;padding:0.25rem 0.75rem;border-radius:9999px;background:rgba(234,179,8,0.1);color:#eab308;">Verificando servidor...</span>
+        </div>
+      </div>
+    </section>
+
   <div class="container mx-auto px-4 py-12">
-    <div class="max-w-6xl mx-auto">
-      <h1 class="text-4xl font-display font-bold mb-2 text-center">
-        <span class="text-primary">Gerenciar</span> Notícias
-      </h1>
-      <p class="text-center text-muted-foreground mb-12">Adicione, visualize e remova notícias do site</p>
 
-      <div class="grid lg:grid-cols-2 gap-8 mb-12">
+    <!-- =================== NOTÍCIAS =================== -->
+    <div class="admin-section" style="padding-top:0;">
+      <div class="admin-section-header">
+        <h1><span class="text-primary">Gerenciar</span> Notícias</h1>
+        <p>Adicione, visualize e remova notícias do site</p>
+      </div>
+
+      <div class="admin-grid-2">
         <!-- Formulário -->
-        <div class="bg-card border border-border rounded-lg p-6">
-          <h2 class="text-xl font-display font-bold mb-6">
-            <span class="text-primary">Nova</span> Notícia
-          </h2>
-          
-        <form id="noticiaForm" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium mb-2">Título: </label>
-            <input 
-              type="text" 
-              name="titulo" 
-              required 
-              class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-              placeholder="Título da notícia"
-            >
-          </div>
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Nova</span> Notícia</h2>
 
-          <div>
-            <label class="block text-sm font-medium mb-2">Descrição: </label>
-            <textarea 
-              name="descricao" 
-              required 
-              rows="5"
-              class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none text-foreground"
-              placeholder="Descreva o evento ou notícia..."
-            ></textarea>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium mb-2">Data: </label>
-              <input 
-                type="text" 
-                name="data" 
-                required 
-                pattern="\d{2}/\d{2}/\d{4}"
-                class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                placeholder="DD/MM/AAAA"
-              >
+          <form id="noticiaForm">
+            <div class="admin-form-group">
+              <label class="admin-label">Título</label>
+              <input type="text" name="titulo" required class="admin-input" placeholder="Título da notícia">
             </div>
-            
-            <div>
-              <label class="block text-sm font-medium mb-2">Foto:</label>
-              <input 
-                type="file" 
-                name="foto" 
-                accept="image/*"
-                class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:cursor-pointer hover:file:bg-primary/90"
-              >
+
+            <div class="admin-form-group">
+              <label class="admin-label">Descrição</label>
+              <textarea name="descricao" required rows="4" class="admin-input" style="resize:none;" placeholder="Descreva o evento ou notícia..."></textarea>
             </div>
-          </div>
-          
-          <p class="text-xs text-muted-foreground">* Campos obrigatórios | Imagens: PNG, JPG, JPEG, GIF, WEBP (máx. 16MB)</p>
 
-          <button 
-            type="submit" 
-            class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
-          >
-            + Adicionar Notícia
-          </button>
-        </form>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;" class="admin-form-group">
+              <div>
+                <label class="admin-label">Data</label>
+                <input type="text" name="data" required pattern="\d{2}/\d{2}/\d{4}" class="admin-input" placeholder="DD/MM/AAAA">
+              </div>
+              <div>
+                <label class="admin-label">Foto</label>
+                <input type="file" name="foto" accept="image/*" class="admin-file-input">
+              </div>
+            </div>
 
-        <div id="message" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
+            <p class="admin-hint">* Campos obrigatórios | Imagens: PNG, JPG, JPEG, GIF, WEBP (máx. 16MB)</p>
+
+            <div style="margin-top:1rem;">
+              <button type="submit" class="admin-btn-primary">+ Adicionar Notícia</button>
+            </div>
+          </form>
+
+          <div id="noticiaMessage" class="admin-message"></div>
         </div>
 
         <!-- Preview -->
-        <div class="bg-card border border-border rounded-lg p-6">
-          <h2 class="text-xl font-display font-bold mb-6">
-            <span class="text-primary">Preview</span> da Notícia
-          </h2>
-          
-          <div id="previewCard" class="bg-background border border-border rounded-lg overflow-hidden">
-            <div id="previewImageContainer" class="relative h-48 bg-secondary/30 flex items-center justify-center">
-              <img id="previewImage" class="hidden w-full h-full object-cover" alt="Preview">
-              <span id="previewPlaceholder" class="text-muted-foreground text-sm">📷 Imagem aparecerá aqui</span>
-            </div>
-            <div class="p-4">
-              <span id="previewData" class="text-xs text-muted-foreground">--/--/----</span>
-              <h3 id="previewTitulo" class="text-base font-semibold mt-1 text-muted-foreground">Título da notícia</h3>
-              <p id="previewDescricao" class="text-muted-foreground text-sm mt-2">
-                Descrição da notícia aparecerá aqui...
-              </p>
-            </div>
-          </div>
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Preview</span> da Notícia</h2>
 
-          <div class="mt-6 space-y-3">
-            <div class="flex items-center justify-between p-3 bg-background rounded-lg">
-              <span class="text-sm text-muted-foreground">Status do Servidor</span>
-              <span id="serverStatus" class="text-xs px-2 py-1 rounded bg-yellow-500/10 text-yellow-500">Verificando...</span>
+          <div class="admin-preview-box">
+            <div id="previewImageContainer" class="admin-img-placeholder">
+              <img id="previewImage" class="hidden" style="width:100%;height:100%;object-fit:cover;" alt="Preview">
+              <span id="previewPlaceholder" style="color:var(--muted-foreground);font-size:0.875rem;">Imagem aparecerá aqui</span>
+            </div>
+            <div style="padding:1rem;">
+              <span id="previewData" style="font-size:0.75rem;color:var(--muted-foreground);">--/--/----</span>
+              <h3 id="previewTitulo" style="font-size:1rem;font-weight:600;margin-top:0.25rem;color:var(--muted-foreground);">Título da notícia</h3>
+              <p id="previewDescricao" style="color:var(--muted-foreground);font-size:0.875rem;margin-top:0.5rem;">Descrição da notícia aparecerá aqui...</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Lista de Notícias -->
-      <div class="bg-card border border-border rounded-lg p-6">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-display font-bold">
-            <span class="text-primary">Notícias</span> Cadastradas
-          </h2>
-          <button onclick="loadNoticias()" class="text-sm text-primary hover:underline">
-            ↻ Atualizar
-          </button>
+      <div class="admin-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+          <h2 class="admin-card-title" style="margin-bottom:0;"><span class="text-primary">Notícias</span> Cadastradas</h2>
+          <button onclick="loadNoticias()" class="admin-refresh-btn">↻ Atualizar</button>
         </div>
-        <div id="listaNoticias" class="space-y-3">
-          <p class="text-muted-foreground text-center py-8">Carregando notícias...</p>
+        <div id="listaNoticias" style="display:flex;flex-direction:column;gap:0.75rem;">
+          <p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Carregando notícias...</p>
         </div>
       </div>
     </div>
-  </div>
+
+    <hr class="admin-divider">
+
+    <!-- =================== PRODUTOS =================== -->
+    <div class="admin-section" style="padding-top:0;">
+      <div class="admin-section-header">
+        <h1><span class="text-primary">Gerenciar</span> Produtos</h1>
+        <p>Adicione ou remova produtos da aba de produtos</p>
+      </div>
+
+      <div class="admin-grid-2">
+        <!-- Formulário -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Novo</span> Produto</h2>
+
+          <form id="produtoForm" enctype="multipart/form-data">
+            <div class="admin-form-group">
+              <label class="admin-label">Nome</label>
+              <input type="text" name="nome" required class="admin-input" placeholder="Nome do produto">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Preço</label>
+              <input type="number" name="preco" min="0" step="0.01" required class="admin-input" placeholder="Ex: 79.90">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Foto</label>
+              <input type="file" name="foto" accept="image/*" class="admin-file-input">
+            </div>
+
+            <div style="margin-top:1rem;">
+              <button type="submit" class="admin-btn-primary">+ Adicionar Produto</button>
+            </div>
+          </form>
+
+          <div id="produtoMessage" class="admin-message"></div>
+        </div>
+
+        <!-- Lista -->
+        <div class="admin-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+            <h2 class="admin-card-title" style="margin-bottom:0;"><span class="text-primary">Produtos</span> Cadastrados</h2>
+            <button onclick="loadProdutos()" class="admin-refresh-btn">↻ Atualizar</button>
+          </div>
+          <div id="listaProdutos" style="display:flex;flex-direction:column;gap:0.75rem;">
+            <p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Carregando produtos...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="admin-divider">
+
+    <!-- =================== TRANSPARÊNCIA =================== -->
+    <div class="admin-section" style="padding-top:0;">
+      <div class="admin-section-header">
+        <h1><span class="text-primary">Gerenciar</span> Transparência</h1>
+        <p>Adicione ou remova arquivos da página de transparência</p>
+      </div>
+
+      <div class="admin-grid-2">
+        <!-- Formulário -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Novo</span> Documento</h2>
+
+          <form id="transparenciaForm" enctype="multipart/form-data">
+            <div class="admin-form-group">
+              <label class="admin-label">Título</label>
+              <input type="text" name="titulo" required class="admin-input" placeholder="Título do documento">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Categoria</label>
+              <select name="categoria" required class="admin-input">
+                <option value="relatorio_financeiro">Relatório Financeiro</option>
+                <option value="documentos">Documentos</option>
+                <option value="estatuto">Estatuto</option>
+              </select>
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Arquivo</label>
+              <input type="file" name="arquivo" accept=".pdf,.doc,.docx,.xls,.xlsx" class="admin-file-input">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Data</label>
+              <input type="date" name="data" required class="admin-input">
+            </div>
+
+            <div style="margin-top:1rem;">
+              <button type="submit" class="admin-btn-primary">+ Adicionar Documento</button>
+            </div>
+          </form>
+
+          <div id="transparenciaMessage" class="admin-message"></div>
+        </div>
+
+        <!-- Lista -->
+        <div class="admin-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+            <h2 class="admin-card-title" style="margin-bottom:0;"><span class="text-primary">Documentos</span> Cadastrados</h2>
+            <button onclick="loadTransparencia()" class="admin-refresh-btn">↻ Atualizar</button>
+          </div>
+          <div id="listaTransparencia" style="display:flex;flex-direction:column;gap:0.75rem;">
+            <p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Carregando documentos...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="admin-divider">
+
+    <!-- =================== GESTÃO =================== -->
+    <div class="admin-section" style="padding-top:0;">
+      <div class="admin-section-header">
+        <h1><span class="text-primary">Gerenciar</span> Gestão</h1>
+        <p>Defina a gestão atual, adicione membros e arquive a gestão vigente no histórico</p>
+      </div>
+
+      <div class="admin-grid-2">
+        <!-- Formulário -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Nova</span> Gestão Atual</h2>
+
+          <form id="gestaoForm">
+            <div class="admin-form-group">
+              <label class="admin-label">Período</label>
+              <input type="text" name="periodo" required class="admin-input" placeholder="Ex: 2026-2027">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Presidente</label>
+              <input type="text" name="presidente" required class="admin-input" placeholder="Nome da presidência">
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:0.5rem;padding:1rem;background:var(--background);margin-bottom:1rem;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+                <h3 style="font-weight:600;font-size:0.875rem;">Membros da diretoria</h3>
+                <button type="button" id="addMembroBtn" style="font-size:0.75rem;color:var(--primary);background:none;border:none;cursor:pointer;text-decoration:underline;">+ Adicionar membro</button>
+              </div>
+              <div id="membrosContainer" style="display:flex;flex-direction:column;gap:1rem;">
+                <!-- membros dinâmicos -->
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:0.75rem;">
+              <button type="submit" class="admin-btn-primary">Salvar Gestão Atual</button>
+              <button type="button" id="arquivarGestaoBtn" class="admin-btn-secondary">Arquivar Gestão Atual</button>
+            </div>
+          </form>
+
+          <div id="gestaoMessage" class="admin-message"></div>
+        </div>
+
+        <!-- Preview -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Preview</span> da Gestão</h2>
+
+          <div class="admin-preview-box" style="padding:1rem;margin-bottom:1.5rem;">
+            <p style="font-size:0.75rem;color:var(--muted-foreground);margin-bottom:0.25rem;">Período</p>
+            <h3 id="previewPeriodoGestao" style="font-size:1.125rem;font-weight:700;">--</h3>
+            <p style="font-size:0.75rem;color:var(--muted-foreground);margin-top:0.75rem;margin-bottom:0.25rem;">Presidência</p>
+            <p id="previewPresidenteGestao" style="font-size:1rem;">--</p>
+          </div>
+
+          <div class="admin-preview-box" style="padding:1rem;">
+            <h3 style="font-weight:600;margin-bottom:1rem;font-size:0.875rem;">Membros cadastrados</h3>
+            <div id="previewMembrosGestao" style="display:flex;flex-direction:column;gap:0.75rem;">
+              <p style="font-size:0.875rem;color:var(--muted-foreground);">Nenhum membro adicionado ainda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gestão cadastrada -->
+      <div class="admin-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+          <h2 class="admin-card-title" style="margin-bottom:0;"><span class="text-primary">Gestão</span> Cadastrada</h2>
+          <button onclick="loadGestao()" class="admin-refresh-btn">↻ Atualizar</button>
+        </div>
+
+        <div id="gestaoAtualBox" style="margin-bottom:2rem;">
+          <p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Carregando gestão atual...</p>
+        </div>
+
+        <div>
+          <h3 class="admin-card-title"><span class="text-primary">Histórico</span> de Gestões</h3>
+          <div id="historicoGestoes" style="display:flex;flex-direction:column;gap:1rem;">
+            <p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Carregando histórico...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="admin-divider">
+
+    <!-- =================== MENSALIDADE =================== -->
+    <div class="admin-section" style="padding-top:0;">
+      <div class="admin-section-header">
+        <h1><span class="text-primary">Gerenciar</span> Mensalidade</h1>
+        <p>Atualize os valores dos planos de mensalidade</p>
+      </div>
+
+      <div class="admin-grid-2">
+        <!-- Formulário -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Valores</span> dos Planos</h2>
+
+          <form id="mensalidadeForm">
+            <div class="admin-form-group">
+              <label class="admin-label">Plano sem campeonato</label>
+              <input type="number" name="valor_sem_campeonato" min="0" step="0.01" required class="admin-input" placeholder="Ex: 70">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Plano com campeonato</label>
+              <input type="number" name="valor_com_campeonato" min="0" step="0.01" required class="admin-input" placeholder="Ex: 80">
+            </div>
+
+            <div style="margin-top:1rem;">
+              <button type="submit" class="admin-btn-primary">Salvar Mensalidades</button>
+            </div>
+          </form>
+
+          <div id="mensalidadeMessage" class="admin-message"></div>
+        </div>
+
+        <!-- Preview -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Preview</span> dos Planos</h2>
+
+          <div style="display:flex;flex-direction:column;gap:1rem;">
+            <div class="admin-preview-box" style="padding:1rem;">
+              <p style="font-size:0.75rem;color:var(--muted-foreground);">Plano esportes sem campeonato semestral</p>
+              <p style="font-size:1.5rem;font-family:'Bebas Neue',sans-serif;font-weight:700;margin-top:0.5rem;">
+                R$ <span id="previewSemCampeonato">70</span>
+                <span style="font-size:0.875rem;color:var(--muted-foreground);">/ mês</span>
+              </p>
+            </div>
+
+            <div class="admin-preview-box" style="padding:1rem;">
+              <p style="font-size:0.75rem;color:var(--muted-foreground);">Plano esportes com campeonato semestral</p>
+              <p style="font-size:1.5rem;font-family:'Bebas Neue',sans-serif;font-weight:700;margin-top:0.5rem;">
+                R$ <span id="previewComCampeonato">80</span>
+                <span style="font-size:0.875rem;color:var(--muted-foreground);">/ mês</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="admin-divider">
+
+    <!-- =================== CARROSSEL PÁGINA INICIAL =================== -->
+    <div class="admin-section" style="padding-top:0;">
+      <div class="admin-section-header">
+        <h1><span class="text-primary">Carrossel</span> Página Inicial</h1>
+        <p>Fotos exibidas no fundo da página inicial (hero) com transição automática</p>
+      </div>
+
+      <div class="admin-grid-2">
+        <!-- Formulário -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Nova</span> Foto do Hero</h2>
+
+          <form id="carouselHomeForm" enctype="multipart/form-data">
+            <div class="admin-form-group">
+              <label class="admin-label">Legenda</label>
+              <input type="text" name="legenda" required class="admin-input" placeholder="Ex: Campus universitário">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Foto</label>
+              <input type="file" name="foto" accept="image/*" required class="admin-file-input">
+            </div>
+
+            <div style="margin-top:1rem;">
+              <button type="submit" class="admin-btn-primary">+ Adicionar Foto</button>
+            </div>
+          </form>
+
+          <div id="carouselHomeMessage" class="admin-message"></div>
+
+          <div style="margin-top:1.5rem;" class="admin-preview-box">
+            <div id="carouselHomePreviewImgContainer" class="admin-img-placeholder">
+              <img id="carouselHomePreviewImage" class="hidden" style="width:100%;height:100%;object-fit:cover;" alt="Preview">
+              <span id="carouselHomePreviewPlaceholder">Imagem aparecerá aqui</span>
+            </div>
+            <div style="padding:1rem;">
+              <p id="carouselHomePreviewLegenda" style="color:var(--muted-foreground);font-size:0.875rem;">A legenda aparecerá aqui...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista -->
+        <div class="admin-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+            <h2 class="admin-card-title" style="margin-bottom:0;"><span class="text-primary">Fotos</span> do Hero</h2>
+            <button onclick="loadCarouselHome()" class="admin-refresh-btn">↻ Atualizar</button>
+          </div>
+          <div id="listaCarouselHome" style="display:flex;flex-direction:column;gap:0.75rem;">
+            <p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Carregando fotos...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="admin-divider">
+
+    <!-- =================== CARROSSEL LIGA EINSTEIN =================== -->
+    <div class="admin-section" style="padding-top:0;">
+      <div class="admin-section-header">
+        <h1><span class="text-primary">Carrossel</span> Liga Einstein</h1>
+        <p>Fotos exibidas no carrossel da página Liga Einstein</p>
+      </div>
+
+      <div class="admin-grid-2">
+        <!-- Formulário -->
+        <div class="admin-card">
+          <h2 class="admin-card-title"><span class="text-primary">Nova</span> Foto da Liga</h2>
+
+          <form id="carouselLigaForm" enctype="multipart/form-data">
+            <div class="admin-form-group">
+              <label class="admin-label">Legenda</label>
+              <input type="text" name="legenda" required class="admin-input" placeholder="Ex: Primeiro lugar geral no JUCAMP 25">
+            </div>
+
+            <div class="admin-form-group">
+              <label class="admin-label">Foto</label>
+              <input type="file" name="foto" accept="image/*" required class="admin-file-input">
+            </div>
+
+            <div style="margin-top:1rem;">
+              <button type="submit" class="admin-btn-primary">+ Adicionar Foto</button>
+            </div>
+          </form>
+
+          <div id="carouselLigaMessage" class="admin-message"></div>
+
+          <div style="margin-top:1.5rem;" class="admin-preview-box">
+            <div id="carouselLigaPreviewImgContainer" class="admin-img-placeholder">
+              <img id="carouselLigaPreviewImage" class="hidden" style="width:100%;height:100%;object-fit:cover;" alt="Preview">
+              <span id="carouselLigaPreviewPlaceholder">Imagem aparecerá aqui</span>
+            </div>
+            <div style="padding:1rem;">
+              <p id="carouselLigaPreviewLegenda" style="color:var(--muted-foreground);font-size:0.875rem;">A legenda aparecerá aqui...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista -->
+        <div class="admin-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+            <h2 class="admin-card-title" style="margin-bottom:0;"><span class="text-primary">Fotos</span> da Liga</h2>
+            <button onclick="loadCarouselLiga()" class="admin-refresh-btn">↻ Atualizar</button>
+          </div>
+          <div id="listaCarouselLiga" style="display:flex;flex-direction:column;gap:0.75rem;">
+            <p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Carregando fotos...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- close container -->
+  </div><!-- close admin-content -->
 
   <script src="config.js"></script>
   <script>
@@ -194,6 +778,7 @@
     function showAdmin() {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-content').style.display = '';
+      initAll();
     }
 
     function logout() {
@@ -201,55 +786,102 @@
       location.reload();
     }
 
-    // Auto-login if token exists
     if (isLoggedIn()) { showAdmin(); }
-  </script>
 
+    // --- Hero carousel for admin page ---
+    let adminHeroBgIndex = 0;
+    let adminHeroBgSlides = [];
 
-  <script>
-    
-    // Verificar status do servidor
+    async function loadAdminHeroCarousel() {
+      try {
+        const response = await fetch(`${API_URL}/api/carousel`);
+        const fotos = await response.json();
+        if (!fotos || fotos.length === 0) return;
+
+        const container = document.getElementById('admin-hero-bg-container');
+        container.innerHTML = '';
+
+        fotos.forEach((foto, i) => {
+          const img = document.createElement('img');
+          img.src = foto.url.startsWith('http') ? foto.url : API_URL + foto.url;
+          img.alt = foto.legenda || '';
+          img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:' + (i === 0 ? '1' : '0') + ';transition:opacity 1s ease-in-out;';
+          img.className = 'admin-hero-bg-slide';
+          img.dataset.index = i;
+          container.appendChild(img);
+        });
+
+        adminHeroBgSlides = container.querySelectorAll('.admin-hero-bg-slide');
+        adminHeroBgIndex = 0;
+
+        setInterval(() => {
+          if (adminHeroBgSlides.length <= 1) return;
+          const current = adminHeroBgIndex;
+          adminHeroBgIndex = (adminHeroBgIndex + 1) % adminHeroBgSlides.length;
+          adminHeroBgSlides[current].style.opacity = '0';
+          adminHeroBgSlides[adminHeroBgIndex].style.opacity = '1';
+        }, 5000);
+      } catch (e) {
+        console.error('Erro ao carregar carrossel do hero admin:', e);
+      }
+    }
+
+    // --- Server status ---
     async function checkServerStatus() {
       try {
         const response = await fetch(`${API_URL}/api/news`);
         if (response.ok) {
-          document.getElementById('serverStatus').className = 'text-xs px-2 py-1 rounded bg-green-500/10 text-green-500';
-          document.getElementById('serverStatus').textContent = '✓ Online';
+          document.getElementById('serverStatus').style.background = 'rgba(34,197,94,0.1)';
+          document.getElementById('serverStatus').style.color = '#22c55e';
+          document.getElementById('serverStatus').textContent = 'Servidor online';
         }
       } catch (error) {
-        document.getElementById('serverStatus').className = 'text-xs px-2 py-1 rounded bg-red-500/10 text-red-500';
-        document.getElementById('serverStatus').textContent = '✗ Offline';
+        document.getElementById('serverStatus').style.background = 'rgba(239,68,68,0.1)';
+        document.getElementById('serverStatus').style.color = '#ef4444';
+        document.getElementById('serverStatus').textContent = 'Servidor offline';
       }
     }
 
-    // Preview em tempo real
-    const form = document.getElementById('noticiaForm');
+    // --- Helper: show message ---
+    function showMessage(elementId, type, text) {
+      const el = document.getElementById(elementId);
+      el.className = 'admin-message ' + type;
+      el.textContent = text;
+      setTimeout(() => { el.className = 'admin-message'; }, 4000);
+    }
+
+    // =================== NOTÍCIAS ===================
+    const noticiaForm = document.getElementById('noticiaForm');
     const previewTitulo = document.getElementById('previewTitulo');
     const previewDescricao = document.getElementById('previewDescricao');
     const previewData = document.getElementById('previewData');
     const previewImage = document.getElementById('previewImage');
     const previewPlaceholder = document.getElementById('previewPlaceholder');
 
-    form.titulo.addEventListener('input', (e) => {
+    noticiaForm.titulo.addEventListener('input', (e) => {
       previewTitulo.textContent = e.target.value || 'Título da notícia';
-      previewTitulo.className = e.target.value ? 'text-base font-semibold mt-1' : 'text-base font-semibold mt-1 text-muted-foreground';
+      previewTitulo.style.color = e.target.value ? 'var(--foreground)' : 'var(--muted-foreground)';
     });
 
-    form.descricao.addEventListener('input', (e) => {
+    noticiaForm.descricao.addEventListener('input', (e) => {
       previewDescricao.textContent = e.target.value || 'Descrição da notícia aparecerá aqui...';
-      previewDescricao.className = e.target.value ? 'text-sm mt-2' : 'text-muted-foreground text-sm mt-2';
+      previewDescricao.style.color = e.target.value ? 'var(--foreground)' : 'var(--muted-foreground)';
     });
 
-    form.data.addEventListener('input', (e) => {
-      previewData.textContent = e.target.value || '--/--/----';
+    noticiaForm.data.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2);
+      if (value.length >= 5) value = value.slice(0, 5) + '/' + value.slice(5, 9);
+      e.target.value = value;
+      previewData.textContent = value || '--/--/----';
     });
 
-    form.foto.addEventListener('change', function(e) {
+    noticiaForm.foto.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-          previewImage.src = e.target.result;
+        reader.onload = function(ev) {
+          previewImage.src = ev.target.result;
           previewImage.classList.remove('hidden');
           previewPlaceholder.classList.add('hidden');
         };
@@ -257,1329 +889,774 @@
       }
     });
 
-    // Auto-formatar data
-    form.data.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/\D/g, '');
-      if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2);
-      if (value.length >= 5) value = value.slice(0, 5) + '/' + value.slice(5, 9);
-      e.target.value = value;
-    });
-
-    // Enviar formulário
-    form.addEventListener('submit', async (e) => {
+    noticiaForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
       const formData = new FormData(e.target);
-      const messageDiv = document.getElementById('message');
       const submitBtn = e.target.querySelector('button[type="submit"]');
-      
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando...';
-      
+
       try {
         const response = await fetch(`${API_URL}/api/news`, {
           method: 'POST',
           headers: authHeaders(),
           body: formData
         });
-        
+
         if (response.ok) {
-          messageDiv.className = 'mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm';
-          messageDiv.textContent = '✓ Notícia adicionada com sucesso!';
-          messageDiv.classList.remove('hidden');
-          
-          // Reset
+          showMessage('noticiaMessage', 'success', 'Notícia adicionada com sucesso!');
           e.target.reset();
           previewImage.classList.add('hidden');
           previewPlaceholder.classList.remove('hidden');
           previewTitulo.textContent = 'Título da notícia';
-          previewTitulo.className = 'text-base font-semibold mt-1 text-muted-foreground';
+          previewTitulo.style.color = 'var(--muted-foreground)';
           previewDescricao.textContent = 'Descrição da notícia aparecerá aqui...';
-          previewDescricao.className = 'text-muted-foreground text-sm mt-2';
+          previewDescricao.style.color = 'var(--muted-foreground)';
           previewData.textContent = '--/--/----';
-          
           loadNoticias();
-          
-          setTimeout(() => messageDiv.classList.add('hidden'), 3000);
         } else {
           throw new Error('Erro ao adicionar notícia');
         }
       } catch (error) {
-        messageDiv.className = 'mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm';
-        messageDiv.textContent = '✗ Erro ao adicionar. Verifique se o servidor está rodando.';
-        messageDiv.classList.remove('hidden');
+        showMessage('noticiaMessage', 'error', 'Erro ao adicionar. Verifique se o servidor está rodando.');
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = '+ Adicionar Notícia';
       }
     });
 
-    // Carregar e listar notícias
     async function loadNoticias() {
       try {
         const response = await fetch(`${API_URL}/api/news`);
         const noticias = await response.json();
-        
         const lista = document.getElementById('listaNoticias');
-        
+
         if (noticias.length === 0) {
-          lista.innerHTML = '<p class="text-muted-foreground text-center py-8">Nenhuma notícia cadastrada. Adicione a primeira!</p>';
+          lista.innerHTML = '<p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Nenhuma notícia cadastrada.</p>';
           return;
         }
-        
+
         lista.innerHTML = noticias.map((noticia, index) => `
-          <div class="bg-background border border-border rounded-lg p-4 hover:border-primary/50 transition-colors">
-            <div class="flex gap-4">
+          <div class="admin-list-item">
+            <div style="display:flex;gap:1rem;">
               ${noticia.foto
-                ? `<img src="${escapeHTML(API_URL + noticia.foto)}" alt="${escapeHTML(noticia.titulo)}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0">`
-                : `<div class="w-20 h-20 bg-secondary/30 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">📰</div>`
+                ? `<img src="${escapeHTML(API_URL + noticia.foto)}" alt="${escapeHTML(noticia.titulo)}" style="width:5rem;height:5rem;object-fit:cover;border-radius:0.5rem;flex-shrink:0;">`
+                : `<div style="width:5rem;height:5rem;background:rgba(128,128,128,0.15);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">📰</div>`
               }
-              <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-start gap-2">
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-1">
-                      <span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">#${noticias.length - index}</span>
-                      <span class="text-xs text-muted-foreground">${noticia.data}</span>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;justify-content:space-between;align-items:start;gap:0.5rem;">
+                  <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;">
+                      <span class="admin-badge">#${noticias.length - index}</span>
+                      <span style="font-size:0.75rem;color:var(--muted-foreground);">${noticia.data}</span>
                     </div>
-                    <h3 class="font-display font-bold text-base truncate">${escapeHTML(noticia.titulo)}</h3>
-                    <p class="text-sm text-muted-foreground mt-1 line-clamp-2">${escapeHTML(noticia.descricao)}</p>
+                    <h3 style="font-weight:700;font-size:0.875rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHTML(noticia.titulo)}</h3>
+                    <p style="font-size:0.75rem;color:var(--muted-foreground);margin-top:0.25rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHTML(noticia.descricao)}</p>
                   </div>
-                  <button 
-                    onclick="deletarNoticia(${noticia.id})"
-                    class="text-red-500 hover:bg-red-500/10 px-3 py-1.5 rounded text-sm border border-red-500/30 hover:border-red-500 transition-colors flex-shrink-0"
-                    title="Deletar notícia"
-                  >
-                    🗑️
-                  </button>
+                  <button onclick="deletarNoticia(${noticia.id})" class="admin-btn-delete" title="Deletar">🗑️</button>
                 </div>
               </div>
             </div>
           </div>
         `).join('');
       } catch (error) {
-        console.error('Erro ao carregar notícias:', error);
         document.getElementById('listaNoticias').innerHTML = `
-          <div class="text-center py-8">
-            <p class="text-red-500 mb-2">✗ Erro ao carregar notícias</p>
-            <p class="text-sm text-muted-foreground">Verifique se o servidor está rodando em ${API_URL}</p>
+          <div style="text-align:center;padding:2rem 0;">
+            <p style="color:#ef4444;margin-bottom:0.5rem;">Erro ao carregar notícias</p>
+            <p style="font-size:0.75rem;color:var(--muted-foreground);">Verifique se o servidor está rodando em ${API_URL}</p>
           </div>
         `;
       }
     }
 
-    // Deletar notícia
     async function deletarNoticia(id) {
-      if (!confirm('⚠️ Tem certeza que deseja deletar esta notícia?\n\nEsta ação não pode ser desfeita.')) return;
-      
+      if (!confirm('Tem certeza que deseja deletar esta notícia?\n\nEsta ação não pode ser desfeita.')) return;
       try {
-        const response = await fetch(`${API_URL}/api/news/${id}`, {
-          method: 'DELETE',
-          headers: authHeaders()
-        });
-        
-        if (response.ok) {
-          loadNoticias();
-        } else {
-          alert('✗ Erro ao deletar notícia');
-        }
+        const response = await fetch(`${API_URL}/api/news/${id}`, { method: 'DELETE', headers: authHeaders() });
+        if (response.ok) loadNoticias();
+        else alert('Erro ao deletar notícia');
       } catch (error) {
-        alert('✗ Erro ao deletar notícia. Verifique sua conexão.');
+        alert('Erro ao deletar notícia. Verifique sua conexão.');
       }
     }
 
-    // Inicializar
-    checkServerStatus();
-    loadNoticias();
-    setInterval(checkServerStatus, 30000); // Verificar servidor a cada 30s
-
-</script>  
-
-  <!--===================PRODUTOS========================= -->
-
-  <div class="max-w-6xl mx-auto mt-16">
-
-    <h1 class="text-4xl font-display font-bold mb-2 text-center"> 
-      <span class="text-primary">Gerenciar</span> Produtos 
-    </h1> 
-    
-    <p class="text-center text-muted-foreground mb-12"> 
-      Adicione ou remova produtos da aba de produtos 
-    </p> 
-    
-    <div class="grid lg:grid-cols-2 gap-8 mb-12"> 
-      
-      <!--Formulário-->
-      <div class="bg-card border border-border rounded-lg p-6"> 
-        <h2 class="text-xl font-display font-bold mb-6"> 
-          <span class="text-primary">Novo</span> Produto 
-        </h2> 
-        
-        <form id="produtoForm" class="space-y-4" enctype="multipart/form-data"> 
-      <div> 
-        <label class="block text-sm font-medium mb-2">Nome: </label> 
-        <input 
-          type="text" 
-          name="nome" 
-          required class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" 
-          placeholder="Nome do produto" 
-        > 
-      </div> 
-      
-      <div> 
-        <label class="block text-sm font-medium mb-2">Preço: </label> 
-        <input
-         type="number" 
-         name="preco" 
-         min="0"
-         step="0.01"
-         required class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground" 
-         placeholder="Exemplo:R$ 79,90" 
-        > 
-      </div> 
-        
-      <div> 
-        <label class="block text-sm font-medium mb-2">Foto: </label> 
-        <input
-         type="file" 
-         name="foto"
-         accept="image/*" 
-         class="w-full px-4 py-2 bg-background border border-border rounded-lg text-white" 
-        > 
-      </div> 
-      
-      <button 
-        type="submit" 
-        class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg" 
-      > 
-        + Adicionar Produto
-      </button> 
-    
-    </form> 
-
-  </div>
-  
-  <div class="bg-card border border-border rounded-lg p-6"> 
-    <h2 class="text-xl font-display font-bold mb-6">
-      <span class="text-primary">Produtos</span> Cadastrados 
-    </h2> 
-    
-    <div id="listaProdutos" class="space-y-3"> 
-      <p class="text-muted-foreground text-center py-8"> 
-        Carregando produtos... 
-      </p> 
-    </div> 
-  </div> 
-</div> 
-</div>
-
-  <script>
-
-
-  const produtoForm = document.getElementById("produtoForm")
-
-  if(produtoForm){
-
-  produtoForm.addEventListener("submit", async (e)=>{
-
-    e.preventDefault()
-
-    const formData = new FormData(e.target)
-
-    const response = await fetch(`${API_URL}/api/produtos`,{
-      method:"POST",
-      headers: authHeaders(),
-      body:formData
-    })
-
-    if(response.ok){
-
-      alert("Produto cadastrado!")
-
-      e.target.reset()
-
-      loadProdutos()
-
-    }else{
-
-      alert("Erro ao cadastrar produto")
-
-    }
-
-  })
-
-  }
-
-  async function loadProdutos(){
-
-    try{
-
-      const response = await fetch(`${API_URL}/api/produtos`)
-      const produtos = await response.json()
-      const lista = document.getElementById("listaProdutos")
-      if(!lista) return
-
-      lista.innerHTML = produtos.map(produto=>`
-
-        <div class="bg-background border border-border rounded-lg p-4 flex justify-between items-center">
-
-          <div class="flex gap-3 items-center">
-
-            <div class="w-16 h-16 bg-secondary/30 rounded flex items-center justify-center">
-              🛍️
-            </div>
-
-
-            <div>
-              <h3 class="font-semibold">${escapeHTML(produto.nome)}</h3>
-              <p class="text-sm text-muted-foreground">R$ ${escapeHTML(produto.preco)}</p>
-            </div>
-
-          </div>
-
-          <button 
-            onclick="deletarProduto(${produto.id})"
-            class="text-red-500 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/10"
-          >
-            🗑️
-          </button>
-
-        </div>
-
-      `).join("")
-
-    }catch(error){
-
-      console.error("Erro ao carregar produtos")
-
-    }
-
-  }
-
-  async function deletarProduto(id){
-
-    if(!confirm("Tem certeza que deseja deletar este produto?")) return
-
-    await fetch(`${API_URL}/api/produtos/${id}`,{
-      method:"DELETE",
-      headers: authHeaders()
-    })
-
-    loadProdutos()
-
-  }
-
-  loadProdutos()
-
-  </script>
-
-   <!--===================TRANSPARÊNCIA========================= -->
-
-  <div class="max-w-6xl mx-auto mt-16">
-    <h1 class="text-4xl font-display font-bold mb-2 text-center">
-      <span class="text-primary">Gerenciar</span> Transparência
-    </h1>
-
-    <p class="text-center text-muted-foreground mb-12">
-    Adicione ou remova arquivos da página de transparência
-    </p>
-
-  <div class="grid lg:grid-cols-2 gap-8 mb-12">
-
-  <!-- Formulário -->
-  <div class="bg-card border border-border rounded-lg p-6">
-    <h2 class="text-xl font-display font-bold mb-6">
-      <span class="text-primary">Novo</span> Documento
-    </h2>
-
-    <form id="transparenciaForm" class="space-y-4" enctype="multipart/form-data">
-
-  <div>
-    <label class="block text-sm font-medium mb-2">Título:</label>
-    <input
-      type="text"
-      name="titulo"
-      required
-      class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-      placeholder="Título do documento"
-    >
-  </div>
-
-  <div>
-    <label class="block text-sm font-medium mb-2">Categoria:</label>
-
-    <select
-      name="categoria"
-      required
-      class="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground"
-    >
-
-    <option value="relatorio_financeiro">Relatório Financeiro</option>
-    <option value="documentos">Documentos</option>
-    <option value="estatuto">Estatuto</option>
-
-    </select>
-
-  </div>
-
-  <div>
-    <label class="block text-sm font-medium mb-2">Arquivo:</label>
-
-    <input
-      type="file"
-      name="arquivo"
-      accept=".pdf,.doc,.docx,.xls,.xlsx"
-      class="w-full px-4 py-2 bg-background border border-border rounded-lg text-white"
-    >
-  </div>
-
-  <div class="block text-sm font-medium mb-2">
-    <label class="block text-sm font-medium mb-2">Data: </label>
-    <input 
-      type="date" 
-      name="data" 
-      required 
-      pattern="\d{2}/\d{2}/\d{4}"
-      class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-      placeholder="DD/MM/AAAA"
-    >
-  </div>
-
-  <button
-    type="submit"
-    class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg"
-  >
-    + Adicionar Documento
-  </button>
-  </form>
-  </div>
-
-  <!-- Lista -->
-
-  <div class="bg-card border border-border rounded-lg p-6">
-    <h2 class="text-xl font-display font-bold mb-6">
-      <span class="text-primary">Documentos</span> Cadastrados
-    </h2>
-
-  <div id="listaTransparencia" class="space-y-3">
-    <p class="text-muted-foreground text-center py-8">
-    Carregando documentos...
-    </p>
-  </div>
-  </div>
-
-  <script>
-    
-
-    const transparenciaForm = document.getElementById("transparenciaForm")
-    if(transparenciaForm){
-    transparenciaForm.addEventListener("submit", async (e)=>{
-
-    e.preventDefault()
-
-    const formData = new FormData(e.target)
-
-    const response = await fetch(`${API_URL}/api/transparencia`,{
-      method:"POST",
-      headers: authHeaders(),
-      body:formData
-    })
-
-    if(response.ok){
-
-      alert("Documento cadastrado!")
-
-      e.target.reset()
-
-      loadTransparencia()
-
-    }else{
-
-      alert("Erro ao cadastrar documento")
-
+    // =================== PRODUTOS ===================
+    const produtoForm = document.getElementById('produtoForm');
+
+    produtoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      try {
+        const response = await fetch(`${API_URL}/api/produtos`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: formData
+        });
+        if (response.ok) {
+          showMessage('produtoMessage', 'success', 'Produto cadastrado com sucesso!');
+          e.target.reset();
+          loadProdutos();
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        showMessage('produtoMessage', 'error', 'Erro ao cadastrar produto.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '+ Adicionar Produto';
+      }
+    });
+
+    async function loadProdutos() {
+      try {
+        const response = await fetch(`${API_URL}/api/produtos`);
+        const produtos = await response.json();
+        const lista = document.getElementById('listaProdutos');
+
+        if (produtos.length === 0) {
+          lista.innerHTML = '<p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Nenhum produto cadastrado.</p>';
+          return;
         }
 
-    })
-
-    }
-
-
-  async function loadTransparencia(){
-
-  try{
-
-    const response = await fetch(`${API_URL}/api/transparencia`)
-    const dados = await response.json()
-
-    const lista = document.getElementById("listaTransparencia")
-
-    if(!lista) return
-
-    lista.innerHTML = dados.map(doc=>`
-
-      <div class="bg-background border border-border rounded-lg p-4 flex justify-between items-center">
-
-        <div class="flex gap-3 items-center">
-
-          <div class="w-16 h-16 bg-secondary/30 rounded flex items-center justify-center">
-            📄
-          </div>
-
-          <div>
-
-            <h3 class="font-semibold">${escapeHTML(doc.titulo)}</h3>
-
-            <p class="text-sm text-muted-foreground">
-              ${escapeHTML(doc.categoria)} • ${escapeHTML(doc.data || "")}
-            </p>
-
-            ${doc.arquivo
-              ? `<a href="${escapeHTML(API_URL + doc.arquivo)}" target="_blank" class="text-primary text-sm">Abrir arquivo</a>`
-              : ""
-            }
-
-          </div>
-
-        </div>
-
-        <button 
-          onclick="deletarTransparencia(${doc.id})"
-          class="text-red-500 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/10"
-        >
-          🗑️
-        </button>
-
-      </div>
-
-    `).join("")
-
-  }catch(error){
-
-    console.error("Erro ao carregar documentos")
-
-  }
-
-}
-
-
-async function deletarTransparencia(id){
-
-  if(!confirm("Tem certeza que deseja deletar este documento?")) return
-
-  await fetch(`${API_URL}/api/transparencia/${id}`,{
-    method:"DELETE",
-    headers: authHeaders()
-  })
-
-  loadTransparencia()
-
-}
-
-
-loadTransparencia()
-</script>
-
-<!-- =================== GESTÃO =================== -->
-<div class="max-w-6xl mx-auto mt-16">
-  <h1 class="text-4xl font-display font-bold mb-2 text-center">
-    <span class="text-primary">Gerenciar</span> Gestão
-  </h1>
-  <p class="text-center text-muted-foreground mb-12">
-    Defina a gestão atual, adicione membros e arquive a gestão vigente no histórico
-  </p>
-
-  <div class="grid lg:grid-cols-2 gap-8 mb-12">
-    <!-- Formulário -->
-    <div class="bg-card border border-border rounded-lg p-6">
-      <h2 class="text-xl font-display font-bold mb-6">
-        <span class="text-primary">Nova</span> Gestão Atual
-      </h2>
-
-      <form id="gestaoForm" class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium mb-2">Período:</label>
-          <input
-            type="text"
-            name="periodo"
-            required
-            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-            placeholder="Ex: 2026-2027"
-          >
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium mb-2">Presidente:</label>
-          <input
-            type="text"
-            name="presidente"
-            required
-            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-            placeholder="Nome da presidência"
-          >
-        </div>
-
-        <div class="border border-border rounded-lg p-4 bg-background">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold">Membros da diretoria</h3>
-            <button
-              type="button"
-              id="addMembroBtn"
-              class="text-sm text-primary hover:underline"
-            >
-              + Adicionar membro
-            </button>
-          </div>
-
-          <div id="membrosContainer" class="space-y-4">
-            <!-- membros dinâmicos -->
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
-        >
-          + Salvar Gestão Atual
-        </button>
-
-        <button
-          type="button"
-          id="arquivarGestaoBtn"
-          class="w-full border border-yellow-500/40 text-yellow-500 py-3 rounded-lg font-display text-lg hover:bg-yellow-500/10 transition-colors"
-        >
-          Arquivar Gestão Atual
-        </button>
-      </form>
-
-      <div id="gestaoMessage" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
-    </div>
-
-    <!-- Preview -->
-    <div class="bg-card border border-border rounded-lg p-6">
-      <h2 class="text-xl font-display font-bold mb-6">
-        <span class="text-primary">Preview</span> da Gestão
-      </h2>
-
-      <div class="bg-background border border-border rounded-lg p-4 mb-6">
-        <p class="text-sm text-muted-foreground mb-2">Período</p>
-        <h3 id="previewPeriodoGestao" class="text-lg font-bold">--</h3>
-        <p class="text-sm text-muted-foreground mt-3 mb-1">Presidência</p>
-        <p id="previewPresidenteGestao" class="text-base">--</p>
-      </div>
-
-      <div class="bg-background border border-border rounded-lg p-4">
-        <h3 class="font-semibold mb-4">Membros cadastrados</h3>
-        <div id="previewMembrosGestao" class="space-y-3">
-          <p class="text-sm text-muted-foreground">Nenhum membro adicionado ainda.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Gestão atual e histórico -->
-  <div class="bg-card border border-border rounded-lg p-6">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-display font-bold">
-        <span class="text-primary">Gestão</span> Cadastrada
-      </h2>
-      <button onclick="loadGestao()" class="text-sm text-primary hover:underline">
-        ↻ Atualizar
-      </button>
-    </div>
-
-    <div id="gestaoAtualBox" class="mb-8">
-      <p class="text-muted-foreground text-center py-8">Carregando gestão atual...</p>
-    </div>
-
-    <div>
-      <h3 class="text-xl font-display font-bold mb-4">
-        <span class="text-primary">Histórico</span> de Gestões
-      </h3>
-      <div id="historicoGestoes" class="space-y-4">
-        <p class="text-muted-foreground text-center py-8">Carregando histórico...</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  
-
-
-const gestaoForm = document.getElementById("gestaoForm");
-const membrosContainer = document.getElementById("membrosContainer");
-const gestaoMessage = document.getElementById("gestaoMessage");
-const previewPeriodoGestao = document.getElementById("previewPeriodoGestao");
-const previewPresidenteGestao = document.getElementById("previewPresidenteGestao");
-const previewMembrosGestao = document.getElementById("previewMembrosGestao");
-const addMembroBtn = document.getElementById("addMembroBtn");
-const arquivarGestaoBtn = document.getElementById("arquivarGestaoBtn");
-
-let membroIndex = 0;
-
-function gerarAvatar(nome) {
-  if (!nome || !nome.trim()) return "?";
-  return nome.trim().charAt(0).toUpperCase();
-}
-
-function criarBlocoMembro(membro = {}) {
-  membroIndex++;
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "border border-border rounded-lg p-4 space-y-3";
-  wrapper.dataset.index = membroIndex;
-
-  wrapper.innerHTML = `
-    <div class="flex items-center justify-between">
-      <h4 class="font-medium">Membro ${membroIndex}</h4>
-      <button type="button" class="text-red-500 hover:underline text-sm remove-membro-btn">
-        Remover
-      </button>
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium mb-2">Nome:</label>
-      <input
-        type="text"
-        name="membro_nome_${membroIndex}"
-        value="${membro.nome || ""}"
-        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-nome"
-        placeholder="Nome do membro"
-      >
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium mb-2">Cargo:</label>
-      <input
-        type="text"
-        name="membro_cargo_${membroIndex}"
-        value="${membro.cargo || ""}"
-        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-cargo"
-        placeholder="Ex: Presidente, Diretor de Marketing..."
-      >
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium mb-2">Curso:</label>
-      <input
-        type="text"
-        name="membro_curso_${membroIndex}"
-        value="${membro.curso || ""}"
-        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-curso"
-        placeholder="Ex: Engenharia Biomédica"
-      >
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium mb-2">Email:</label>
-      <input
-        type="email"
-        name="membro_email_${membroIndex}"
-        value="${membro.email || ""}"
-        class="w-full px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground membro-input membro-email"
-        placeholder="email@aaaldv.com"
-      >
-    </div>
-  `;
-
-  wrapper.querySelector(".remove-membro-btn").addEventListener("click", () => {
-    wrapper.remove();
-    atualizarPreviewGestao();
-  });
-
-  wrapper.querySelectorAll(".membro-input").forEach(input => {
-    input.addEventListener("input", atualizarPreviewGestao);
-  });
-
-  membrosContainer.appendChild(wrapper);
-  atualizarPreviewGestao();
-}
-
-function coletarMembros() {
-  const blocos = membrosContainer.querySelectorAll("[data-index]");
-  const membros = [];
-
-  blocos.forEach(bloco => {
-    const nome = bloco.querySelector(".membro-nome")?.value?.trim() || "";
-    const cargo = bloco.querySelector(".membro-cargo")?.value?.trim() || "";
-    const curso = bloco.querySelector(".membro-curso")?.value?.trim() || "";
-    const email = bloco.querySelector(".membro-email")?.value?.trim() || "";
-
-    if (nome || cargo || curso || email) {
-      membros.push({
-        nome,
-        cargo,
-        curso,
-        email,
-        avatar: gerarAvatar(nome)
-      });
-    }
-  });
-
-  return membros;
-}
-
-function atualizarPreviewGestao() {
-  const periodo = gestaoForm.periodo.value.trim();
-  const presidente = gestaoForm.presidente.value.trim();
-  const membros = coletarMembros();
-
-  previewPeriodoGestao.textContent = periodo || "--";
-  previewPresidenteGestao.textContent = presidente || "--";
-
-  if (membros.length === 0) {
-    previewMembrosGestao.innerHTML = `<p class="text-sm text-muted-foreground">Nenhum membro adicionado ainda.</p>`;
-    return;
-  }
-
-  previewMembrosGestao.innerHTML = membros.map(membro => `
-    <div class="border border-border rounded-lg p-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-          ${membro.avatar}
-        </div>
-        <div>
-          <p class="font-semibold">${membro.nome || "Sem nome"}</p>
-          <p class="text-sm text-muted-foreground">${membro.cargo || "Sem cargo"}</p>
-          <p class="text-sm text-muted-foreground">${membro.curso || ""}</p>
-          <p class="text-sm text-muted-foreground">${membro.email || ""}</p>
-        </div>
-      </div>
-    </div>
-  `).join("");
-}
-
-function mostrarMensagemGestao(tipo, texto) {
-  gestaoMessage.className =
-    tipo === "success"
-      ? "mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm"
-      : "mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm";
-
-  gestaoMessage.textContent = texto;
-  gestaoMessage.classList.remove("hidden");
-
-  setTimeout(() => {
-    gestaoMessage.classList.add("hidden");
-  }, 4000);
-}
-
-gestaoForm.periodo.addEventListener("input", atualizarPreviewGestao);
-gestaoForm.presidente.addEventListener("input", atualizarPreviewGestao);
-
-addMembroBtn.addEventListener("click", () => criarBlocoMembro());
-
-gestaoForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const payload = {
-    periodo: gestaoForm.periodo.value.trim(),
-    presidente: gestaoForm.presidente.value.trim(),
-    membros: coletarMembros()
-  };
-
-  try {
-    const response = await fetch(`${API_URL}/api/board/atual`, {
-      method: "POST",
-      headers: authHeaders(true),
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) throw new Error("Erro ao salvar gestão");
-
-    mostrarMensagemGestao("success", "✓ Gestão atual salva com sucesso!");
-    loadGestao();
-  } catch (error) {
-    mostrarMensagemGestao("error", "✗ Erro ao salvar gestão atual.");
-  }
-});
-
-arquivarGestaoBtn.addEventListener("click", async () => {
-  const confirmar = confirm("Tem certeza que deseja arquivar a gestão atual?");
-  if (!confirmar) return;
-
-  try {
-    const response = await fetch(`${API_URL}/api/board/archive`, {
-      method: "POST",
-      headers: authHeaders()
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Erro ao arquivar");
-    }
-
-    mostrarMensagemGestao("success", "✓ Gestão arquivada com sucesso!");
-    loadGestao();
-  } catch (error) {
-    mostrarMensagemGestao("error", "✗ Não foi possível arquivar a gestão atual.");
-  }
-});
-
-async function loadGestao() {
-  try {
-    const response = await fetch(`${API_URL}/api/board`);
-    const dados = await response.json();
-
-    const gestaoAtualBox = document.getElementById("gestaoAtualBox");
-    const historicoGestoes = document.getElementById("historicoGestoes");
-
-    if (dados.atual && Object.keys(dados.atual).length > 0) {
-      const membros = dados.atual.membros || [];
-
-      gestaoAtualBox.innerHTML = `
-        <div class="bg-background border border-border rounded-lg p-6">
-          <div class="flex items-center justify-between gap-4 mb-4">
-            <div>
-              <h3 class="text-xl font-display font-bold">Gestão ${dados.atual.periodo || "--"}</h3>
-              <p class="text-sm text-muted-foreground">Presidência: ${dados.atual.presidente || "--"}</p>
+        lista.innerHTML = produtos.map(produto => `
+          <div class="admin-list-item" style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;gap:0.75rem;align-items:center;">
+              ${produto.foto
+                ? `<img src="${escapeHTML(API_URL + produto.foto)}" alt="${escapeHTML(produto.nome)}" style="width:4rem;height:4rem;object-fit:cover;border-radius:0.5rem;">`
+                : `<div style="width:4rem;height:4rem;background:rgba(128,128,128,0.15);border-radius:0.375rem;display:flex;align-items:center;justify-content:center;font-size:1.25rem;">🛍️</div>`
+              }
+              <div>
+                <h3 style="font-weight:600;font-size:0.875rem;">${escapeHTML(produto.nome)}</h3>
+                <p style="font-size:0.75rem;color:var(--muted-foreground);">R$ ${escapeHTML(produto.preco)}</p>
+              </div>
             </div>
-            <span class="text-xs px-2 py-1 rounded bg-green-500/10 text-green-500">Atual</span>
+            <button onclick="deletarProduto(${produto.id})" class="admin-btn-delete">🗑️</button>
           </div>
-
-          <div class="grid md:grid-cols-2 gap-4">
-            ${membros.length > 0
-              ? membros.map(membro => `
-                <div class="border border-border rounded-lg p-4">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                      ${membro.avatar || gerarAvatar(membro.nome)}
-                    </div>
-                    <div>
-                      <h4 class="font-semibold">${membro.nome || "Sem nome"}</h4>
-                      <p class="text-sm text-muted-foreground">${membro.cargo || "Sem cargo"}</p>
-                      <p class="text-sm text-muted-foreground">${membro.curso || ""}</p>
-                      <p class="text-sm text-muted-foreground">${membro.email || ""}</p>
-                    </div>
-                  </div>
-                </div>
-              `).join("")
-              : `<p class="text-muted-foreground">Nenhum membro cadastrado.</p>`
-            }
-          </div>
-        </div>
-      `;
-    } else {
-      gestaoAtualBox.innerHTML = `
-        <p class="text-muted-foreground text-center py-8">
-          Nenhuma gestão atual cadastrada.
-        </p>
-      `;
+        `).join('');
+      } catch (error) {
+        console.error('Erro ao carregar produtos');
+      }
     }
 
-    if (dados.historico && dados.historico.length > 0) {
-      historicoGestoes.innerHTML = dados.historico.map((gestao, index) => `
-        <div class="bg-background border border-border rounded-lg p-5">
-          <div class="flex items-center justify-between gap-4 mb-3">
-            <div>
-              <h4 class="font-display font-bold">Gestão ${gestao.periodo || "--"}</h4>
-              <p class="text-sm text-muted-foreground">Presidência: ${gestao.presidente || "--"}</p>
-            </div>
-            <span class="text-xs px-2 py-1 rounded bg-primary/10 text-primary">#${dados.historico.length - index}</span>
-          </div>
-
-          <details class="group">
-            <summary class="cursor-pointer text-sm text-primary hover:underline">
-              Ver diretoria completa
-            </summary>
-
-            <div class="grid md:grid-cols-2 gap-4 mt-4">
-              ${(gestao.membros || []).map(membro => `
-                <div class="border border-border rounded-lg p-4">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                      ${membro.avatar || gerarAvatar(membro.nome)}
-                    </div>
-                    <div>
-                      <h5 class="font-semibold">${membro.nome || "Sem nome"}</h5>
-                      <p class="text-sm text-muted-foreground">${membro.cargo || "Sem cargo"}</p>
-                      <p class="text-sm text-muted-foreground">${membro.curso || ""}</p>
-                      <p class="text-sm text-muted-foreground">${membro.email || ""}</p>
-                    </div>
-                  </div>
-                </div>
-              `).join("") || `<p class="text-muted-foreground">Sem membros cadastrados.</p>`}
-            </div>
-          </details>
-        </div>
-      `).join("");
-    } else {
-      historicoGestoes.innerHTML = `
-        <p class="text-muted-foreground text-center py-8">
-          Nenhuma gestão no histórico ainda.
-        </p>
-      `;
+    async function deletarProduto(id) {
+      if (!confirm('Tem certeza que deseja deletar este produto?')) return;
+      await fetch(`${API_URL}/api/produtos/${id}`, { method: 'DELETE', headers: authHeaders() });
+      loadProdutos();
     }
-  } catch (error) {
-    document.getElementById("gestaoAtualBox").innerHTML = `
-      <p class="text-red-500 text-center py-8">✗ Erro ao carregar gestão atual.</p>
-    `;
-    document.getElementById("historicoGestoes").innerHTML = `
-      <p class="text-red-500 text-center py-8">✗ Erro ao carregar histórico.</p>
-    `;
-  }
-}
 
-criarBlocoMembro();
-loadGestao();
-</script>
+    // =================== TRANSPARÊNCIA ===================
+    const transparenciaForm = document.getElementById('transparenciaForm');
 
-<!-- =================== MENSALIDADE E CARROSSEL =================== -->
-<div class="max-w-6xl mx-auto mt-16">
-  <h1 class="text-4xl font-display font-bold mb-2 text-center">
-    <span class="text-primary">Gerenciar</span> Mensalidade e Carrossel
-  </h1>
-  <p class="text-center text-muted-foreground mb-12">
-    Atualize os valores dos planos e adicione fotos ao carrossel de conquistas
-  </p>
+    transparenciaForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
 
-  <div class="grid lg:grid-cols-2 gap-8 mb-12">
-    <!-- Mensalidade -->
-    <div class="bg-card border border-border rounded-lg p-6">
-      <h2 class="text-xl font-display font-bold mb-6">
-        <span class="text-primary">Mensalidade</span> dos Planos
-      </h2>
-
-      <form id="mensalidadeForm" class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium mb-2">Plano sem campeonato:</label>
-          <input
-            type="number"
-            name="valor_sem_campeonato"
-            min="0"
-            step="0.01"
-            required
-            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-            placeholder="Ex: 70"
-          >
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium mb-2">Plano com campeonato:</label>
-          <input
-            type="number"
-            name="valor_com_campeonato"
-            min="0"
-            step="0.01"
-            required
-            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-            placeholder="Ex: 80"
-          >
-        </div>
-
-        <button
-          type="submit"
-          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
-        >
-          Salvar Mensalidades
-        </button>
-      </form>
-
-      <div id="mensalidadeMessage" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
-
-      <div class="mt-6 bg-background border border-border rounded-lg p-4">
-        <h3 class="font-semibold mb-4">Preview</h3>
-
-        <div class="space-y-4">
-          <div class="border border-border rounded-lg p-4">
-            <p class="text-sm text-muted-foreground">Plano esportes sem campeonato semestral</p>
-            <p class="text-2xl font-display font-bold mt-2">
-              R$ <span id="previewSemCampeonato">70</span>
-              <span class="text-sm text-muted-foreground">/ mês</span>
-            </p>
-          </div>
-
-          <div class="border border-border rounded-lg p-4">
-            <p class="text-sm text-muted-foreground">Plano esportes com campeonato semestral</p>
-            <p class="text-2xl font-display font-bold mt-2">
-              R$ <span id="previewComCampeonato">80</span>
-              <span class="text-sm text-muted-foreground">/ mês</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Carrossel -->
-    <div class="bg-card border border-border rounded-lg p-6">
-      <h2 class="text-xl font-display font-bold mb-6">
-        <span class="text-primary">Nova</span> Foto do Carrossel
-      </h2>
-
-      <form id="carouselForm" class="space-y-4" enctype="multipart/form-data">
-        <div>
-          <label class="block text-sm font-medium mb-2">Legenda:</label>
-          <input
-            type="text"
-            name="legenda"
-            required
-            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-            placeholder="Ex: Primeiro lugar geral no JUCAMP 25"
-          >
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium mb-2">Foto:</label>
-          <input
-            type="file"
-            name="foto"
-            accept="image/*"
-            required
-            class="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-primary file:text-primary-foreground file:cursor-pointer hover:file:bg-primary/90"
-          >
-        </div>
-
-        <button
-          type="submit"
-          class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-display text-lg hover:bg-primary/90 transition-colors"
-        >
-          + Adicionar Foto
-        </button>
-      </form>
-
-      <div id="carouselMessage" class="mt-4 p-3 rounded-lg hidden text-sm"></div>
-
-      <div class="mt-6 bg-background border border-border rounded-lg overflow-hidden">
-        <div id="carouselPreviewImageContainer" class="relative h-48 bg-secondary/30 flex items-center justify-center">
-          <img id="carouselPreviewImage" class="hidden w-full h-full object-cover" alt="Preview da foto">
-          <span id="carouselPreviewPlaceholder" class="text-muted-foreground text-sm">📷 Imagem aparecerá aqui</span>
-        </div>
-        <div class="p-4">
-          <p id="carouselPreviewLegenda" class="text-muted-foreground text-sm">
-            A legenda aparecerá aqui...
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Lista de fotos -->
-  <div class="bg-card border border-border rounded-lg p-6">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-display font-bold">
-        <span class="text-primary">Fotos</span> do Carrossel
-      </h2>
-      <button onclick="loadCarousel()" class="text-sm text-primary hover:underline">
-        ↻ Atualizar
-      </button>
-    </div>
-
-    <div id="listaCarousel" class="space-y-3">
-      <p class="text-muted-foreground text-center py-8">Carregando fotos...</p>
-    </div>
-  </div>
-</div>
-
-<script>
-
-  
-const mensalidadeForm = document.getElementById("mensalidadeForm");
-const mensalidadeMessage = document.getElementById("mensalidadeMessage");
-const previewSemCampeonato = document.getElementById("previewSemCampeonato");
-const previewComCampeonato = document.getElementById("previewComCampeonato");
-
-const carouselForm = document.getElementById("carouselForm");
-const carouselMessage = document.getElementById("carouselMessage");
-const carouselPreviewLegenda = document.getElementById("carouselPreviewLegenda");
-const carouselPreviewImage = document.getElementById("carouselPreviewImage");
-const carouselPreviewPlaceholder = document.getElementById("carouselPreviewPlaceholder");
-
-function mostrarMensagemMensalidade(tipo, texto) {
-  mensalidadeMessage.className =
-    tipo === "success"
-      ? "mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm"
-      : "mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm";
-
-  mensalidadeMessage.textContent = texto;
-  mensalidadeMessage.classList.remove("hidden");
-
-  setTimeout(() => mensalidadeMessage.classList.add("hidden"), 4000);
-}
-
-function mostrarMensagemCarousel(tipo, texto) {
-  carouselMessage.className =
-    tipo === "success"
-      ? "mt-4 p-3 rounded-lg bg-green-500/10 text-green-500 text-sm"
-      : "mt-4 p-3 rounded-lg bg-red-500/10 text-red-500 text-sm";
-
-  carouselMessage.textContent = texto;
-  carouselMessage.classList.remove("hidden");
-
-  setTimeout(() => carouselMessage.classList.add("hidden"), 4000);
-}
-
-mensalidadeForm.valor_sem_campeonato.addEventListener("input", (e) => {
-  previewSemCampeonato.textContent = e.target.value || "70";
-});
-
-mensalidadeForm.valor_com_campeonato.addEventListener("input", (e) => {
-  previewComCampeonato.textContent = e.target.value || "80";
-});
-
-mensalidadeForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const payload = {
-    valor_sem_campeonato: mensalidadeForm.valor_sem_campeonato.value,
-    valor_com_campeonato: mensalidadeForm.valor_com_campeonato.value
-  };
-
-  try {
-    const response = await fetch(`${API_URL}/api/mensalidade`, {
-      method: "POST",
-      headers: authHeaders(true),
-      body: JSON.stringify(payload)
+      try {
+        const response = await fetch(`${API_URL}/api/transparencia`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: formData
+        });
+        if (response.ok) {
+          showMessage('transparenciaMessage', 'success', 'Documento cadastrado com sucesso!');
+          e.target.reset();
+          loadTransparencia();
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        showMessage('transparenciaMessage', 'error', 'Erro ao cadastrar documento.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '+ Adicionar Documento';
+      }
     });
 
-    if (!response.ok) throw new Error("Erro ao salvar mensalidades");
+    async function loadTransparencia() {
+      try {
+        const response = await fetch(`${API_URL}/api/transparencia`);
+        const dados = await response.json();
+        const lista = document.getElementById('listaTransparencia');
 
-    mostrarMensagemMensalidade("success", "✓ Mensalidades atualizadas com sucesso!");
-  } catch (error) {
-    mostrarMensagemMensalidade("error", "✗ Erro ao atualizar mensalidades.");
-  }
-});
+        if (dados.length === 0) {
+          lista.innerHTML = '<p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Nenhum documento cadastrado.</p>';
+          return;
+        }
 
-async function loadMensalidade() {
-  try {
-    const response = await fetch(`${API_URL}/api/mensalidade`);
-    const dados = await response.json();
-
-    if (dados.valor_sem_campeonato !== undefined) {
-      mensalidadeForm.valor_sem_campeonato.value = dados.valor_sem_campeonato;
-      previewSemCampeonato.textContent = dados.valor_sem_campeonato;
-    }
-
-    if (dados.valor_com_campeonato !== undefined) {
-      mensalidadeForm.valor_com_campeonato.value = dados.valor_com_campeonato;
-      previewComCampeonato.textContent = dados.valor_com_campeonato;
-    }
-  } catch (error) {
-    console.error("Erro ao carregar mensalidades");
-  }
-}
-
-carouselForm.legenda.addEventListener("input", (e) => {
-  carouselPreviewLegenda.textContent = e.target.value || "A legenda aparecerá aqui...";
-});
-
-carouselForm.foto.addEventListener("change", function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      carouselPreviewImage.src = ev.target.result;
-      carouselPreviewImage.classList.remove("hidden");
-      carouselPreviewPlaceholder.classList.add("hidden");
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-carouselForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
-
-  try {
-    const response = await fetch(`${API_URL}/api/carousel`, {
-      method: "POST",
-      headers: authHeaders(),
-      body: formData
-    });
-
-    if (!response.ok) throw new Error("Erro ao adicionar foto");
-
-    mostrarMensagemCarousel("success", "✓ Foto adicionada ao carrossel!");
-    e.target.reset();
-    carouselPreviewLegenda.textContent = "A legenda aparecerá aqui...";
-    carouselPreviewImage.classList.add("hidden");
-    carouselPreviewPlaceholder.classList.remove("hidden");
-    loadCarousel();
-  } catch (error) {
-    mostrarMensagemCarousel("error", "✗ Erro ao adicionar foto ao carrossel.");
-  }
-});
-
-async function loadCarousel() {
-  try {
-    const response = await fetch(`${API_URL}/api/carousel`);
-    const fotos = await response.json();
-    const lista = document.getElementById("listaCarousel");
-
-    if (!fotos || fotos.length === 0) {
-      lista.innerHTML = `
-        <p class="text-muted-foreground text-center py-8">
-          Nenhuma foto cadastrada no carrossel.
-        </p>
-      `;
-      return;
-    }
-
-    lista.innerHTML = fotos.map((foto, index) => `
-      <div class="bg-background border border-border rounded-lg p-4 hover:border-primary/50 transition-colors">
-        <div class="flex gap-4 items-start">
-          <img
-            src="${API_URL}${foto.url}"
-            alt="Foto do carrossel"
-            class="w-24 h-24 object-cover rounded-lg flex-shrink-0"
-          >
-
-          <div class="flex-1 min-w-0">
-            <div class="flex justify-between items-start gap-3">
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">
-                    #${fotos.length - index}
-                  </span>
-                </div>
-
-                <p class="text-sm text-muted-foreground break-words">
-                  ${foto.legenda || "Sem legenda"}
+        lista.innerHTML = dados.map(doc => `
+          <div class="admin-list-item" style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;gap:0.75rem;align-items:center;">
+              <div style="width:4rem;height:4rem;background:rgba(128,128,128,0.15);border-radius:0.375rem;display:flex;align-items:center;justify-content:center;font-size:1.25rem;">📄</div>
+              <div>
+                <h3 style="font-weight:600;font-size:0.875rem;">${escapeHTML(doc.titulo)}</h3>
+                <p style="font-size:0.75rem;color:var(--muted-foreground);">
+                  ${escapeHTML(doc.categoria)} ${doc.data ? '• ' + escapeHTML(doc.data) : ''}
                 </p>
+                ${doc.arquivo ? `<a href="${escapeHTML(API_URL + doc.arquivo)}" target="_blank" style="color:var(--primary);font-size:0.75rem;">Abrir arquivo</a>` : ''}
+              </div>
+            </div>
+            <button onclick="deletarTransparencia(${doc.id})" class="admin-btn-delete">🗑️</button>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Erro ao carregar documentos');
+      }
+    }
+
+    async function deletarTransparencia(id) {
+      if (!confirm('Tem certeza que deseja deletar este documento?')) return;
+      await fetch(`${API_URL}/api/transparencia/${id}`, { method: 'DELETE', headers: authHeaders() });
+      loadTransparencia();
+    }
+
+    // =================== GESTÃO ===================
+    const gestaoForm = document.getElementById('gestaoForm');
+    const membrosContainer = document.getElementById('membrosContainer');
+    const gestaoMessage = document.getElementById('gestaoMessage');
+    const previewPeriodoGestao = document.getElementById('previewPeriodoGestao');
+    const previewPresidenteGestao = document.getElementById('previewPresidenteGestao');
+    const previewMembrosGestao = document.getElementById('previewMembrosGestao');
+    const addMembroBtn = document.getElementById('addMembroBtn');
+    const arquivarGestaoBtn = document.getElementById('arquivarGestaoBtn');
+
+    let membroIndex = 0;
+
+    function gerarAvatar(nome) {
+      if (!nome || !nome.trim()) return '?';
+      return nome.trim().charAt(0).toUpperCase();
+    }
+
+    function criarBlocoMembro(membro = {}) {
+      membroIndex++;
+
+      const wrapper = document.createElement('div');
+      wrapper.style.cssText = 'border:1px solid var(--border);border-radius:0.5rem;padding:1rem;';
+      wrapper.dataset.index = membroIndex;
+
+      wrapper.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+          <h4 style="font-weight:500;font-size:0.875rem;">Membro ${membroIndex}</h4>
+          <button type="button" class="remove-membro-btn" style="color:#ef4444;font-size:0.75rem;background:none;border:none;cursor:pointer;text-decoration:underline;">Remover</button>
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Nome</label>
+          <input type="text" name="membro_nome_${membroIndex}" value="${membro.nome || ''}" class="admin-input membro-input membro-nome" placeholder="Nome do membro">
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Cargo</label>
+          <input type="text" name="membro_cargo_${membroIndex}" value="${membro.cargo || ''}" class="admin-input membro-input membro-cargo" placeholder="Ex: Diretor de Marketing">
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Curso</label>
+          <input type="text" name="membro_curso_${membroIndex}" value="${membro.curso || ''}" class="admin-input membro-input membro-curso" placeholder="Ex: Engenharia Biomédica">
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Email</label>
+          <input type="email" name="membro_email_${membroIndex}" value="${membro.email || ''}" class="admin-input membro-input membro-email" placeholder="email@aaaldv.com">
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-label">Foto</label>
+          <input type="file" accept="image/*" class="admin-file-input membro-input membro-foto">
+          <div class="membro-foto-preview" style="display:none;margin-top:0.5rem;">
+            <img src="" alt="Preview" style="width:2.5rem;height:2.5rem;border-radius:9999px;object-fit:cover;display:inline-block;">
+            <span style="font-size:0.75rem;color:#22c55e;margin-left:0.5rem;">Foto enviada</span>
+          </div>
+        </div>
+      `;
+
+      if (membro.foto) {
+        wrapper.dataset.fotoUrl = membro.foto;
+        const preview = wrapper.querySelector('.membro-foto-preview');
+        preview.style.display = '';
+        preview.querySelector('img').src = API_URL + membro.foto;
+      }
+
+      wrapper.querySelector('.remove-membro-btn').addEventListener('click', () => {
+        wrapper.remove();
+        atualizarPreviewGestao();
+      });
+
+      const fotoInput = wrapper.querySelector('.membro-foto');
+      fotoInput.addEventListener('change', async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const formData = new FormData();
+        formData.append('foto', file);
+        try {
+          const res = await fetch(`${API_URL}/api/board/upload-foto`, {
+            method: 'POST',
+            headers: authHeaders(),
+            body: formData
+          });
+          if (!res.ok) throw new Error('Upload falhou');
+          const data = await res.json();
+          wrapper.dataset.fotoUrl = data.url;
+          const preview = wrapper.querySelector('.membro-foto-preview');
+          preview.style.display = '';
+          preview.querySelector('img').src = API_URL + data.url;
+          atualizarPreviewGestao();
+        } catch (err) {
+          alert('Erro ao enviar foto do membro.');
+          console.error(err);
+        }
+      });
+
+      wrapper.querySelectorAll('.membro-input').forEach(input => {
+        input.addEventListener('input', atualizarPreviewGestao);
+      });
+
+      membrosContainer.appendChild(wrapper);
+      atualizarPreviewGestao();
+    }
+
+    function coletarMembros() {
+      const blocos = membrosContainer.querySelectorAll('[data-index]');
+      const membros = [];
+
+      blocos.forEach(bloco => {
+        const nome = bloco.querySelector('.membro-nome')?.value?.trim() || '';
+        const cargo = bloco.querySelector('.membro-cargo')?.value?.trim() || '';
+        const curso = bloco.querySelector('.membro-curso')?.value?.trim() || '';
+        const email = bloco.querySelector('.membro-email')?.value?.trim() || '';
+
+        if (nome || cargo || curso || email) {
+          membros.push({
+            nome, cargo, curso, email,
+            foto: bloco.dataset.fotoUrl || '',
+            avatar: gerarAvatar(nome)
+          });
+        }
+      });
+
+      return membros;
+    }
+
+    function atualizarPreviewGestao() {
+      const periodo = gestaoForm.periodo.value.trim();
+      const presidente = gestaoForm.presidente.value.trim();
+      const membros = coletarMembros();
+
+      previewPeriodoGestao.textContent = periodo || '--';
+      previewPresidenteGestao.textContent = presidente || '--';
+
+      if (membros.length === 0) {
+        previewMembrosGestao.innerHTML = '<p style="font-size:0.875rem;color:var(--muted-foreground);">Nenhum membro adicionado ainda.</p>';
+        return;
+      }
+
+      previewMembrosGestao.innerHTML = membros.map(membro => `
+        <div style="border:1px solid var(--border);border-radius:0.5rem;padding:0.75rem;">
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            ${membro.foto
+              ? `<img src="${API_URL}${membro.foto}" style="width:2.5rem;height:2.5rem;border-radius:9999px;object-fit:cover;">`
+              : `<div style="width:2.5rem;height:2.5rem;border-radius:9999px;background:rgba(var(--primary-rgb,220 38 38),0.1);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;">${membro.avatar}</div>`
+            }
+            <div>
+              <p style="font-weight:600;font-size:0.875rem;">${membro.nome || 'Sem nome'}</p>
+              <p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.cargo || 'Sem cargo'}</p>
+              ${membro.curso ? `<p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.curso}</p>` : ''}
+              ${membro.email ? `<p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.email}</p>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    gestaoForm.periodo.addEventListener('input', atualizarPreviewGestao);
+    gestaoForm.presidente.addEventListener('input', atualizarPreviewGestao);
+
+    addMembroBtn.addEventListener('click', () => criarBlocoMembro());
+
+    gestaoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        periodo: gestaoForm.periodo.value.trim(),
+        presidente: gestaoForm.presidente.value.trim(),
+        membros: coletarMembros()
+      };
+
+      try {
+        const response = await fetch(`${API_URL}/api/board/atual`, {
+          method: 'POST',
+          headers: authHeaders(true),
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error('Erro ao salvar gestão');
+        showMessage('gestaoMessage', 'success', 'Gestão atual salva com sucesso!');
+        loadGestao();
+      } catch (error) {
+        showMessage('gestaoMessage', 'error', 'Erro ao salvar gestão atual.');
+      }
+    });
+
+    arquivarGestaoBtn.addEventListener('click', async () => {
+      if (!confirm('Tem certeza que deseja arquivar a gestão atual?')) return;
+      try {
+        const response = await fetch(`${API_URL}/api/board/archive`, {
+          method: 'POST',
+          headers: authHeaders()
+        });
+        if (!response.ok) throw new Error('Erro ao arquivar');
+        showMessage('gestaoMessage', 'success', 'Gestão arquivada com sucesso!');
+        loadGestao();
+      } catch (error) {
+        showMessage('gestaoMessage', 'error', 'Não foi possível arquivar a gestão atual.');
+      }
+    });
+
+    async function loadGestao() {
+      try {
+        const response = await fetch(`${API_URL}/api/board`);
+        const dados = await response.json();
+
+        const gestaoAtualBox = document.getElementById('gestaoAtualBox');
+        const historicoGestoes = document.getElementById('historicoGestoes');
+
+        if (dados.atual && Object.keys(dados.atual).length > 0) {
+          const membros = dados.atual.membros || [];
+
+          gestaoAtualBox.innerHTML = `
+            <div class="admin-list-item" style="padding:1.5rem;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;">
+                <div>
+                  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.25rem;font-weight:700;">Gestão ${dados.atual.periodo || '--'}</h3>
+                  <p style="font-size:0.875rem;color:var(--muted-foreground);">Presidência: ${dados.atual.presidente || '--'}</p>
+                </div>
+                <span style="font-size:0.625rem;padding:0.125rem 0.5rem;border-radius:9999px;background:rgba(34,197,94,0.1);color:#22c55e;">Atual</span>
               </div>
 
-              <button
-                onclick="deletarFotoCarousel(${foto.id})"
-                class="text-red-500 hover:bg-red-500/10 px-3 py-1.5 rounded text-sm border border-red-500/30 hover:border-red-500 transition-colors flex-shrink-0"
-                title="Deletar foto"
-              >
-                🗑️
-              </button>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem;">
+                ${membros.length > 0
+                  ? membros.map(membro => `
+                    <div style="border:1px solid var(--border);border-radius:0.5rem;padding:1rem;">
+                      <div style="display:flex;align-items:center;gap:0.75rem;">
+                        ${membro.foto
+                          ? `<img src="${API_URL}${membro.foto}" style="width:2.5rem;height:2.5rem;border-radius:9999px;object-fit:cover;">`
+                          : `<div style="width:2.5rem;height:2.5rem;border-radius:9999px;background:rgba(var(--primary-rgb,220 38 38),0.1);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;">${membro.avatar || gerarAvatar(membro.nome)}</div>`
+                        }
+                        <div>
+                          <h4 style="font-weight:600;font-size:0.875rem;">${membro.nome || 'Sem nome'}</h4>
+                          <p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.cargo || 'Sem cargo'}</p>
+                          ${membro.curso ? `<p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.curso}</p>` : ''}
+                          ${membro.email ? `<p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.email}</p>` : ''}
+                        </div>
+                      </div>
+                    </div>
+                  `).join('')
+                  : '<p style="color:var(--muted-foreground);">Nenhum membro cadastrado.</p>'
+                }
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    `).join("");
-  } catch (error) {
-    document.getElementById("listaCarousel").innerHTML = `
-      <div class="text-center py-8">
-        <p class="text-red-500 mb-2">✗ Erro ao carregar fotos do carrossel</p>
-      </div>
-    `;
-  }
-}
+          `;
+        } else {
+          gestaoAtualBox.innerHTML = '<p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Nenhuma gestão atual cadastrada.</p>';
+        }
 
-async function deletarFotoCarousel(id) {
-  const confirmar = confirm("Tem certeza que deseja deletar esta foto do carrossel?");
-  if (!confirmar) return;
+        if (dados.historico && dados.historico.length > 0) {
+          historicoGestoes.innerHTML = dados.historico.map((gestao, index) => `
+            <div class="admin-list-item" style="padding:1.25rem;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:0.75rem;">
+                <div>
+                  <h4 style="font-weight:700;font-size:0.875rem;">Gestão ${gestao.periodo || '--'}</h4>
+                  <p style="font-size:0.75rem;color:var(--muted-foreground);">Presidência: ${gestao.presidente || '--'}</p>
+                </div>
+                <span class="admin-badge">#${dados.historico.length - index}</span>
+              </div>
 
-  try {
-    const response = await fetch(`${API_URL}/api/carousel/${id}`, {
-      method: "DELETE",
-      headers: authHeaders()
+              <details>
+                <summary style="cursor:pointer;font-size:0.875rem;color:var(--primary);">Ver diretoria completa</summary>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem;margin-top:1rem;">
+                  ${(gestao.membros || []).map(membro => `
+                    <div style="border:1px solid var(--border);border-radius:0.5rem;padding:1rem;">
+                      <div style="display:flex;align-items:center;gap:0.75rem;">
+                        ${membro.foto
+                          ? `<img src="${API_URL}${membro.foto}" style="width:2.5rem;height:2.5rem;border-radius:9999px;object-fit:cover;">`
+                          : `<div style="width:2.5rem;height:2.5rem;border-radius:9999px;background:rgba(var(--primary-rgb,220 38 38),0.1);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;">${membro.avatar || gerarAvatar(membro.nome)}</div>`
+                        }
+                        <div>
+                          <h5 style="font-weight:600;font-size:0.875rem;">${membro.nome || 'Sem nome'}</h5>
+                          <p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.cargo || 'Sem cargo'}</p>
+                          ${membro.curso ? `<p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.curso}</p>` : ''}
+                          ${membro.email ? `<p style="font-size:0.75rem;color:var(--muted-foreground);">${membro.email}</p>` : ''}
+                        </div>
+                      </div>
+                    </div>
+                  `).join('') || '<p style="color:var(--muted-foreground);">Sem membros cadastrados.</p>'}
+                </div>
+              </details>
+            </div>
+          `).join('');
+        } else {
+          historicoGestoes.innerHTML = '<p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Nenhuma gestão no histórico ainda.</p>';
+        }
+      } catch (error) {
+        document.getElementById('gestaoAtualBox').innerHTML = '<p style="color:#ef4444;text-align:center;padding:2rem 0;">Erro ao carregar gestão atual.</p>';
+        document.getElementById('historicoGestoes').innerHTML = '<p style="color:#ef4444;text-align:center;padding:2rem 0;">Erro ao carregar histórico.</p>';
+      }
+    }
+
+    // =================== MENSALIDADE ===================
+    const mensalidadeForm = document.getElementById('mensalidadeForm');
+    const previewSemCampeonato = document.getElementById('previewSemCampeonato');
+    const previewComCampeonato = document.getElementById('previewComCampeonato');
+
+    mensalidadeForm.valor_sem_campeonato.addEventListener('input', (e) => {
+      previewSemCampeonato.textContent = e.target.value || '70';
     });
 
-    if (!response.ok) throw new Error("Erro ao deletar foto");
+    mensalidadeForm.valor_com_campeonato.addEventListener('input', (e) => {
+      previewComCampeonato.textContent = e.target.value || '80';
+    });
 
-    loadCarousel();
-  } catch (error) {
-    alert("✗ Erro ao deletar foto.");
-  }
-}
+    mensalidadeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        valor_sem_campeonato: mensalidadeForm.valor_sem_campeonato.value,
+        valor_com_campeonato: mensalidadeForm.valor_com_campeonato.value
+      };
 
-loadMensalidade();
-loadCarousel();
-</script>
+      try {
+        const response = await fetch(`${API_URL}/api/mensalidade`, {
+          method: 'POST',
+          headers: authHeaders(true),
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error();
+        showMessage('mensalidadeMessage', 'success', 'Mensalidades atualizadas com sucesso!');
+      } catch (error) {
+        showMessage('mensalidadeMessage', 'error', 'Erro ao atualizar mensalidades.');
+      }
+    });
 
-  </div><!-- close admin-content -->
+    async function loadMensalidade() {
+      try {
+        const response = await fetch(`${API_URL}/api/mensalidade`);
+        const dados = await response.json();
+        if (dados.valor_sem_campeonato !== undefined) {
+          mensalidadeForm.valor_sem_campeonato.value = dados.valor_sem_campeonato;
+          previewSemCampeonato.textContent = dados.valor_sem_campeonato;
+        }
+        if (dados.valor_com_campeonato !== undefined) {
+          mensalidadeForm.valor_com_campeonato.value = dados.valor_com_campeonato;
+          previewComCampeonato.textContent = dados.valor_com_campeonato;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar mensalidades');
+      }
+    }
+
+    // =================== CARROSSEL PÁGINA INICIAL ===================
+    const carouselHomeForm = document.getElementById('carouselHomeForm');
+    const carouselHomePreviewImage = document.getElementById('carouselHomePreviewImage');
+    const carouselHomePreviewPlaceholder = document.getElementById('carouselHomePreviewPlaceholder');
+    const carouselHomePreviewLegenda = document.getElementById('carouselHomePreviewLegenda');
+
+    carouselHomeForm.legenda.addEventListener('input', (e) => {
+      carouselHomePreviewLegenda.textContent = e.target.value || 'A legenda aparecerá aqui...';
+    });
+
+    carouselHomeForm.foto.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          carouselHomePreviewImage.src = ev.target.result;
+          carouselHomePreviewImage.classList.remove('hidden');
+          carouselHomePreviewPlaceholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    carouselHomeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      try {
+        const response = await fetch(`${API_URL}/api/carousel`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: formData
+        });
+        if (!response.ok) throw new Error();
+        showMessage('carouselHomeMessage', 'success', 'Foto adicionada ao carrossel da página inicial!');
+        e.target.reset();
+        carouselHomePreviewLegenda.textContent = 'A legenda aparecerá aqui...';
+        carouselHomePreviewImage.classList.add('hidden');
+        carouselHomePreviewPlaceholder.classList.remove('hidden');
+        loadCarouselHome();
+      } catch (error) {
+        showMessage('carouselHomeMessage', 'error', 'Erro ao adicionar foto.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '+ Adicionar Foto';
+      }
+    });
+
+    async function loadCarouselHome() {
+      try {
+        const response = await fetch(`${API_URL}/api/carousel`);
+        const fotos = await response.json();
+        const lista = document.getElementById('listaCarouselHome');
+
+        if (!fotos || fotos.length === 0) {
+          lista.innerHTML = '<p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Nenhuma foto cadastrada.</p>';
+          return;
+        }
+
+        lista.innerHTML = fotos.map((foto, index) => `
+          <div class="admin-list-item">
+            <div style="display:flex;gap:1rem;align-items:start;">
+              <img src="${API_URL}${foto.url}" alt="Foto do carrossel" style="width:6rem;height:6rem;object-fit:cover;border-radius:0.5rem;flex-shrink:0;">
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;justify-content:space-between;align-items:start;gap:0.75rem;">
+                  <div style="flex:1;min-width:0;">
+                    <span class="admin-badge" style="margin-bottom:0.25rem;display:inline-block;">#${fotos.length - index}</span>
+                    <p style="font-size:0.875rem;color:var(--muted-foreground);word-break:break-word;">${foto.legenda || 'Sem legenda'}</p>
+                  </div>
+                  <button onclick="deletarFotoCarouselHome(${foto.id})" class="admin-btn-delete" title="Deletar">🗑️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        document.getElementById('listaCarouselHome').innerHTML = '<div style="text-align:center;padding:2rem 0;"><p style="color:#ef4444;">Erro ao carregar fotos do carrossel</p></div>';
+      }
+    }
+
+    async function deletarFotoCarouselHome(id) {
+      if (!confirm('Tem certeza que deseja deletar esta foto do carrossel?')) return;
+      try {
+        await fetch(`${API_URL}/api/carousel/${id}`, { method: 'DELETE', headers: authHeaders() });
+        loadCarouselHome();
+      } catch (error) {
+        alert('Erro ao deletar foto.');
+      }
+    }
+
+    // =================== CARROSSEL LIGA EINSTEIN ===================
+    const carouselLigaForm = document.getElementById('carouselLigaForm');
+    const carouselLigaPreviewImage = document.getElementById('carouselLigaPreviewImage');
+    const carouselLigaPreviewPlaceholder = document.getElementById('carouselLigaPreviewPlaceholder');
+    const carouselLigaPreviewLegenda = document.getElementById('carouselLigaPreviewLegenda');
+
+    carouselLigaForm.legenda.addEventListener('input', (e) => {
+      carouselLigaPreviewLegenda.textContent = e.target.value || 'A legenda aparecerá aqui...';
+    });
+
+    carouselLigaForm.foto.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          carouselLigaPreviewImage.src = ev.target.result;
+          carouselLigaPreviewImage.classList.remove('hidden');
+          carouselLigaPreviewPlaceholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    carouselLigaForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      try {
+        const response = await fetch(`${API_URL}/api/carousel-liga`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: formData
+        });
+        if (!response.ok) throw new Error();
+        showMessage('carouselLigaMessage', 'success', 'Foto adicionada ao carrossel da Liga!');
+        e.target.reset();
+        carouselLigaPreviewLegenda.textContent = 'A legenda aparecerá aqui...';
+        carouselLigaPreviewImage.classList.add('hidden');
+        carouselLigaPreviewPlaceholder.classList.remove('hidden');
+        loadCarouselLiga();
+      } catch (error) {
+        showMessage('carouselLigaMessage', 'error', 'Erro ao adicionar foto.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '+ Adicionar Foto';
+      }
+    });
+
+    async function loadCarouselLiga() {
+      try {
+        const response = await fetch(`${API_URL}/api/carousel-liga`);
+        const fotos = await response.json();
+        const lista = document.getElementById('listaCarouselLiga');
+
+        if (!fotos || fotos.length === 0) {
+          lista.innerHTML = '<p style="color:var(--muted-foreground);text-align:center;padding:2rem 0;">Nenhuma foto cadastrada.</p>';
+          return;
+        }
+
+        lista.innerHTML = fotos.map((foto, index) => `
+          <div class="admin-list-item">
+            <div style="display:flex;gap:1rem;align-items:start;">
+              <img src="${API_URL}${foto.url}" alt="Foto do carrossel" style="width:6rem;height:6rem;object-fit:cover;border-radius:0.5rem;flex-shrink:0;">
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;justify-content:space-between;align-items:start;gap:0.75rem;">
+                  <div style="flex:1;min-width:0;">
+                    <span class="admin-badge" style="margin-bottom:0.25rem;display:inline-block;">#${fotos.length - index}</span>
+                    <p style="font-size:0.875rem;color:var(--muted-foreground);word-break:break-word;">${foto.legenda || 'Sem legenda'}</p>
+                  </div>
+                  <button onclick="deletarFotoCarouselLiga(${foto.id})" class="admin-btn-delete" title="Deletar">🗑️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        document.getElementById('listaCarouselLiga').innerHTML = '<div style="text-align:center;padding:2rem 0;"><p style="color:#ef4444;">Erro ao carregar fotos do carrossel</p></div>';
+      }
+    }
+
+    async function deletarFotoCarouselLiga(id) {
+      if (!confirm('Tem certeza que deseja deletar esta foto do carrossel da Liga?')) return;
+      try {
+        await fetch(`${API_URL}/api/carousel-liga/${id}`, { method: 'DELETE', headers: authHeaders() });
+        loadCarouselLiga();
+      } catch (error) {
+        alert('Erro ao deletar foto.');
+      }
+    }
+
+    // =================== INIT ALL ===================
+    function initAll() {
+      checkServerStatus();
+      loadAdminHeroCarousel();
+      loadNoticias();
+      loadProdutos();
+      loadTransparencia();
+      criarBlocoMembro();
+      loadGestao();
+      loadMensalidade();
+      loadCarouselHome();
+      loadCarouselLiga();
+      setInterval(checkServerStatus, 30000);
+    }
+  </script>
 </body>
 </html>

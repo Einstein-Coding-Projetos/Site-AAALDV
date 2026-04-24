@@ -66,6 +66,11 @@ class Carrossel(db.Model):
     url = db.Column(db.String(500), nullable=False)
     legenda = db.Column(db.String(255))
 
+class CarrosselLiga(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    url = db.Column(db.String(500), nullable=False)
+    legenda = db.Column(db.String(255))
+
 class ValorMensalidade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     valor_sem_campeonato = db.Column(db.String(50))
@@ -303,6 +308,40 @@ def deletar_carrossel(id):
     db.session.commit()
     return jsonify({"message": "Foto deletada"}), 200
 
+# --- ROTA CARROSSEL LIGA ---
+@app.route('/api/carousel-liga', methods=['GET'])
+def listar_carrossel_liga():
+    fotos = CarrosselLiga.query.all()
+    return jsonify([{"id": f.id, "url": f.url, "legenda": f.legenda} for f in fotos])
+
+@app.route('/api/carousel-liga', methods=['POST'])
+@require_auth
+def criar_carrossel_liga():
+    try:
+        foto_url = save_uploaded_file(request.files.get('foto'))
+        if not foto_url:
+            return jsonify({'error': 'Arquivo inválido ou ausente'}), 400
+
+        nova_foto = CarrosselLiga(
+            id=int(datetime.now().timestamp() * 1000),
+            url=foto_url,
+            legenda=request.form.get('legenda', 'Sem legenda')
+        )
+        db.session.add(nova_foto)
+        db.session.commit()
+        return jsonify({"id": nova_foto.id, "url": nova_foto.url}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@app.route('/api/carousel-liga/<int:id>', methods=['DELETE'])
+@require_auth
+def deletar_carrossel_liga(id):
+    foto = CarrosselLiga.query.get_or_404(id)
+    delete_uploaded_file(foto.url)
+    db.session.delete(foto)
+    db.session.commit()
+    return jsonify({"message": "Foto deletada"}), 200
+
 # --- ROTA DIRETORIA (BOARD) ---
 @app.route('/api/board', methods=['GET'])
 def listar_diretoria():
@@ -329,6 +368,14 @@ def salvar_gestao_atual():
 @require_auth
 def arquivar_gestao():
     return jsonify({"message": "Gestão arquivada"}), 200
+
+@app.route('/api/board/upload-foto', methods=['POST'])
+@require_auth
+def upload_foto_membro():
+    foto_url = save_uploaded_file(request.files.get('foto'))
+    if not foto_url:
+        return jsonify({'error': 'Arquivo inválido'}), 400
+    return jsonify({'url': foto_url}), 201
 
 if __name__ == '__main__':
     print('=' * 50)
