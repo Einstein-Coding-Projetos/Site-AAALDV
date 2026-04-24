@@ -36,6 +36,7 @@
   .board-grid {
     grid-template-columns: 1fr;
   }
+
   .financeiro-header, .documents-header, .estatuto-header {
     flex-direction: column;
     gap: 6px;
