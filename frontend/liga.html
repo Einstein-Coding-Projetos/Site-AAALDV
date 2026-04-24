@@ -443,14 +443,30 @@
       updateCarousel();
     });
 
-    // 4. INICIALIZAÇÃO AO CARREGAR A PÁGINA
+    // 4. AUTO-ROTAÇÃO DO CARROSSEL (cicla a cada 5 segundos)
+    let autoRotateInterval = null;
+
+    function startAutoRotate() {
+      if (autoRotateInterval) clearInterval(autoRotateInterval);
+      autoRotateInterval = setInterval(() => {
+        const allSlides = track.querySelectorAll(".slide");
+        if (allSlides.length <= 1) return;
+        currentSlideIndex++;
+        updateCarousel();
+      }, 5000);
+    }
+
+    // Reinicia o timer quando o usuário clica nos botões
+    document.querySelector(".carousel-btn.next").parentElement.addEventListener("click", () => {
+      startAutoRotate();
+    });
+
+    // 5. INICIALIZAÇÃO AO CARREGAR A PÁGINA
     window.addEventListener('DOMContentLoaded', async () => {
-      // Carrega os dados do servidor
       await carregarPrecoAtualizado();
       await carregarFotos();
-      
-      // Pequeno delay opcional para garantir que as imagens foram renderizadas
       updateCarousel();
+      startAutoRotate();
     });
   </script>
 </body>
